@@ -1,0 +1,92 @@
+@import '../assests.css';
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    position: relative;
+    top: -35px;
+    width: 100vw;
+}
+.nav__a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 8px;
+    color: var(--colour-white);
+    border: 1px solid var(--colour-white);
+    border-radius: 10px;
+    font-family: var(--font-links);
+    letter-spacing: 0.102em;
+    text-shadow: 1px 1px 1px var(--colour-blue);
+}
+.nav__a:nth-child(1) {
+    font-size: 12px;
+    width: 220px;
+    height: 50px;
+    border: none;
+}
+.nav__a:nth-child(2){
+    font-size: 14px;
+    width: 260px;
+    height: 60px;
+}
+.nav__a:nth-child(3) {
+    font-size: 10px;
+    width: 195px;
+    height: 40px;
+}
+
+.nav__a:nth-child(4) {
+    font-size: 8px;
+    width: 150px;
+    height: 30px;
+}
+.nav__a--communication {
+    background-color: var(--colour-communication);
+}
+.nav__a--about {
+    background-color: var(--colour-about);
+}
+.nav__a--reviews {
+    background-color: var(--colour-reviews);
+}
+.nav__a--consultation {
+    background-color: var(--colour-consultation);
+}
+
+@media only screen and (min-width: 1060px) {
+    .nav {
+        flex-flow: row nowrap;
+        justify-content: space-around;
+    }
+    .nav__a--communication {
+        order: 1;
+    }
+    .nav__a--about {
+        order: 2;
+    }
+    .nav__a--reviews {
+        order: 3;
+    }
+    .nav__a--consultation {
+        order: 4;
+    }
+    .nav__a:nth-child(1) {
+        align-self: flex-start;
+    }
+    .nav__a:nth-child(2) {
+        align-self: center;
+        margin-top: -25px;
+    }
+    .nav__a:nth-child(3) {
+        align-self: center;
+        margin-top: 100px;
+    }
+    .nav__a:nth-child(4) {
+        align-self: flex-end;
+    }
+}

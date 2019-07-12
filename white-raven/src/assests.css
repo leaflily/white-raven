@@ -1,0 +1,29 @@
+/* define all colours, fonts, etc... here */
+
+:root {
+    --colour-white: #ffffff;
+    --colour-off-white: #F1F1F1;
+    --colour-grey: #808080;
+    --colour-off-black: #333333;
+    --colour-blue: #6698CC;
+    --colour-orange: #C69838;
+    --colour-light-blue: #D8EBFE;
+    --colour-light-orange: #FBF3E1;
+
+    --colour-communication: #016AA3;
+    --colour-about: #668A2F;
+    --colour-reviews: #E4B766;
+    --colour-consultation: #D47C5E;
+
+    --mobile-width: 320px;
+    --tablet-width: 1080px;
+
+    --font-quotes: italic 400 16px basic-sans, sans-serif;
+    --font-answers: normal 300 16px work-sans, sans-serif;
+    --font-people: normal 300 8px work-sans, sans-serif;
+    --font-links: normal 700 12px delve-hand, sans-serif;
+    --font-main-heading: normal 400 24px dapifer-stencil, sans-serif;
+    --font-main: normal 400 14px dapifer-stencil, sans-serif;
+    --font-aside: normal 300 12px shogun, sans-serif;
+    --font-aside-heading: normal 700 14px shogun, sans-serif;
+}

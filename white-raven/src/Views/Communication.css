@@ -1,0 +1,88 @@
+@import '../assests.css';
+
+.main--communication .main__section__figure--Dolphin {
+    display: none;
+    margin-right: 0;
+    margin-top: 5px;
+}
+
+.main--communication .main__figure--Dolphin-mobile {
+    width: 100vw;
+    height: 125vw;
+    margin: 0;
+    padding: 0;
+}
+
+.main--communication .main__section__p__headline {
+    color: var(--colour-communication);
+}
+
+.main--communication .main__section__list-heading {
+    font: var(--font-aside-heading);
+    color: var(--colour-communication);
+}
+
+.main--communication .main__section__list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main--communication .main__section__list__ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+    font: var(--font-aside);
+}
+
+.main--communication .main__section__list__ul li {
+    padding: 0 1em 0 0;
+    margin: 1em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main--communication .main__section__list__ul li:after {
+    content: '';
+    background-image: url('./images/point.png');
+    background-repeat: no-repeat;
+    padding: 0 1em 0 0;
+    margin: 0 0 0 1em;
+}
+
+.main--communication .main__section__p--last {
+    clear: both;
+}
+
+@media only screen and (min-width: 600px) {
+    .main--communication .main__figure--Dolphin-mobile {
+        display: none;
+    }
+    .main--communication .main__section__figure--Dolphin {
+        display: inline-block;
+        float: right;
+        width: 240px;
+        height: 300px;
+        clear: right;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .main--communication .main__section__list-heading {
+        font-size: 16px;
+    }
+    .main--communication .main__section__list__ul {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (min-width: 1060px) {
+    .main--communication .main__section-background--blue {
+        max-height: 500px;
+    }
+    .main--communication .main__section__figure--Dolphin {
+        width: 480px;
+        height: 600px;
+    }
+}

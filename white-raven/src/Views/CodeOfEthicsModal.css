@@ -1,0 +1,21 @@
+.modal__ethics {
+    padding: 32px;
+    max-width: 800px;
+}
+
+.modal__ethics__title {
+    text-align: center;
+}
+
+.modal__ethics__subtitle {
+    text-align: center;
+}
+
+.modal__ethics__title {
+    font-size: 24px;
+}
+
+.modal__ethics__subtitle {
+    font-size: 18px;
+    margin-bottom: 36px;
+}

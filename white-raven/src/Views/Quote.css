@@ -1,0 +1,13 @@
+@import '../assests.css';
+
+.quote {
+    width: 300px;
+    color: var(--colour-off-white);
+    text-align: right;
+}
+.quote__text {
+    font: var(--font-quotes);
+}
+.quote__author {
+    font: var(--font-people);
+}

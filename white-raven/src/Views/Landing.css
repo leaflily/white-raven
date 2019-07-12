@@ -1,0 +1,115 @@
+.header--landing {
+  z-index: 50;
+}
+
+.nav--landing {
+  z-index: 100;
+  min-height: calc(80vh - 170px);
+  top: 0;
+  position: relative;
+}
+
+.nav--landing .nav__a:nth-child(1) {
+  font-size: 14px;
+  width: 260px;
+  height: 60px;
+  border: 1px solid var(--colour-white);
+}
+.nav--landing .nav__a:nth-child(2) {
+  font-size: 12px;
+  width: 220px;
+  height: 50px;
+}
+@media only screen and (min-width: 450px) {
+  .nav--landing {
+    position: absolute;
+    top: calc(60vh - 155px);
+    min-height: 0;
+    right: 0;
+    width: 450px;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .nav--landing {
+    position: absolute;
+    top: calc(60vh - 155px);
+    min-height: 0;
+    right: 2vw;
+  }
+}
+@media only screen and (min-width: 1060px) {
+  .nav--landing {
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10vw;
+    top: 40vh;
+  }
+  .nav--landing .nav__a {
+    align-self: center;
+    margin: 8px;
+  }
+}
+
+
+
+#clouds__viewport {
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  perspective: 400;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#clouds__world {
+  z-index: 10;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+}
+
+#clouds__world div { 
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+}
+
+.clouds__cloudBase {
+  height: 20px;
+  width: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  position: absolute;
+  left: -25vw;
+  top: 256px;
+}
+
+.clouds__cloudBase--right {
+  left: 100vw;
+}
+
+.clouds__cloudBase--expired {
+  opacity: 0;
+  -webkit-transition: opacity .5s ease-out;
+  -moz-transition: opacity .5s ease-out;
+  -o-transition: opacity .5s ease-out;
+}
+
+.clouds__cloudBase__cloudLayer {
+  height: 256px;
+  left: 50%;
+  margin-left: -128px;
+  margin-top: -128px;
+  position: absolute;
+  top: 50%;
+  width: 256px;
+
+  -webkit-transition: opacity .5s ease-out;
+  -moz-transition: opacity .5s ease-out;
+  -o-transition: opacity .5s ease-out;
+}

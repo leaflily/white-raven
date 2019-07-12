@@ -1,0 +1,63 @@
+@import '../assests.css';
+
+.main {
+    margin: 0;
+    color: var(--colour-grey);
+    font: var(--font-main);
+}
+
+.main__section {
+    max-width: 1000px;
+    padding: 20px 5vw;
+    text-align: right;
+    margin: 0 auto;
+    font-size: 14px;
+    height: 100%;
+}
+.main__section-background:first-child {
+    padding-top: 32px;
+}
+.main__section-background:last-child {
+    padding-bottom: 80px;
+}
+.main__section__headline, .main__section__p__headline {
+    font: var(--font-main-heading);
+    font-size: 24px;
+}
+
+.main__section__list-heading {
+    font: var(--font-aside-heading);
+}
+
+.main__section-background--blue {
+    background-color: var(--colour-light-blue);
+}
+
+.main__section-background--orange {
+    background-color: var(--colour-light-orange);
+}
+
+button {
+    cursor: pointer;
+}
+
+.main__section__button {
+    background: var(--colour-white);
+    border: 1px solid var(--colour-grey);
+    border-radius: 8px;
+    width: 220px;
+    height: 50px;
+}
+
+.main__section__button:hover {
+cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+    .main__section {
+        font-size: 16px;
+    }
+    .main__section__headline, .main__section__p__headline {
+        font-size: 32px;
+    }
+}

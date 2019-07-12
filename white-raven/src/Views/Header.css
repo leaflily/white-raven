@@ -1,0 +1,76 @@
+@import '../assests.css';
+
+.header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.header:not(.header--landing) {
+    width: 100%;
+    background-image: radial-gradient(70% 90% at bottom right, var(--colour-orange), var(--colour-blue));
+}
+
+.header__logo {
+    margin-top: 50px;
+}
+
+.header__logo__a {
+    width: 260px;
+    display: inline-block;
+}
+
+@media only screen and (min-width: 360px) {
+    .header {
+        display: inline-block;
+    }
+    .header__logo__a {
+        margin-left: 50px;
+    }
+    .header .quote {
+        float: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        align-content: flex-end;
+    }
+}
+
+@media only screen and (min-width: 750px) {
+    .header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        padding-bottom: 20px;
+        height: 220px;
+    }
+    .header__logo {
+        margin-top: 0;
+        align-self: flex-start;
+        margin-top: 85px;
+        margin-left: 100px;
+    }
+    .header .quote {
+        align-self: flex-end;
+        margin-right: 10vw;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .header {
+        justify-content: space-between;
+        margin: 0;
+        height: 280px;
+    }
+    .header__logo {
+        margin-left: 15vw;
+    }
+    .header__logo__a {
+        width: 330px;
+    }
+    .header .quote {
+        margin-right: 15%; 
+    }
+}

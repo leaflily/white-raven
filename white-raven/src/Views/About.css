@@ -1,0 +1,44 @@
+@import '../assests.css';
+
+.main--about .main__section__figure--Chimp { 
+    float: right;
+    width: 150px;
+    height: 200px;
+    clear: right;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.main--about .main__section__iframe--youtube {
+    width: 240px;
+    height: 135px;
+    float: none;
+    margin-left: 20px;
+}
+
+.main--about .main__section__headline {
+    color: var(--colour-about);
+}
+
+.main--about .main__section__bottom-clearance {
+    clear: both;
+}
+
+@media only screen and (min-width: 450px) {
+    .main--about .main__section__iframe--youtube {
+        float: right;
+    }
+    .main--about .main__section__bottom-p {
+        margin-top: 64px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .main--about .main__section__figure--Chimp {
+        width: 250px;
+        height: 320px;
+    }
+    .main--about .main__section {
+        max-width: 800px;
+    }
+}
