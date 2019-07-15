@@ -1,7 +1,6 @@
 import React from 'react';
 import './modal.css';
 import './QnAModal.css';
-import { resolve } from 'path';
 
 const QnAs = [
     {
@@ -15,9 +14,9 @@ const QnAs = [
         a: 'After booking, you will receive a confirmation email. I will be in touch, time can then be arranged for our Skype or phone call where we can discuss the communication in detail.'
     },
     {
-        tags: '',
+        tags: 'far, location',
         q: 'Is distance an issue?',
-        a: 'An animal communication session can be done over any distance as it is a telepathic/energetic experience.'
+        a: 'A communication session can be done over any distance as it is a telepathic/energetic experience.'
     },
     {
         tags: '',
@@ -25,6 +24,26 @@ const QnAs = [
         a: 'You will be asked to send a photo of your animal along with some information.'
     },
 ];
+const excludeSearchWords = [
+    'the',
+    'they',
+    'there',
+    'they\'re',
+    'their',
+    'them',
+    'in',
+    'to',
+    'do',
+    'on',
+    'with',
+    'you',
+    'i',
+    'me',
+    'how',
+    'will',
+    'what',
+    'can'
+]
 
 function QnA(props) {
     return (
@@ -61,7 +80,7 @@ class QnAModal extends React.Component {
             matches = matches.map((m, i) => {
                 return {
                     index: i,
-                    score: [0, ...m].reduce((t, w) => t + (w.length*(w.length+1)/2))
+                    score: [0, ...m.filter(w => !excludeSearchWords.includes(w.toLowerCase()))].reduce((t, w) => t + (w.length*(w.length+1)/2))
                 }
             }).filter(m => m.score > 0).sort((a, b) => b.score - a.score).map(m => m.index);
             resolve(matches);
