@@ -8,7 +8,6 @@
     height: 250px;
     position: relative;
     top: -35px;
-    width: 100vw;
 }
 .nav__a {
     display: flex;

@@ -1,14 +1,10 @@
 # TODO
-
-- pick more eligible font for code of ethics
-- make q&a list dynamic
-- style last part of consultation page
-- paste in updated text content from emails
+- throttle resize listener in Image.js
 - size and compress all photos
-- add all reviews with photos
 - add clouds to landing
-- add preview on photo upload
 - build in submit functions for consulation and q&a
+- find appropaite backup fonts
+- make q&a list dynamic
 
 ## build 
 - test on different devices

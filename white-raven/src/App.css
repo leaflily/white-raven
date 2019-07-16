@@ -5,6 +5,8 @@
   max-width: 100vw;
 }
 
-@media only screen and (min-width: 768px) {
-
+.image {
+  position: relative;
+  overflow: hidden;
+  background: rgba(180, 180, 180, 0.377) url('./Views/images/spinner.gif') no-repeat center;
 }

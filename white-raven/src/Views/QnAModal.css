@@ -2,16 +2,16 @@
 
 .modal__qna {
     padding: 32px;
-    width: 80vw;
+    padding-top: 0;
+    width: 70vw;
     max-width: 800px;
-    max-height: 80vh;
     font: var(--font-answers);
-    overflow: hidden;
 }
 
 .modal__qna__title {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
+    margin-top: 0px;
 }
 
 .modal__qna__query {
@@ -19,7 +19,7 @@
     text-align: center;
     padding: 16px;
     box-sizing: border-box;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
 }
 
 .modal__qna__answers {
@@ -31,13 +31,13 @@
     align-items: center;
     justify-content: flex-start;
     overflow: auto;
-    height: 60vh;
+    height: 45vh;
 }
 
 .modal__qna__answers__dialog {
     display: flex;
     flex-direction: column;
-    width: 80vw;
+    width: 100%;
     max-width: 600px;
     background: rgba(255,255,255,0.5);
     padding: 8px 32px;
@@ -46,7 +46,7 @@
 }
 
 .modal__qna__answers__dialog__q {
-    padding: 4px 32px;
+    padding: 8px 16px;
     background: var(--colour-consultation);
     align-self: flex-start;
     border-radius: 10px;
@@ -54,7 +54,7 @@
     text-align: left;
 }
 .modal__qna__answers__dialog__a {
-    padding: 8px 32px;
+    padding: 8px 16px;
     background: var(--colour-about);
     align-self: flex-end;
     max-width: 80%;

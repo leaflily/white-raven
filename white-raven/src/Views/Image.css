@@ -1,0 +1,24 @@
+.image-thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    filter: blur(5px);
+    overflow: hidden;
+    display: inline-block;
+    opacity: 0;
+}
+
+.image-thumb--show { 
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+.image-full {
+    width: 100%;
+    height: 100%;
+}
+
+.image-thumb--hide { 
+    opacity: 0;
+    transition: opacity 0.5s linear;
+}

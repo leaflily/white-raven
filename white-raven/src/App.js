@@ -12,12 +12,9 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      page: 'Landing'
-    }
+    
   }
   render() {
-    const page = this.state.page.toLowerCase();
     return (
       <div className="App">
         <Router>

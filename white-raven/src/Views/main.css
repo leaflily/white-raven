@@ -42,8 +42,9 @@ button {
 }
 
 .main__section__button {
-    background: var(--colour-white);
-    border: 1px solid var(--colour-grey);
+    background: var(--colour-grey);
+    border: 1px solid var(--colour-white);
+    color: var(--colour-white);
     border-radius: 8px;
     width: 220px;
     height: 50px;

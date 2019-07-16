@@ -23,7 +23,13 @@ const QnAs = [
         q: 'What do you need to communicate?',
         a: 'You will be asked to send a photo of your animal along with some information.'
     },
+    {
+        tags: 'price, time, included',
+        q: 'How much will it cost and what will that include?',
+        a: 'Each communication is £50 per animal this includes a distant communication (45mins) plus a skype/phone call.'
+    }
 ];
+
 const excludeSearchWords = [
     'the',
     'they',
@@ -38,6 +44,7 @@ const excludeSearchWords = [
     'with',
     'you',
     'i',
+    'is',
     'me',
     'how',
     'will',
@@ -165,14 +172,14 @@ class QnAModal extends React.Component {
         return (
             <div className="modal modal--qna" onClick={this.props.handleEvent} data-func="closeModal">
                 <div className="modal__box">
+                <div className="modal__box__exit" onClick={this.props.handleEvent} data-func="closeModal">X</div>   
                     <div className="modal__box__content modal__qna">
-                        <div className="modal__box__content__exit" onClick={this.props.handleEvent} data-func="closeModal">X</div>
-                        <h1 className="modal__qna__title">Q & A</h1>
+                         <h1 className="modal__qna__title">Q & A</h1>
                         <form onSubmit={this.preventDefault} className="modal__qna__form">
                             <input onChange={this.handleEvent} data-func="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" />
                             <div onScroll={this.handleScroll} className="modal__qna__answers">
                                 {this.state.displayAnswers.map(a => <QnA q={QnAs[a].q} a={QnAs[a].a} />)}
-                                {this.state.query !== '' && this.state.matchResults.length === this.state.displayAnswers.length && <>
+                                {this.state.query !== '' && this.state.matchResults.length <= this.state.displayAnswers.length && <>
                                 <div className="modal__qna__answers__dialog">
                                     <h3>Query unanswered?</h3>
                                     <p className="modal__qna__answers__dialog__q">{this.state.query}</p>

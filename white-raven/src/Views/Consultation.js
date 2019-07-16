@@ -6,7 +6,7 @@ import CodeOfEthicsModal from './CodeOfEthicsModal';
 import QnAModal from './QnAModal';
 import './main.css';
 import './Consultation.css';
-import elephants from './images/elephants.jpg';
+import Image from './Image';
 
 class Consultation extends React.Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class Consultation extends React.Component {
             modalSelected: 'booking',
             bookingStage: 0,
             inputs: {
+                photo: null,
                 name: '',
                 age: '',
                 ageValue: 'years',
@@ -38,7 +39,7 @@ class Consultation extends React.Component {
         this.handleInput = this.handleInput.bind(this);
     }
     modals = {
-        booking: () => <BookingModal handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
+        booking: () => <BookingModal photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
         codeOfEthics: () => <CodeOfEthicsModal handleEvent={this.handleEvent} />,
         qna: () => <QnAModal handleEvent={this.handleEvent} />
     };  
@@ -113,8 +114,8 @@ class Consultation extends React.Component {
         const target = e.target.hasAttribute("data-name") ? e.target : e.target.parentElement;
         const name = target.getAttribute("data-name");
         if (target.hasAttribute("type")) {
-            if (target.getAttribute("type") === 'file') {
-               
+            if (target.getAttribute("type") === 'file' && target.files.length > 0) {
+                this.input(name, URL.createObjectURL(target.files[0]));
             }
             else {
                 this.input(name, target.value);
@@ -136,32 +137,19 @@ class Consultation extends React.Component {
                 <main className="main main--consultation">
                     { this.state.modalVisible && this.modals[this.state.modalSelected]() }
                 <div className="main__section-background main__section-background--blue">
-                <img className="main__section-background__img main__section-background__img--Elephant pre-img" src={elephants} alt="Elephants embracing, trunk coiled around trunk" />
-                        <section className="main__section">
-                            <button onClick={this.handleEvent} data-func="openModal" data-params="booking" className="main__section__button main__section__button--book">
-                                Book a Session 
-                            </button>
-                        </section>
+                    <div className="main__section-background__img main__section-background__img--Elephant image">
+                        <Image fileName="elephants.jpg" sizeShifts={[0, 420, 820, 1404]} className="" alt="Elephants embracing, trunk coiled around trunk" />
+                    </div>
+                    <section className="main__section">
+                        <button onClick={this.handleEvent} data-func="openModal" data-params="booking" className="main__section__button main__section__button--book">
+                            Book a Session 
+                        </button>
+                    </section>
                 </div>
                 <div className="main__section-background main__section-background--orange">
-                        <section className="main__section">
-                            <p>Each communication is £50 per animal this includes 
-                                a distant communication (45mins) plus a skype/phone 
-                                call.</p>
-                            <p>You will be asked to send a photo of your animal 
-                            along with some information.</p>
-                            <p>An animal communication session can be done over 
-                                any distance as it is a telepathic/energetic 
-                                experience.</p>
-                            <p>After booking, you will receive confirmation within 
-                                48hours and time can then be arranged for our 
-                                Skype or phone call to discuss the communication 
-                                in detail with you.</p>
-                            <p>Please note that at this time I am not working 
-                                with missing animals.</p>
-                                
+                        <section className="main__section main__section--info">       
                                 <button onClick={this.handleEvent} data-func="openModal" data-params="qna" className="main__section__button main__section__button--qna">Q & A</button>
-                                <button onClick={this.handleEvent} data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics that I follow</button>
+                                <button onClick={this.handleEvent} data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics</button>
                         </section>
                 </div>
                 </main>

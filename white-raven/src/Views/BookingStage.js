@@ -7,7 +7,8 @@ function BookingStage(props) {
             content: <form className="modal__booking-stage__form modal__booking-stage__form--animal-info">
                 <div className="modal__booking-stage__form__photo-upload">
                     <div className="modal__booking-stage__form__photo-upload__area">
-                        <input  type="file" />
+                        <img src={props.photo} alt="" />
+                        <input data-name="photo" onChange={props.handleInput} type="file" />
                     </div>
                     <p className="modal__booking-stage__form__photo-upload__info">Clear recent photo (alone, with eyes visible)</p>
                 </div>    

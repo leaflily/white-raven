@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Nav from './Nav';
-import chimp from './images/chimp.jpg';
+import Image from './Image';
 import './main.css';
 import './About.css';
 
@@ -16,30 +16,29 @@ function About() {
             <main className="main main--about">
                 <div className="main__section-background main__section-background--blue">
                     <section className="main__section">
-                        <figure className="main__section__figure--Chimp">
-                            <img className="pre-img" src={chimp} alt="Denise hugging chimp" />
+                        <figure className="main__section__figure--Chimp image">
+                            <Image fileName="chimp.jpg" sizeShifts={[0, 600]} className="" alt="Denise hugging chimp" />
                         </figure>
                         <h1 className="main__section__headline">About Me</h1>
                         <p>
-                            Having a lifelong interest in animals, I have been the 
-                            guardian and carer for a great variety from the humble 
-                            gerbil, goats, dogs, donkeys to the more unusual 
-                            chinchillas, meerkats, skunks, parrots, pygmy 
-                            marmosets, silver fox and reptiles bearded dragons, 
-                            snakes and also endangered species such as monkeys from 
-                            South America and potorous from Australia.  
-                            I am widely travelled, and have many wildlife and 
-                            exotic pet experiences on which to draw.
+                            Having a lifelong interest in animals, I have been 
+                            the guardian and carer for a great variety of them - 
+                            from the humble gerbil, goats, dogs, donkeys to the 
+                            more unusual - meerkats, chinchillas, parrots, 
+                            reptiles to name but a few, also endangered species 
+                            such as monkeys from South America and potoroos from 
+                            Australia. I am widely travelled and have many 
+                            wildlife experiences on which to draw.
                         </p>
                         <p>
                             Ever passionate about the idea of communicating with 
                             animals, I developed and refined my early ‘Dr. Doolittle’ 
-                            instincts into a formally accredited skill when my human 
-                            family members had left the nest. 
-                            For me, the catalyst to the process of serious study was 
-                            discovering the remarkable Anna Breytenbach and her 
-                            transformative work with a black leopard, Spirit, at Jukani 
-                            Predator Park, a game rescue centre, in South Africa in 2012.
+                            instincts into a formally accredited skill when my 
+                            human family members had left the nest. For me, the 
+                            catalyst to the process of serious study was discovering 
+                            the remarkable Anna Breytenbach and her transformative 
+                            work with a black leopard, Spirit, at Jukani Predator 
+                            Park, a game rescue centre, in South Africa in 2012.
                         </p>
                     </section>
                 </div>
@@ -59,10 +58,10 @@ function About() {
                                 allowfullscreen>
                             </iframe>
                             <p className="main__section__bottom-p">
-                                Like my mentors, my main aim is to increase our awareness 
-                                of and compassion for animals, and by communicating with 
-                                them to acquire a deeper understanding and relationship 
-                                with all life. 
+                                Like my mentors, my main aim is to increase our awareness of 
+                                and compassion for animals, and by communicating with them 
+                                to acquire a deeper understanding and relationship with 
+                                all life.
                             </p>
                             <div className="main__section__bottom-clearance"></div>
                     </section>

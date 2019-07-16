@@ -6,8 +6,9 @@ function CodeOfEthicsModal(props) {
     return (
         <div className="modal modal--CodeOfEthics" onClick={props.handleEvent} data-func="closeModal">
             <div className="modal__box">
+            <div className="modal__box__exit" onClick={props.handleEvent} data-func="closeModal">X</div>
                 <div className="modal__box__content modal__ethics">
-                <div className="modal__box__content__exit" onClick={props.handleEvent} data-func="closeModal">X</div>
+                
                     <h1 className="modal__ethics__title">Code of Ethics for Interspecies Telepathic Communicators</h1>
                     <h2 className="modal__ethics__subtitle">Formulated in 1990 by Penelope Smith</h2>
                  

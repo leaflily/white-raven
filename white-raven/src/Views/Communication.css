@@ -8,7 +8,7 @@
 
 .main--communication .main__figure--Dolphin-mobile {
     width: 100vw;
-    height: 125vw;
+    min-height: 125vw;
     margin: 0;
     padding: 0;
 }

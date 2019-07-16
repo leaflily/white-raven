@@ -1,5 +1,9 @@
 @import '../assests.css';
 
+.modal--Booking .modal__box {
+    padding-bottom: 0;
+}
+
 .modal__booking-stage {
     z-index: 100;
     display: flex;
@@ -9,15 +13,15 @@
 }
 
 .modal__booking-stage__title {
-    margin-top: 32px;
-    margin-bottom: 48px;
+    margin-top: 0px;
+    
 }
 
 .modal__booking-stage__form {
     box-sizing: border-box;
     width: 90vw;
     max-width: 800px;
-    height: 50vh;
+    height: 45vh;
     overflow: auto;
     display: flex;
     flex-flow: row wrap;
@@ -78,9 +82,15 @@
     color: var(--colour-off-black); 
 }
 
+.modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area img {
+    position: absolute;
+}
+
 .modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area input[type=file] {
     position: absolute;
-    color: var(--colour-off-black);
+    top: 0;
+    margin: 0;
+    color: var(--colour-consultation);
     width: 100%;
     height: 100%;
     box-sizing: border-box;

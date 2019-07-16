@@ -1,3 +1,5 @@
+@import '../assests.css';
+
 .main--consultation .main__section-background--blue {
     padding-top: 60px;
 }
@@ -14,31 +16,61 @@
     background: var(--colour-communication);
     border: 3px solid var(--colour-white);
     border-radius: 8px;
-    width: 224px;
-    height: 72px;
+    width: 300px;
+    height: 100px;
     color: var(--colour-white);
     font: var(--font-main-heading);
+    font-size: 32px;
     position: absolute;
-    left: calc(50% - 112px);
-    top: calc(60px - 36px);
+    left: calc(50% - 150px);
+    top: calc(60px - 50px);
     text-shadow: 1px 1px 1px var(--colour-communication);
     z-index: 50;
 }
 
+.main__section-background__img--Elephant {
+    width: 100vw;
+    height: 37.5vw;
+}
+
+.main--consultation .main__section--info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-end;
+    height: 180px;
+    padding: 64px 0;
+}
+
+.main--consultation .main__section__button--qna, .main--consultation .main__section__button--code-of-ethics {
+    background: var(--colour-about);
+    margin-bottom: 16px;
+    border-color: var(--colour-consultation);
+    font: var(--font-main-heading);
+    font-size: 18px;
+}
+.main--consultation .main__section__button--qna { background: var(--colour-about); }
+.main--consultation .main__section__button--code-of-ethics { background: var(--colour-reviews); }
+
+
 @media only screen and (min-width: 1060px) { 
+    .main--consultation .main__section__button--book {
+        width: 400px;
+        height: 130px;
+        font-size: 38px;
+        position: absolute;
+        left: calc(50% - 200px);
+        top: calc(80px - 65px);
+    }
     .main--consultation .main__section-background--blue {
         padding-top: 80px;
     }
     .main--consultation .main__section-background--blue .main__section {
         padding: 80px 20px 0 20px;
     }
+    .main--consultation .main__section__button--qna, .main--consultation .main__section__button--code-of-ethics {
+        width: 260px;
+        height: 80px;
 
-    .main--consultation .main__section__button--book {
-        width: 384px;
-        height: 124px;
-        font-size: 32px;
-        position: absolute;
-        left: calc(50% - 192px);
-        top: calc(80px - 62px);
     }
 }
