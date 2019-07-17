@@ -8,7 +8,7 @@ function BookingModal(props) {
             <div className="modal__box">
                 <div className="modal__box__exit" onClick={props.handleEvent} data-func="closeModal">X</div>   
                 <div className="modal__box__content">
-                    <BookingStage name="Booking" photo={props.photo} stage={props.stage} handleEvent={props.handleEvent} handleInput={props.handleInput} inputs={props.inputs} />
+                    <BookingStage notFilledIn={props.notFilledIn} name="Booking" photo={props.photo} stage={props.stage} handleEvent={props.handleEvent} handleInput={props.handleInput} inputs={props.inputs} />
                 </div>
             </div>  
         </div>

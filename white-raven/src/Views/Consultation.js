@@ -30,19 +30,39 @@ class Consultation extends React.Component {
                 familyMembers: '',
                 backgroundInfo: '',
                 reason: '',
-                otherQuestions: ''
-            }
+                otherQuestions: '',
+                clientName: '',
+                clientEmail: '',
+                clientNumber: '',
+            },
+            notFilledIn: ''
         };
         this.handleEvent = this.handleEvent.bind(this);
         this.closeOnEsc = this.closeOnEsc.bind(this);
         this.eventFunctions.closeModal = this.eventFunctions.closeModal.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
+    componentWillMount() {
+        if (sessionStorage.getItem('bookingInputs') !== null) {
+            console.log(JSON.parse(sessionStorage.getItem('bookingInputs')));
+            this.setState({
+                inputs: JSON.parse(sessionStorage.getItem('bookingInputs'))
+            })
+        }
+    }
+    componentWillUnmount() {
+        sessionStorage.setItem('bookingInputs', JSON.stringify(this.state.inputs));
+    }
     modals = {
-        booking: () => <BookingModal photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
+        booking: () => <BookingModal notFilledIn={this.state.notFilledIn} photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
         codeOfEthics: () => <CodeOfEthicsModal handleEvent={this.handleEvent} />,
         qna: () => <QnAModal handleEvent={this.handleEvent} />
     };  
+    stageInputs = {
+        0: ['photo', 'name', 'age', 'gender', 'home', 'familyMembers', 'backgroundInfo'],
+        1: ['reason', 'otherQuestions'],
+        2: ['clientName', 'clientEmail', 'clientNumber']
+    }
     eventFunctions = {
         input: (name, value) => {
             this.setState({
@@ -63,11 +83,17 @@ class Consultation extends React.Component {
             window.removeEventListener('keydown', this.closeOnEsc);
         },
         nextStage() {
-            if (this.state.bookingStage < this.stages.length - 1) {
-                const stage = this.state.bookingStage + 1;
-                this.setState({
-                    bookingStage: stage
-                })
+            var notFilledIn = this.stageInputs[this.state.bookingStage].find(input => !this.state.inputs[input] || (input === 'gender' && this.state.inputs.gender === 'gender'));
+            if (notFilledIn) {
+                this.setState({ notFilledIn })
+            }
+            else {
+                if (this.state.bookingStage < this.stages.length - 1) {
+                    const stage = this.state.bookingStage + 1;
+                    this.setState({
+                        bookingStage: stage
+                    })
+                }
             }
         },
         prevStage() {
@@ -79,6 +105,14 @@ class Consultation extends React.Component {
             }
             else {
                 this.eventFunctions.closeModal();
+            }
+        },
+        submit(name) {
+            if (name === 'book') {
+
+            }
+            else if (name === 'query') {
+
             }
         }
     };
@@ -94,7 +128,6 @@ class Consultation extends React.Component {
         }
         const target = e.target.hasAttribute("data-func") ? e.target : e.target.parentElement;
         const func = target.getAttribute("data-func");
-        console.log(target)
         let params = target.hasAttribute("data-params") ? target.getAttribute("data-params").replace(/\s\s+/g, "").split(",") : [];
         if (params.includes("value")) { 
             params.splice(params.indexOf("value"), 1, target.value);
@@ -105,7 +138,8 @@ class Consultation extends React.Component {
         const newInputValues = Object.assign({}, this.state.inputs);
         newInputValues[name] = value;
         this.setState({
-            inputs: newInputValues
+            inputs: newInputValues,
+            notFilledIn: ''
         })
         sessionStorage.setItem(name, value);
     }

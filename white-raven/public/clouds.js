@@ -63,10 +63,10 @@ Cloud.prototype.animate = function() {
             this.expire();
         }
         if (fps < 30) {
-            maxClouds = 0;
+            maxClouds = 1;
         }
         else if (fps < 40) {
-            maxClouds = 1;
+            maxClouds = 2;
         }
         else if (fps < 50) {
             maxClouds = 5;
@@ -164,51 +164,11 @@ Cloud.prototype.create = function() {
 
 generateClouds();
 
-
-window.addEventListener('mousewheel', onContainerMouseWheel);
-window.addEventListener('DOMMouseScroll', onContainerMouseWheel);
-window.addEventListener('click', onMouseMove);
-//   window.addEventListener('touchmove', onMouseMove);
-
-function onMouseMove(e) {
-    var x = e.clientX || e.touches[0].clientX;
-    var y = e.clientY || e.touches[0].clientY;
-
-    worldYAngle = -(0.5 - (x / window.innerWidth)) * 180;
-    worldXAngle = (0.5 - (y / window.innerHeight)) * 180;
-    updateView();
-    event.preventDefault();
-}
-
-function onContainerMouseWheel(e) {
-    e = e ? e : window.event;
-    zoom = zoom - (e.detail ? e.detail * -5 : e.wheelDelta / 8);
-    updateView();
-    e.preventDefault();
-}
-
-
 function updateView() {
     var t = `scale(${1 + (zoom/1000)})`;
     world.style.transform = world.style.webkitTransform = world.style.MozTransform = world.style.oTransform = t;
 }
 updateView();
-
-function zoomInOut() {
-    let directionOut = true;
-    function run() {
-        if (cloudCount === 0) {
-            zoom = 0;
-        }
-        if (directionOut ? zoom < 1 : zoom > 3000) {
-            directionOut = !directionOut;
-        }
-        directionOut ? zoom-- : zoom++;
-        updateView();
-        requestAnimationFrame(run);
-    }
-    run();
-}
 
 function random(min, max) {
     var maxium = max + 1 - min;

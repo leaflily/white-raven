@@ -21,7 +21,7 @@
     box-sizing: border-box;
     width: 90vw;
     max-width: 800px;
-    height: 45vh;
+    height: 50vh;
     overflow: auto;
     display: flex;
     flex-flow: row wrap;
@@ -56,6 +56,11 @@
 .modal__booking-stage__nav button {
     flex-basis: 50%;
     background: var(--colour-white);
+}
+.modal__booking-stage__nav button:disabled {
+    background: var(--colour-off-white);
+    opacity: 0.6;
+    cursor: default;
 }
 .modal__booking-stage__nav button:first-child {
     border-bottom-left-radius: 20px;

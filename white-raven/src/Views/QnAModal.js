@@ -178,7 +178,7 @@ class QnAModal extends React.Component {
                         <form onSubmit={this.preventDefault} className="modal__qna__form">
                             <input onChange={this.handleEvent} data-func="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" />
                             <div onScroll={this.handleScroll} className="modal__qna__answers">
-                                {this.state.displayAnswers.map(a => <QnA q={QnAs[a].q} a={QnAs[a].a} />)}
+                                {this.state.displayAnswers.map(a => <QnA key={QnAs[a].q} q={QnAs[a].q} a={QnAs[a].a} />)}
                                 {this.state.query !== '' && this.state.matchResults.length <= this.state.displayAnswers.length && <>
                                 <div className="modal__qna__answers__dialog">
                                     <h3>Query unanswered?</h3>

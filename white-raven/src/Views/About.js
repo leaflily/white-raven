@@ -53,9 +53,9 @@ function About() {
                             </p>
                             <iframe className="main__section__iframe--youtube pre-img" title="Youtube: The incredible story of how leopard Diabolo became Spirit - Anna Breytenbach, 'animal communicator'." 
                                 src="https://www.youtube-nocookie.com/embed/gvwHHMEDdT0" 
-                                frameborder="0" 
+                                frameBorder="0" 
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
+                                allowFullScreen>
                             </iframe>
                             <p className="main__section__bottom-p">
                                 Like my mentors, my main aim is to increase our awareness of 

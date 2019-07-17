@@ -10,3 +10,7 @@
   overflow: hidden;
   background: rgba(180, 180, 180, 0.377) url('./Views/images/spinner.gif') no-repeat center;
 }
+
+.required {
+  outline: red solid 3px;
+}
