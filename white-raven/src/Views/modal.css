@@ -1,6 +1,6 @@
 @import '../assests.css';
 
-.modal {
+.modal-back {
     z-index: 100;
     position: fixed;
     top: 0;
@@ -8,6 +8,14 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.2);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,7 +37,8 @@
     max-width: 100%;
     max-height: 100%;
     color: var(--colour-white);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .modal__box__exit {
     font-size: 18px;
@@ -40,3 +49,29 @@
     cursor: pointer;
     z-index: 200;
 }
+
+
+.modal-fade {
+z-index: 200;
+}
+
+.modal-fade-enter {
+opacity: 0;
+transform: scale(0);
+}
+
+.modal-fade-enter-active {
+opacity: 1;
+transform: scale(1);
+transition: all 250ms ease-in;
+}
+
+.modal-fade-exit {
+opacity: 1;
+} 
+
+.modal-fade-exit-active {
+transform: translateX(-100vw);
+opacity: 0;
+transition: all 250ms ease-out;
+} 

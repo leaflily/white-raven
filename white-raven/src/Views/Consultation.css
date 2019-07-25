@@ -74,3 +74,30 @@
 
     }
 }
+
+.modal-fade {
+z-index: 200;
+}
+
+.modal-fade-enter {
+opacity: 0;
+transform: scale(0);
+}
+
+.modal-fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 250ms ease-in;
+}
+
+.modal-fade-exit {
+background: transparent;
+opacity: 1;
+} 
+
+.modal-fade-exit-active {
+background: transparent;
+transform: translateX(-100vw);
+opacity: 0;
+transition: all 250ms ease-out;
+} 

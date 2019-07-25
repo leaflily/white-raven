@@ -11,8 +11,15 @@ class Image extends React.Component {
             sizeFolder: 'small'
         };
         this.checkSize = this.checkSize.bind(this);
+        this.windowWidth = 0;
     }
     componentWillMount() {
+        var thumb = localStorage.getItem('thumb'+this.state.sizeFolder+this.props.fileName);
+        if (thumb) {
+            this.setState({
+                thumb: thumb
+            })
+        }
         import(`./images/${this.state.sizeFolder}/thumbs/${this.props.fileName}`).then(img => this.setState({
             thumb: img.default
         }))
@@ -26,15 +33,18 @@ class Image extends React.Component {
         window.removeEventListener("resize", this.checkSize);
     };
     checkSize() {
-        var folders = ['small', 'medium', 'large', 'xlarge'];
-        folders = folders.splice(0, this.props.sizeShifts.length);
-        const folder = folders[this.props.sizeShifts.findIndex(s => s >= window.innerWidth)-1] || folders[folders.length-1];
-        if (folder !== this.state.sizeFolder) {
-            this.setState({
-                sizeFolder: folder
-            }, () =>
-            this.importFull()) 
-        } 
+        if (Math.abs(window.innerWidth - this.windowWidth) > 100) {
+            this.windowWidth = window.innerWidth;
+            var folders = ['small', 'medium', 'large', 'xlarge'];
+            folders = folders.splice(0, this.props.sizeShifts.length);
+            const folder = folders[this.props.sizeShifts.findIndex(s => s >= this.windowWidth)-1] || folders[folders.length-1];
+            if (folder !== this.state.sizeFolder) {
+                this.setState({
+                    sizeFolder: folder
+                }, () =>
+                this.importFull()) 
+            } 
+        }
     }
     importFull() {
         this.full = import(`./images/${this.state.sizeFolder}/${this.props.fileName}`).then(img => this.setState({

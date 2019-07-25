@@ -14,7 +14,6 @@
 
 .modal__booking-stage__title {
     margin-top: 0px;
-    
 }
 
 .modal__booking-stage__form {
@@ -22,11 +21,17 @@
     width: 90vw;
     max-width: 800px;
     height: 50vh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     align-content: flex-start;
+    padding: 32px;
+}
+
+.modal__booking-stage__form--payment {
+    display: block;
     padding: 32px;
 }
 
@@ -83,12 +88,23 @@
     width: 180px;
     height: 180px;
     border: 1px solid var(--colour-grey);
-    background: var(--colour-white) url(./images/photoupload.png) center no-repeat;
+    
     color: var(--colour-off-black); 
 }
 
-.modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area img {
+.modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area::before {
+    content: '';
     position: absolute;
+    top: 0;
+    width: 180px;
+    height: 180px;
+    background: rgba(255,255,255,0.8) url(./images/photoupload.png) center no-repeat;
+}
+
+.modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area__img {
+    position: absolute;
+    width: 180px;
+    height: 180px;
 }
 
 .modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area input[type=file] {
@@ -189,13 +205,53 @@
     width: 250px;
 }
 
-.modal__booking-stage__form--payment .modal__booking-stage__form__payment-button {
-    width: 250px;
-    height: 120px;
-}
 
 @media only screen and (min-width: 380px) {
     .modal__booking-stage__form--animal-info .modal__booking-stage__form__animal-info__area {
         justify-content: space-between;
     }
 }
+
+.modal__booking-stage>div {
+    position: relative;
+}
+
+.booking-fade {
+z-index: 200;
+}
+    
+.booking-fade-forwards-enter {
+opacity: 0;
+}
+
+.booking-fade-backwards-enter {
+opacity: 0;
+}
+
+.booking-fade-forwards-enter-active, .booking-fade-backwards-enter-active {
+transform: translate(0vw, 0vw);
+opacity: 1;
+transition: all 750ms ease-in;
+}
+
+.booking-fade-forwards-exit, .booking-fade-backwards-exit {
+opacity: 1;
+} 
+
+.booking-fade-forwards-exit-active {
+position: absolute;
+top: 0;
+left: 0;
+transform: translate(-100vw, 0vw);
+transition: all 1250ms ease-out;
+opacity: 0;
+} 
+
+.booking-fade-backwards-exit-active {
+position: absolute;
+top: 0;
+left: 0;
+transform: translate(100vw, 0vw);
+transition: all 1250ms ease-out;
+opacity: 0;
+} 

@@ -7,6 +7,7 @@ var worldXAngle = 0;
 var worldYAngle = 0;
 var maxClouds = 1;
 var cloudCount = 0;
+var minRegenRate = 500;
 
 viewport.style.webkitPerspective = viewport.style.MozPerspective = viewport.style.oPerspective = p;
 
@@ -14,23 +15,25 @@ function generateClouds() {
     if (cloudCount < maxClouds) {
         new Cloud();
     }
-    setTimeout(generateClouds, random(500, 15000));
+    setTimeout(generateClouds, random(minRegenRate, 15000));
 }
 
 
 function Cloud() {
     this.layers = [];
     this.pos = {
-        x: 0,
+        x: (window.innerWidth+256),
         y: random(-256, 256),
         z: random(-256, 256)
     }
     this.cloud = this.create();
     this.created = Date.now();
     this.active = true;
+    this.expired = false;
     this.animate = this.animate.bind(this);
     this.directionOut = (random(0, 1) === 0);
     this.zoom = random(0, 3000);
+    this.zoomBy = 1;
     this.fps = {
         log: [],
         avarage: () => [0, ...this.fps.log].reduce((t, a) => t + a)/(1 + this.fps.log.length),
@@ -39,13 +42,18 @@ function Cloud() {
     this.animate();
 }
 Cloud.prototype.expire = function() {
-    this.active = false;
-    this.cloud.classList.add('cloudBase--expired');
-    setTimeout(() => {
-    cancelAnimationFrame(this.animate);
-    cloudCount--;
-    world.removeChild(this.cloud);
-    }, 500);
+    if (!this.expired) {
+        this.expired = true;
+        this.cloud.classList.add('cloudBase--expired');
+        setTimeout(() => {
+            this.active = false;
+            cancelAnimationFrame(this.animate);
+            cloudCount--;
+            setTimeout(() => {
+                this.cloud.parentNode.removeChild(this.cloud);
+            }, 500);
+        }, 500);
+    }
 }
 Cloud.prototype.updateFps = function() {
     if (this.fps.log.length < 21) {
@@ -61,6 +69,12 @@ Cloud.prototype.animate = function() {
         const fps = this.fps.avarage();
         if (fps < 50) {
             this.expire();
+            if (minRegenRate < 5000) {
+                minRegenRate += 500;
+            }
+        }
+        else if (minRegenRate > 500) {
+            minRegenRate -= 100;
         }
         if (fps < 30) {
             maxClouds = 1;
@@ -91,15 +105,12 @@ Cloud.prototype.animate = function() {
     }
 }
 Cloud.prototype.zoomInOut = function() {
-    if (this.directionOut ? this.zoom < 1 : this.zoom > 3000) {
-        this.directionOut = !this.directionOut;
-    }
-    this.directionOut ? this.zoom-- : this.zoom++;
+    this.directionOut ? this.zoom -= this.zoomBy : this.zoom += this.zoomBy;
 }
 Cloud.prototype.movement = function() {
     if (this.active === true) {
-        this.pos.x += xTravel;
-        if (xTravel > 0 ? (this.pos.x * (1+(zoom/1000))) > window.innerWidth : this.pos.x < 0) {
+        this.pos.x -= xTravel;
+        if (this.pos.x < (128 - (128 * (1 + (zoom/1000))))) {
             this.expire();
         }
     }

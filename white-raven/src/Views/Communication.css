@@ -47,8 +47,8 @@
     content: '';
     background-image: url('./images/point.png');
     background-repeat: no-repeat;
-    padding: 0 1em 0 0;
-    margin: 0 0 0 1em;
+    padding: 0 15px 0 0;
+    margin: 0 0 0 15px;
 }
 
 .main--communication .main__section__p--last {

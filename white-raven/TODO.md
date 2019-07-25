@@ -1,13 +1,13 @@
 # TODO
 
-- transistions for pages and modals
-- throttle resize listener in Image.js
+- make content scale smaller for xlarge screens
+- maybe make elephants photo thinner so more show on landscape screens
+- make css clouds for transitions
 - size and compress all photos
-- build in submit functions for consulation and q&a
 - find better font for bullets
 - find appropaite backup fonts
 - make q&a list dynamic
-- look at implimenting getBoundingClientRect() in clouds.js
+- look into preloading thumbs and maybe photos
 
 ## build 
 - test on different devices

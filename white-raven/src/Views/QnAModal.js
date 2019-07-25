@@ -66,12 +66,17 @@ class QnAModal extends React.Component {
         super(props);
         this.state = {
             query: '',
-            matchResults: [],
+            name: '',
+            email: '',
+            emailInvalid: false,
             displayAnswers: [],
             showMore: 1,
-            showNResults: 4
+            showNResults: 4,
+            querySent: false
         }
         this.handleEvent = this.handleEvent.bind(this);
+        this.submitInProgress = false;
+        this.matchResults = [];
     }
     searchAnswers () {
         return new Promise((resolve) => {
@@ -98,7 +103,7 @@ class QnAModal extends React.Component {
         var matchResults = [];
         
         const updateIndexes = () => {
-            const matches = matchResults.length > this.state.matchResults.length ? matchResults : this.state.matchResults;
+            const matches = matchResults.length > this.matchResults.length ? matchResults : this.matchResults;
             const showNResults = () => {
                 var n;
                 const fullSize = this.state.showNResults * this.state.showMore;
@@ -119,16 +124,15 @@ class QnAModal extends React.Component {
                 }
                 return n
             }
+            this.matchResults = matchResults;
             for (let i=0;i<showNResults();i++) {
                 displayAnswers.push(matchResults.length > 0 ? matches[i] : i);
             }
-            this.setState({displayAnswers, matchResults});
+            this.setState({displayAnswers});
         }
         if (this.state.query !== '') {
-            console.log(this.state.query)
             this.searchAnswers().then(matches => {
                 matchResults = matches;
-                console.log(matches)
                 updateIndexes();
             })
         }
@@ -151,14 +155,53 @@ class QnAModal extends React.Component {
                 }
             });
         },
-        submit() {
-            
+        submit() { 
+            if (!this.submitInProgress) {
+                this.submitInProgress = true;
+                const {query, name, email} = this.state;
+                if (!email.match(/\w+@\D+\.\w+/)) {
+                    this.requireEmail();
+                    this.submitInProgress = false;
+                    return
+                }
+                else {
+                    this.setState({
+                        emailInvalid: false
+                    })
+                }
+                const data = JSON.stringify({query, name, email});
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/server/emailquery.php", true);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                  console.log(data);
+                        this.setState({
+                            querySent: true
+                        }, () => this.submitInProgress = false);
+                    }
+                };
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(data);
+            }
+        },
+        exit() {
+            this.setState({
+                query: '',
+                name: '',
+                email: '',
+                emailInvalid: false,
+                matchResults: [],
+                displayAnswers: [],
+                showMore: 1,
+                showNResults: 4,
+                querySent: false
+            });
         }
     };
     handleEvent(e) {
         e.preventDefault();
-        const target = e.target.hasAttribute('data-func') ? e.target : e.target.parentElement;
-        const func = target.getAttribute('data-func');
+        const target = e.target.hasAttribute('data-func2') ? e.target : e.target.parentElement;
+        const func = target.getAttribute('data-func2');
         let params = target.hasAttribute('data-params') ? target.getAttribute("data-params").replace(/\s\s+/g, '').split(',') : [];
         if (params.includes('value')) { 
             params.splice(params.indexOf('value'), 1, target.value);
@@ -168,31 +211,58 @@ class QnAModal extends React.Component {
     preventDefault(e) {
         e.preventDefault();
     }
+    queryCompleteMessage() {
+        return (
+            <div className="modal__qna__complete">
+                <div className="modal__qna__complete__header">
+                    <h2>Query Sent!</h2>
+                    <div className="modal__qna__complete__exit" onClick={this.handleEvent} data-func2="exit">X</div>
+                </div>
+                <QnA q={this.state.query}
+                    a={<>Thank you {this.state.name} for asking.<br /> 
+                    I really do appreicate your interest.<br />
+                    I'll get back to you with an answer soon.<br />
+                    You should receive a email confirming I've 
+                    received your query<br />(P.S. if you can't find 
+                    the confirmation email please double check 
+                    {this.state.email} is the correct address and 
+                    check your email's junk folder)</>} 
+                />
+            </div>
+        )
+    };
+    requireEmail() {
+        this.setState({
+            emailInvalid: true
+        })
+    }
     render() {
         return (
             <div className="modal modal--qna" onClick={this.props.handleEvent} data-func="closeModal">
                 <div className="modal__box">
                 <div className="modal__box__exit" onClick={this.props.handleEvent} data-func="closeModal">X</div>   
                     <div className="modal__box__content modal__qna">
-                         <h1 className="modal__qna__title">Q & A</h1>
-                        <form onSubmit={this.preventDefault} className="modal__qna__form">
-                            <input onChange={this.handleEvent} data-func="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" />
-                            <div onScroll={this.handleScroll} className="modal__qna__answers">
-                                {this.state.displayAnswers.map(a => <QnA key={QnAs[a].q} q={QnAs[a].q} a={QnAs[a].a} />)}
-                                {this.state.query !== '' && this.state.matchResults.length <= this.state.displayAnswers.length && <>
-                                <div className="modal__qna__answers__dialog">
-                                    <h3>Query unanswered?</h3>
-                                    <p className="modal__qna__answers__dialog__q">{this.state.query}</p>
-                                    <div className="modal__qna__answers__dialog__a">
-                                        <input onChange={this.handleEvent} data-func="input" data-params="name,value" className="modal__qna__name" type="text" placeholder="Name" />
-                                        <input onChange={this.handleEvent} data-func="input" data-params="email,value" className="modal__qna__email" type="text" placeholder="Email Address" />
+                        <h1 className="modal__qna__title">Q & A</h1>
+                        { this.state.querySent ? this.queryCompleteMessage() :
+                            <form onSubmit={this.preventDefault} className="modal__qna__form" autoComplete="on">
+                                <textarea value={this.state.query} onChange={this.handleEvent} data-func2="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" />
+                                <div onScroll={this.handleScroll} className="modal__qna__answers">
+                                    {this.state.displayAnswers.map(a => <QnA key={QnAs[a].q} q={QnAs[a].q} a={QnAs[a].a} />)}
+                                    {this.state.query !== '' && this.matchResults.length <= this.state.displayAnswers.length && <>
+                                    <div className="modal__qna__answers__dialog">
+                                        <h3>Query unanswered?</h3>
+                                        <p className="modal__qna__answers__dialog__q">{this.state.query}</p>
+                                        <div className="modal__qna__answers__dialog__a">
+                                            <input value={this.state.name} onChange={this.handleEvent} data-func2="input" data-params="name,value" className="modal__qna__name" type="text" placeholder="Name"  autoComplete="name" />
+                                            <input value={this.state.email} onChange={this.handleEvent} data-func2="input" data-params="email,value" className={'modal__qna__email '+(this.state.emailInvalid ? 'required' : '')} type="email" placeholder="Email Address" autoComplete="email" />
+                                        </div>
+                                        <input onClick={this.handleEvent} data-func2="submit" className="modal__qna__ask" type="submit" value="Ask" />
                                     </div>
-                                    <input onClick={this.handleEvent} data-func="submit" className="modal__qna__ask" type="submit" value="Ask" />
+                                    </>
+                                    }
                                 </div>
-                                </>
-                                }
-                            </div>
-                        </form>
+                            </form>
+                        }
                     </div>
                 </div> 
             </div>

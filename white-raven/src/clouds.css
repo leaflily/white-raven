@@ -40,9 +40,9 @@
 
   .cloudBase--expired {
     opacity: 0;
-    -webkit-transition: opacity .5s ease-out;
-    -moz-transition: opacity .5s ease-out;
-    -o-transition: opacity .5s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    -moz-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out;
   }
 
   .cloudLayer {
@@ -54,7 +54,7 @@
     top: 50%;
     width: 256px;
 
-    -webkit-transition: opacity .5s ease-out;
-    -moz-transition: opacity .5s ease-out;
-    -o-transition: opacity .5s ease-out;
+    -webkit-transition: opacity 5s ease-in;
+    -moz-transition: opacity 5s ease-in;
+    -o-transition: opacity 5s ease-in;
   }

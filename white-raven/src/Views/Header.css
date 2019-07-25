@@ -19,12 +19,13 @@
 
 .header__logo__a {
     width: 260px;
+    height: 100px;
     display: inline-block;
 }
 
 @media only screen and (min-width: 360px) {
     .header {
-        display: inline-block;
+        justify-content: flex-start;
     }
     .header__logo__a {
         margin-left: 50px;

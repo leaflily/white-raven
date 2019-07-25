@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Nav from './Nav';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import BookingModal from './BookingModal';
 import CodeOfEthicsModal from './CodeOfEthicsModal';
 import QnAModal from './QnAModal';
@@ -17,8 +18,8 @@ class Consultation extends React.Component {
         };
         this.stages = ['one', 'two', 'three', 'four'];
         this.state = {
-            modalVisible: false,
-            modalSelected: 'booking',
+            stageForwards: true,
+            modalSelected: 'none',
             bookingStage: 0,
             inputs: {
                 photo: null,
@@ -37,30 +38,41 @@ class Consultation extends React.Component {
             },
             notFilledIn: ''
         };
+        this.script = document.createElement("script");
         this.handleEvent = this.handleEvent.bind(this);
         this.closeOnEsc = this.closeOnEsc.bind(this);
         this.eventFunctions.closeModal = this.eventFunctions.closeModal.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.debounceActive = false;
     }
     componentWillMount() {
-        if (sessionStorage.getItem('bookingInputs') !== null) {
-            console.log(JSON.parse(sessionStorage.getItem('bookingInputs')));
-            this.setState({
-                inputs: JSON.parse(sessionStorage.getItem('bookingInputs'))
-            })
+        this.script.src = "https://www.paypal.com/sdk/js?client-id=sb&currency=GBP";
+        this.script.async = true;
+        document.body.appendChild(this.script);
+        if (localStorage.getItem('bookingInputs') !== null) {
+            const localData = JSON.parse(localStorage.getItem('bookingInputs'));
+            setTimeout( () =>
+                this.setState({
+                    inputs: localData
+                }),
+            0);
         }
     }
     componentWillUnmount() {
-        sessionStorage.setItem('bookingInputs', JSON.stringify(this.state.inputs));
+        document.body.removeChild(this.script);
+        const data = this.state.inputs;
+        data.photo = null;
+        localStorage.setItem('bookingInputs', JSON.stringify(data));
     }
     modals = {
-        booking: () => <BookingModal notFilledIn={this.state.notFilledIn} photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
+        booking: () => <BookingModal stageForwards={this.state.stageForwards} notFilledIn={this.state.notFilledIn} photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
         codeOfEthics: () => <CodeOfEthicsModal handleEvent={this.handleEvent} />,
-        qna: () => <QnAModal handleEvent={this.handleEvent} />
+        qna: () => <QnAModal handleEvent={this.handleEvent} />,
+        none: () => <></>
     };  
-    stageInputs = {
+    requiredInputs = {
         0: ['photo', 'name', 'age', 'gender', 'home', 'familyMembers', 'backgroundInfo'],
-        1: ['reason', 'otherQuestions'],
+        1: ['reason'],
         2: ['clientName', 'clientEmail', 'clientNumber']
     }
     eventFunctions = {
@@ -71,48 +83,66 @@ class Consultation extends React.Component {
         },
         openModal(name) {
             this.setState({
-                modalSelected: name,
-                modalVisible: true
+                modalSelected: name
             });
             window.addEventListener('keydown', this.closeOnEsc);
         },
         closeModal() {
             this.setState({
-                modalVisible: false
+                modalSelected: 'none'
             });
             window.removeEventListener('keydown', this.closeOnEsc);
         },
         nextStage() {
-            var notFilledIn = this.stageInputs[this.state.bookingStage].find(input => !this.state.inputs[input] || (input === 'gender' && this.state.inputs.gender === 'gender'));
+            var notFilledIn = this.requiredInputs[this.state.bookingStage].find(input => !this.state.inputs[input] || (input === 'gender' && this.state.inputs.gender === 'gender'));
             if (notFilledIn) {
                 this.setState({ notFilledIn })
             }
             else {
-                if (this.state.bookingStage < this.stages.length - 1) {
-                    const stage = this.state.bookingStage + 1;
-                    this.setState({
-                        bookingStage: stage
-                    })
+                if (!this.debounceActive) {
+                    if (this.state.bookingStage < this.stages.length - 1) {
+                        const stage = this.state.bookingStage + 1;
+                        this.debounce(500);
+                        this.setState({
+                            stageForwards: true,
+                        }, () =>  this.setState({
+                            bookingStage: stage
+                        } ));
+                    }
                 }
             }
         },
         prevStage() {
-            if (this.state.bookingStage > 0) {
-                const stage = this.state.bookingStage - 1;
-                this.setState({
-                    bookingStage: stage
-                })
-            }
-            else {
-                this.eventFunctions.closeModal();
+            if (!this.debounceActive) {
+                if (this.state.bookingStage > 0) {
+                    this.debounce(500);
+                    const stage = this.state.bookingStage - 1;
+                    this.setState({
+                        stageForwards: false,
+                    }, () =>  this.setState({
+                        bookingStage: stage
+                    } ));
+                }
+                else {
+                    this.eventFunctions.closeModal();
+                }
             }
         },
         submit(name) {
             if (name === 'book') {
-
-            }
-            else if (name === 'query') {
-
+                const data = JSON.stringify(this.state.inputs);
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/server/emailclientinfo.php", true);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        this.setState({
+                            bookingStage: 'success'
+                        }, this.resetBookingInputs)
+                    }
+                };
+                console.log(data)
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(data);
             }
         }
     };
@@ -164,12 +194,48 @@ class Consultation extends React.Component {
             }
         }
     }
+    resetBookingInputs() {
+        this.setState({
+            inputs: {
+                photo: null,
+                name: '',
+                age: '',
+                ageValue: 'years',
+                gender: 'gender',
+                home: '',
+                familyMembers: '',
+                backgroundInfo: '',
+                reason: '',
+                otherQuestions: '',
+                clientName: '',
+                clientEmail: '',
+                clientNumber: '',
+            }
+        })
+        localStorage.removeItem('bookingInputs');
+    }
+    debounce(ms) {
+        this.debounceActive = true;
+        setTimeout(() => this.debounceActive = false, ms);
+    }
     render() {
         return (
             <>
                 <Header page="consultation" quote={this.quote} />
+                <div className={this.state.modalSelected !== 'none' ? 'modal-back' : undefined}>
+                    <TransitionGroup>
+                        <CSSTransition
+                            key={this.state.modalSelected}
+                            timeout={300}
+                            classNames='modal-fade modal-fade'
+                        >
+                        { this.modals[this.state.modalSelected]() }
+                        </CSSTransition>
+                    </TransitionGroup>
+                </div>
                 <main className="main main--consultation">
-                    { this.state.modalVisible && this.modals[this.state.modalSelected]() }
+                    
+                       
                 <div className="main__section-background main__section-background--blue">
                     <div className="main__section-background__img main__section-background__img--Elephant image">
                         <Image fileName="elephants.jpg" sizeShifts={[0, 420, 820, 1404]} className="" alt="Elephants embracing, trunk coiled around trunk" />

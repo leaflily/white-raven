@@ -1,4 +1,5 @@
 import React from 'react';
+import Paypal from './Paypal';
 
 class Input extends React.Component {
     notFilledIn = this.props.dataName === this.props.notFilledIn;
@@ -73,13 +74,17 @@ class Select extends React.Component {
 }
 
 function BookingStage(props) {
+    const uploadImgStyle = {
+        backgroundImage: `url(${props.photo})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+    }
     const stages = {
-        one: {
-            title: 'Animal Info',
-            content: <form className="modal__booking-stage__form modal__booking-stage__form--animal-info">
+        one: <form className="modal__booking-stage__form modal__booking-stage__form--animal-info">
                 <div className="modal__booking-stage__form__photo-upload">
                     <div className="modal__booking-stage__form__photo-upload__area">
-                        <img src={props.photo} alt="" />
+                        <div className="modal__booking-stage__form__photo-upload__area__img" style={uploadImgStyle} alt="" />
                         <Input notFilledIn={props.notFilledIn} dataName="photo" onChange={props.handleInput} type="file" />
                     </div>
                     <p className="modal__booking-stage__form__photo-upload__info">Clear recent photo (alone, with eyes visible)</p>
@@ -105,54 +110,30 @@ function BookingStage(props) {
                         />
                     </div>
                     <Input inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="home" onChange={props.handleInput} value={props.inputs['home']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Home" />
-                    <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="familyMembers" onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" placeholder="Family Members" />
+                    <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="familyMembers" onChange={props.handleInput} value={props.inputs['familyMembers']} className="modal__booking-stage__form__animal-info__text-area" placeholder="Family Members" />
                 </div>
                 <div className="modal__booking-stage__form__background-info">
-                    <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="backgroundInfo" onChange={props.handleInput} className="modal__booking-stage__form__background-info__text-area" placeholder="Background information (any trama, medication, illness...)" />
+                    <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="backgroundInfo" onChange={props.handleInput} value={props.inputs['backgroundInfo']} className="modal__booking-stage__form__background-info__text-area" placeholder="Background information (any trama, medication, illness...)" />
                 </div>
                
             </form>
-            },
-        two: {
-            title: 'Focus',
-            content: <form className="modal__booking-stage__form modal__booking-stage__form--focus">
-                <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="reason" onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" placeholder="Main reason for communication" />
-                <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="otherQuestions" onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" placeholder="Other concerns/questions/messages you have for your animal friend" />
+        ,
+        two: <form className="modal__booking-stage__form modal__booking-stage__form--focus">
+                <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="reason" value={props.inputs['reason']} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" placeholder="Main reason for communication" />
+                <Textarea inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="otherQuestions" value={props.inputs['otherQuestions']} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" placeholder="Other concerns/questions/messages you have for your animal friend" />
             </form>
-        },
-        three: {
-            title: 'Your Info',
-            content: <form className="modal__booking-stage__form modal__booking-stage__form--your-info">
-                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Name" dataName="yourName" onChange={props.handleInput} value={props.inputs['yourName']} />
-                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} className="modal__booking-stage__form__animal-info__area" type="email" placeholder="Email" dataName="email" onChange={props.handleInput} value={props.inputs['email']} />
-                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number" dataName="phone" onChange={props.handleInput} value={props.inputs['phone']} />
+        ,
+        three: <form className="modal__booking-stage__form modal__booking-stage__form--your-info">
+                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="clientName" onChange={props.handleInput} value={props.inputs['clientName']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Name" />
+                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="clientEmail" onChange={props.handleInput} value={props.inputs['clientEmail']} className="modal__booking-stage__form__animal-info__area" type="email" placeholder="Email" autoComplete="email" />
+                <Input inputs={props.inputs} notFilledIn={props.notFilledIn} dataName="clientNumber" onChange={props.handleInput} value={props.inputs['clientNumber']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number" autoComplete="tel" />
             </form>
-        },
-        four: {
-            title: 'Payment',
-            content: <form className="modal__booking-stage__form modal__booking-stage__form--payment">
-                    <button className="modal__booking-stage__form__payment-button"><h3>Pay Now</h3></button>
-                </form>
-        }
+        ,
+        four: <form className="modal__booking-stage__form modal__booking-stage__form--payment">
+                <Paypal />
+            </form>
     };
-    return (
-        <div className={'modal__booking-stage modal__booking-stage--'+props.stage}>
-            <h2 className="modal__booking-stage__title">Booking - {stages[props.stage].title}</h2>
-            {stages[props.stage].content}
-            <nav className="modal__booking-stage__nav">
-                { props.stage === 'one' ? 
-                    <button onClick={props.handleEvent} data-func="prevStage" disabled>Previous</button> :
-                    <button onClick={props.handleEvent} data-func="prevStage">Previous</button>
-                }
-                
-                { props.stage === 'four' ?
-                    <button onClick={props.handleEvent} data-func="nextStage" disabled>Next</button> :
-                    <button onClick={props.handleEvent} data-func="nextStage">Next</button>
-                }
-                
-            </nav>
-        </div>
-    )
+    return stages[props.stage]
 }
 
 export default BookingStage;
