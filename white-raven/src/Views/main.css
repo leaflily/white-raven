@@ -2,8 +2,8 @@
 
 .main {
     margin: 0;
-    color: var(--colour-grey);
     font: var(--font-main);
+    color: var(--colour-off-black);
 }
 
 .main__section {
@@ -11,7 +11,7 @@
     padding: 20px 5vw;
     text-align: right;
     margin: 0 auto;
-    font-size: 14px;
+    font-size: 16px;
     height: 100%;
 }
 .main__section-background:first-child {
@@ -22,7 +22,7 @@
 }
 .main__section__headline, .main__section__p__headline {
     font: var(--font-main-heading);
-    font-size: 24px;
+    font-size: 28px;
 }
 
 .main__section__list-heading {
@@ -56,7 +56,7 @@ cursor: pointer;
 
 @media only screen and (min-width: 768px) {
     .main__section {
-        font-size: 16px;
+        font-size: 18px;
     }
     .main__section__headline, .main__section__p__headline {
         font-size: 32px;

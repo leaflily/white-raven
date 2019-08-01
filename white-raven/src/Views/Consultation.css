@@ -1,7 +1,7 @@
 @import '../assests.css';
 
 .main--consultation .main__section-background--blue {
-    padding-top: 60px;
+    padding-top: 0;
 }
 
 .main--consultation .main__section {
@@ -10,6 +10,10 @@
 
 .main--consultation .main__section-background--blue .main__section {
     padding: 60px 20px 0 20px;
+}
+
+.main--consultation .main__section-background:last-child {
+    padding: 80px 0;
 }
 
 .main--consultation .main__section__button--book {
@@ -37,9 +41,9 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    align-content: flex-end;
-    height: 180px;
-    padding: 64px 0;
+    align-content: center;
+    min-height: 20vh;
+    
 }
 
 .main--consultation .main__section__button--qna, .main--consultation .main__section__button--code-of-ethics {
@@ -52,6 +56,11 @@
 .main--consultation .main__section__button--qna { background: var(--colour-about); }
 .main--consultation .main__section__button--code-of-ethics { background: var(--colour-reviews); }
 
+@media only screen and (min-width: 720px) { 
+    .main--consultation .main__section-background:last-child {
+        padding: 0;
+    }
+}
 
 @media only screen and (min-width: 1060px) { 
     .main--consultation .main__section__button--book {
@@ -61,9 +70,6 @@
         position: absolute;
         left: calc(50% - 200px);
         top: calc(80px - 65px);
-    }
-    .main--consultation .main__section-background--blue {
-        padding-top: 80px;
     }
     .main--consultation .main__section-background--blue .main__section {
         padding: 80px 20px 0 20px;

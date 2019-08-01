@@ -4,6 +4,7 @@
     --colour-white: #ffffff;
     --colour-off-white: #E1E1E1;
     --colour-grey: #808080;
+    --colour-light-grey: #898989;
     --colour-off-black: #333333;
     --colour-blue: #6698CC;
     --colour-orange: #C69838;
@@ -18,13 +19,13 @@
     --mobile-width: 320px;
     --tablet-width: 1080px;
 
-    --font-quotes: italic 400 16px basic-sans, sans-serif;
-    --font-answers: normal 300 16px work-sans, sans-serif;
-    --font-people: normal 300 8px work-sans, sans-serif;
-    --font-ethics: normal 300 16px work-sans, sans-serif;
-    --font-links: normal 700 12px delve-hand, sans-serif;
-    --font-main-heading: normal 400 24px dapifer-stencil, sans-serif;
-    --font-main: normal 400 14px dapifer-stencil, sans-serif;
-    --font-aside: normal 300 12px shogun, sans-serif;
-    --font-aside-heading: normal 700 14px shogun, sans-serif;
+    --font-quotes: italic 400 16px basic-sans, Verdana, sans-serif;
+    --font-answers: normal 300 16px work-sans, Arial, sans-serif;
+    --font-people: normal 300 8px work-sans, Arial, sans-serif;
+    --font-ethics: normal 300 16px work-sans, Arial, sans-serif;
+    --font-links: normal 700 12px delve-hand, cursive, sans-serif;
+    --font-main-heading: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
+    --font-main: normal 400 14px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
+    --font-aside: normal 300 18px nazare, sans-serif;
+    --font-aside-heading: normal 600 14px nazare, sans-serif;
 }

@@ -13,7 +13,7 @@ class Input extends React.Component {
         {...p} 
         {...ref}
         data-name={dataName}
-        className={`${this.props.hasOwnProperty('className') ? this.props.className : ''} ${this.notFilledIn ? 'required' : ''}`}
+        className={`${this.props.hasOwnProperty('className') ? this.props.className : ''} ${this.notFilledIn ? 'required required-out' : ''}`}
     />
  }
  componentDidUpdate() {
@@ -37,7 +37,7 @@ class Textarea extends React.Component {
            {...p}
            {...ref}
            data-name={dataName} 
-           className={`${this.props.hasOwnProperty('className') ? className : ''} ${this.notFilledIn ? 'required' : ''}`}
+           className={`${this.props.hasOwnProperty('className') ? className : ''} ${this.notFilledIn ? 'required required-out' : ''}`}
            value={inputs[dataName]}></textarea>
     }
     componentDidUpdate() {
@@ -61,7 +61,7 @@ class Select extends React.Component {
            {...p}
            {...ref}
            data-name={dataName} 
-           className={`${this.props.hasOwnProperty('className') ? className : ''} ${this.notFilledIn ? 'required' : ''}`}
+           className={`${this.props.hasOwnProperty('className') ? className : ''} ${this.notFilledIn ? 'required required-out' : ''}`}
            >{options}</select>
     }
     componentDidUpdate() {

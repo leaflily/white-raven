@@ -26,11 +26,14 @@
 @media only screen and (min-width: 360px) {
     .header {
         justify-content: flex-start;
+        flex-flow: column;
     }
     .header__logo__a {
         margin-left: 50px;
     }
     .header .quote {
+        justify-self: flex-end;
+        align-self: flex-end;
         float: right;
         display: flex;
         flex-direction: column;
@@ -71,6 +74,7 @@
     }
     .header__logo__a {
         width: 330px;
+        height: 126px;
     }
     .header .quote {
         margin-right: 15%; 

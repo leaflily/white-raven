@@ -1,7 +1,8 @@
+setTimeout(function() {
 var world = document.getElementById('world');
 var viewport = document.getElementById('viewport');
 var xTravel = 1;
-var zoom = 500;
+var scale = 1;
 var p = 0;
 var worldXAngle = 0;
 var worldYAngle = 0;
@@ -26,13 +27,14 @@ function Cloud() {
         y: random(-256, 256),
         z: random(-256, 256)
     }
+    this.zoom = random(1000, 5000);
+    this.pos.x -= (128 * (1 + (this.zoom/1000)));
     this.cloud = this.create();
     this.created = Date.now();
     this.active = true;
     this.expired = false;
     this.animate = this.animate.bind(this);
     this.directionOut = (random(0, 1) === 0);
-    this.zoom = random(0, 3000);
     this.zoomBy = 1;
     this.fps = {
         log: [],
@@ -110,7 +112,7 @@ Cloud.prototype.zoomInOut = function() {
 Cloud.prototype.movement = function() {
     if (this.active === true) {
         this.pos.x -= xTravel;
-        if (this.pos.x < (128 - (128 * (1 + (zoom/1000))))) {
+        if (this.pos.x < (128 - (128 * (1 + (this.zoom/1000))))) {
             this.expire();
         }
     }
@@ -176,8 +178,7 @@ Cloud.prototype.create = function() {
 generateClouds();
 
 function updateView() {
-    var t = `scale(${1 + (zoom/1000)})`;
-    world.style.transform = world.style.webkitTransform = world.style.MozTransform = world.style.oTransform = t;
+    world.style.transform = world.style.webkitTransform = world.style.MozTransform = world.style.oTransform = scale;
 }
 updateView();
 
@@ -186,3 +187,4 @@ function random(min, max) {
     var randomAbsoluteNumber = Math.floor(Math.random() * Math.floor(maxium));
     return randomAbsoluteNumber + min;
 }
+}, 0);

@@ -237,9 +237,10 @@ class Consultation extends React.Component {
                     
                        
                 <div className="main__section-background main__section-background--blue">
-                    <div className="main__section-background__img main__section-background__img--Elephant image">
-                        <Image fileName="elephants.jpg" sizeShifts={[0, 420, 820, 1404]} className="" alt="Elephants embracing, trunk coiled around trunk" />
-                    </div>
+                <section className="main__section main__section--info">       
+                                <button onClick={this.handleEvent} data-func="openModal" data-params="qna" className="main__section__button main__section__button--qna">Q & A</button>
+                                <button onClick={this.handleEvent} data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics</button>
+                        </section>
                     <section className="main__section">
                         <button onClick={this.handleEvent} data-func="openModal" data-params="booking" className="main__section__button main__section__button--book">
                             Book a Session 
@@ -247,10 +248,9 @@ class Consultation extends React.Component {
                     </section>
                 </div>
                 <div className="main__section-background main__section-background--orange">
-                        <section className="main__section main__section--info">       
-                                <button onClick={this.handleEvent} data-func="openModal" data-params="qna" className="main__section__button main__section__button--qna">Q & A</button>
-                                <button onClick={this.handleEvent} data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics</button>
-                        </section>
+                    <div className="main__section-background__img main__section-background__img--Elephant image">
+                        <Image fileName="elephants.jpg" sizeShifts={[0, 420, 820, 1404]} className="" alt="Elephants embracing, trunk coiled around trunk" />
+                    </div>
                 </div>
                 </main>
                 <Nav page="consultation" />

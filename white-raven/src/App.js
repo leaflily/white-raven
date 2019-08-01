@@ -11,7 +11,16 @@ import Consultation from './Views/Consultation';
 import './App.css';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      appClass: 'App'
+    }
+  }
   componentDidMount() {
+    setTimeout(() => this.setState({
+      appClass: 'App App-loaded'
+    }), 500);
     (function preloadThumbs() {
       var folders = [
         { name: 'small', 
@@ -44,7 +53,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App">
+      <div className={this.state.appClass}>
         <Router>
           <Route render={({ location }) => (<>  
             <TransitionGroup>
