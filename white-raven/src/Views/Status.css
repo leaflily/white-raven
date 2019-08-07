@@ -1,0 +1,43 @@
+@import '../assests.css';
+
+.status {
+    padding: 32px;
+    position: absolute;
+    font: var(--font-aside);
+    color: var(--colour-white);
+    background: rgba(0,0,0,0.5);
+}
+
+.status__options {
+    display: flex;
+    flex-flow: row-reverse wrap;
+}
+
+.status__dots {
+    opacity: 0.5;
+    animation: 2s linear infinite forwards dot-animation;
+}
+
+.no-spin .status__dots {
+    animation: none;
+}
+
+.status__dots--2 {
+    animation-delay: 0.66s;
+}
+.status__dots--3 {
+    animation-delay: 1.22s;
+}
+
+
+@keyframes dot-animation {
+    0% {
+        opacity: 1;
+    }
+    33% {
+        opacity: 1;
+    }
+    34% {
+        opacity: 0.5;
+    }
+}

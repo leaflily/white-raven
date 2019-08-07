@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Header from './Views/Header';
-import Nav from './Views/Nav';
+import ScrollToTop from './ScrollToTop';
 import Landing from './Views/Landing';
 import Communication from './Views/Communication';
 import About from './Views/About';
@@ -55,6 +54,7 @@ class App extends React.Component {
     return (
       <div className={this.state.appClass}>
         <Router>
+        <ScrollToTop>
           <Route render={({ location }) => (<>  
             <TransitionGroup>
               <CSSTransition
@@ -74,6 +74,7 @@ class App extends React.Component {
               </CSSTransition>
             </TransitionGroup>
           </>)}/>
+          </ScrollToTop>
         </Router>
       </div>
     )

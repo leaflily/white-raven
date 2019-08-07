@@ -20,10 +20,10 @@
   width: 220px;
   height: 50px;
 }
-@media only screen and (min-width: 450px) {
+@media only screen and (min-width: 450px) and (min-height: 400px) {
   .nav--landing {
     position: absolute;
-    top: calc(60vh - 155px);
+    top: calc(60vh - 73px);
     min-height: 0;
     right: 0;
     width: 450px;
@@ -34,23 +34,21 @@
     position: absolute;
     top: calc(60vh - 155px);
     min-height: 0;
-    right: 2vw;
+    right: calc(30vw - 150px);
+    width: 280px;
   }
 }
 @media only screen and (min-width: 1060px) {
   .nav--landing {
     flex-direction: column;
     justify-content: center;
-    margin-right: 10vw;
-    top: 40vh;
+    top: calc(80vh - 200px);
   }
   .nav--landing .nav__a {
     align-self: center;
     margin: 8px;
   }
 }
-
-
 
 #clouds__viewport {
   bottom: 0;

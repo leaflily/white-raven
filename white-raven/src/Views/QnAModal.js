@@ -1,4 +1,5 @@
 import React from 'react';
+import Status from './Status';
 import './modal.css';
 import './QnAModal.css';
 
@@ -27,6 +28,11 @@ const QnAs = [
         tags: 'price, time, included',
         q: 'How much will it cost and what will that include?',
         a: 'Each communication is £50 per animal this includes a distant communication (45mins) plus a skype/phone call.'
+    },
+    {
+        tags: 'multiple',
+        q: 'Can I book in for more then one animal?',
+        a: 'Each consultation will focus on just one animal at a time. To make a booking for more then one animal please go through the booking process for each animal in turn.'
     }
 ];
 
@@ -72,11 +78,24 @@ class QnAModal extends React.Component {
             displayAnswers: [],
             showMore: 1,
             showNResults: 4,
-            querySent: false
+            querySent: false,
+            showStatus: false,
+            statusProps: {
+                classNames: '',
+                msg: '',
+                alt: {
+                    name: null,
+                    handler: null
+                },
+                cancel: this.eventFunctions.cancelSubmit
+            }
         }
         this.handleEvent = this.handleEvent.bind(this);
-        this.submitInProgress = false;
         this.matchResults = [];
+        this.submitInProgress = false;
+        this.updateStatus = this.updateStatus.bind(this);
+        this.closeStatus = this.closeStatus.bind(this);
+        this.eventFunctions.submit = this.eventFunctions.submit.bind(this);
     }
     searchAnswers () {
         return new Promise((resolve) => {
@@ -155,9 +174,8 @@ class QnAModal extends React.Component {
                 }
             });
         },
-        submit() { 
+        submit: () => { 
             if (!this.submitInProgress) {
-                this.submitInProgress = true;
                 const {query, name, email} = this.state;
                 if (!email.match(/\w+@\D+\.\w+/)) {
                     this.requireEmail();
@@ -165,6 +183,8 @@ class QnAModal extends React.Component {
                     return
                 }
                 else {
+                    this.submitInProgress = true;
+                    this.updateStatus('Sending your query');
                     this.setState({
                         emailInvalid: false
                     })
@@ -174,30 +194,59 @@ class QnAModal extends React.Component {
                 xhttp.open("POST", "/server/emailquery.php", true);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState === 4 && this.status === 200) {
-                  console.log(data);
+                        this.closeStatus();
                         this.setState({
-                            querySent: true
+                            querySent: true,
                         }, () => this.submitInProgress = false);
+                    }
+                    else {
+                        this.updateStatus('Unable to connect', false, {name: 'Retry', handler: this.eventFunctions.retrySubmit});
                     }
                 };
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(data);
             }
         },
+        retrySubmit: () => {
+            this.submitInProgress = false;
+            this.eventFunctions.submit();
+        },
+        cancelSubmit: () => {
+            this.submitInProgress = false;
+            this.closeStatus();
+        },
         exit() {
+            this.matchResults = [];
             this.setState({
                 query: '',
                 name: '',
                 email: '',
                 emailInvalid: false,
-                matchResults: [],
                 displayAnswers: [],
                 showMore: 1,
                 showNResults: 4,
                 querySent: false
             });
+            this.updateAnswers();
         }
     };
+    updateStatus(msg, spin, alt = this.state.statusProps.alt, cancel = this.state.statusProps.cancel) {
+        const classNames = spin ? '' : 'no-spin';
+        this.setState({
+            showStatus: true,
+            statusProps: {
+                classNames,
+                msg: msg,
+                alt: alt,
+                cancel: cancel
+            }
+        })
+    }
+    closeStatus() {
+        this.setState({
+            showStatus: false
+        })
+    }
     handleEvent(e) {
         e.preventDefault();
         const target = e.target.hasAttribute('data-func2') ? e.target : e.target.parentElement;
@@ -239,6 +288,7 @@ class QnAModal extends React.Component {
     render() {
         return (
             <div className="modal modal--qna" onClick={this.props.handleEvent} data-func="closeModal">
+                {this.state.showStatus && <Status {...this.state.statusProps} /> }
                 <div className="modal__box">
                 <div className="modal__box__exit" onClick={this.props.handleEvent} data-func="closeModal">X</div>   
                     <div className="modal__box__content modal__qna">

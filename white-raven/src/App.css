@@ -44,3 +44,28 @@
   opacity: 0;
   transition: opacity 750ms ease-in;
 } 
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+  font: var(--font-aside);
+}
+
+li {
+  margin: 1em 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+li:after {
+  content: '';
+  min-width: 8px;
+  min-height: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--colour-blue);
+  border-radius: 10px;
+  margin: 8px 0 0 5px;
+}

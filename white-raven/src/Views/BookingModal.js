@@ -5,10 +5,11 @@ import './BookingModal.css';
 
 function BookingModal(props) {
     const stageTitles = {
-        one: 'Animal Info', 
-        two:  'Focus',    
-        three: 'Your Info',   
-        four: 'Payment',
+        one: 'Start',
+        two: 'Animal Info', 
+        three:  'Focus',    
+        four: 'Your Info',   
+        five: 'Payment'
     };
     return (
         <div className="modal modal--Booking" onClick={props.handleEvent} data-func="closeModal">
@@ -47,7 +48,7 @@ function BookingModal(props) {
                                 <button onClick={props.handleEvent} data-func="prevStage">Previous</button>
                             }
                             
-                            { props.stage === 'four' ?
+                            { props.stage === 'five' ?
                                 <button onClick={props.handleEvent} data-func="nextStage" disabled>Next</button> :
                                 <button onClick={props.handleEvent} data-func="nextStage">Next</button>
                             }

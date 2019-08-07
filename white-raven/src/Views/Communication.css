@@ -29,29 +29,7 @@
 }
 
 .main--communication .main__section__list__ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: right;
-    font: var(--font-aside);
     color: var(--colour-light-grey);
-}
-
-.main--communication .main__section__list__ul li {
-    margin: 1em 0;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.main--communication .main__section__list__ul li:after {
-    content: '';
-    min-width: 8px;
-    min-height: 8px;
-    width: 8px;
-    height: 8px;
-    background: var(--colour-blue);
-    border-radius: 10px;
-    margin: 8px 0 0 5px;
 }
 
 .main--communication .main__section__p--last {

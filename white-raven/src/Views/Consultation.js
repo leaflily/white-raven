@@ -13,13 +13,14 @@ class Consultation extends React.Component {
     constructor(props) {
         super(props);
         this.quote = {
-            text: <q>Until one has loved an animal a part of one’s  soul remains unawakened</q>,
+            text: <q>Until one has loved an animal a part of one’s soul remains unawakened</q>,
             author: 'Irene M. Pepperberg'
         };
-        this.stages = ['one', 'two', 'three', 'four'];
+        this.stages = ['one', 'two', 'three', 'four', 'five'];
         this.state = {
             stageForwards: true,
             modalSelected: 'none',
+            paymentStage: false,
             bookingStage: 0,
             inputs: {
                 photo: null,
@@ -27,16 +28,14 @@ class Consultation extends React.Component {
                 age: '',
                 ageValue: 'years',
                 gender: 'gender',
-                home: '',
-                familyMembers: '',
-                backgroundInfo: '',
                 reason: '',
                 otherQuestions: '',
                 clientName: '',
                 clientEmail: '',
                 clientNumber: '',
             },
-            notFilledIn: ''
+            notFilledIn: '',
+            error: null
         };
         this.script = document.createElement("script");
         this.handleEvent = this.handleEvent.bind(this);
@@ -49,8 +48,8 @@ class Consultation extends React.Component {
         this.script.src = "https://www.paypal.com/sdk/js?client-id=sb&currency=GBP";
         this.script.async = true;
         document.body.appendChild(this.script);
-        if (localStorage.getItem('bookingInputs') !== null) {
-            const localData = JSON.parse(localStorage.getItem('bookingInputs'));
+        if (sessionStorage.getItem('bookingInputs') !== null) {
+            const localData = JSON.parse(sessionStorage.getItem('bookingInputs'));
             setTimeout( () =>
                 this.setState({
                     inputs: localData
@@ -62,18 +61,27 @@ class Consultation extends React.Component {
         document.body.removeChild(this.script);
         const data = this.state.inputs;
         data.photo = null;
-        localStorage.setItem('bookingInputs', JSON.stringify(data));
+        sessionStorage.setItem('bookingInputs', JSON.stringify(data));
     }
     modals = {
-        booking: () => <BookingModal stageForwards={this.state.stageForwards} notFilledIn={this.state.notFilledIn} photo={this.state.inputs.photo} handleEvent={this.handleEvent} handleInput={this.handleInput} stage={this.stages[this.state.bookingStage]} inputs={this.state.inputs} />,
+        booking: () => <BookingModal 
+            stageForwards={this.state.stageForwards} 
+            notFilledIn={this.state.notFilledIn} 
+            photo={this.state.inputs.photo} 
+            handleEvent={this.handleEvent} 
+            handleInput={this.handleInput} 
+            stage={this.paymentStage ? this.stages[this.stages.length - 1] : this.stages[this.state.bookingStage]} 
+            inputs={this.state.inputs} />,
         codeOfEthics: () => <CodeOfEthicsModal handleEvent={this.handleEvent} />,
         qna: () => <QnAModal handleEvent={this.handleEvent} />,
         none: () => <></>
     };  
     requiredInputs = {
-        0: ['photo', 'name', 'age', 'gender', 'home', 'familyMembers', 'backgroundInfo'],
-        1: ['reason'],
-        2: ['clientName', 'clientEmail', 'clientNumber']
+        0: [],
+        1: ['photo', 'name', 'age', 'gender'],
+        2: ['reason'],
+        3: ['clientName', 'clientEmail', 'clientNumber'],
+        4: []
     }
     eventFunctions = {
         input: (name, value) => {
@@ -95,19 +103,37 @@ class Consultation extends React.Component {
         },
         nextStage() {
             var notFilledIn = this.requiredInputs[this.state.bookingStage].find(input => !this.state.inputs[input] || (input === 'gender' && this.state.inputs.gender === 'gender'));
+            const goToNextStage = () => {
+                const stage = this.state.bookingStage + 1;
+                this.debounce(500);
+                this.setState({
+                    stageForwards: true,
+                }, () =>  this.setState({
+                    bookingStage: stage
+                } ));
+            }
+            const goToPaymentStage = () => {
+                console.log('pay stage');
+                this.debounce(500);
+                this.setState({
+                    stageForwards: true,
+                }, () =>  this.setState({
+                    paymentStage: true,
+                    bookingStage: this.stages.length - 1
+                } ));
+            }
             if (notFilledIn) {
-                this.setState({ notFilledIn })
+                console.log(notFilledIn);
+                this.setState({ notFilledIn });
             }
             else {
                 if (!this.debounceActive) {
-                    if (this.state.bookingStage < this.stages.length - 1) {
-                        const stage = this.state.bookingStage + 1;
-                        this.debounce(500);
-                        this.setState({
-                            stageForwards: true,
-                        }, () =>  this.setState({
-                            bookingStage: stage
-                        } ));
+                    if (this.state.bookingStage === this.stages.length - 1) { 
+                        goToPaymentStage()
+                        // this.sendBookingInfo().then(() => goToPaymentStage()).catch(err => this.handleError(err));
+                    }
+                    else if (this.state.bookingStage < this.stages.length - 1) {
+                        goToNextStage();
                     }
                 }
             }
@@ -135,17 +161,40 @@ class Consultation extends React.Component {
                 xhttp.open("POST", "/server/emailclientinfo.php", true);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState === 4 && this.status === 200) {
-                        this.setState({
-                            bookingStage: 'success'
-                        }, this.resetBookingInputs)
+                        this.confirmBooking();
                     }
                 };
-                console.log(data)
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(data);
             }
+        },
+        cancelBooking() {
+            this.resetBookingInputs();
+            this.eventFunctions.closeModal();
         }
     };
+    sendBookingInfo() {
+        return new Promise((resolve, reject) => {
+            const data = JSON.stringify(this.state.inputs);
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "/server/emailclientinfo.php", true);
+            xhttp.onreadystatechange = function(err) {
+                if (this.readyState === 4 && this.status === 200) {
+                    resolve();
+                }
+                else {
+                    reject(err);
+                }
+            };
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(data);
+        });
+    }
+    confirmBooking() {
+        this.setState({
+            bookingStage: 'success'
+        }, this.resetBookingInputs)
+    }
     closeOnEsc(e) {
         if (e.key === 'Escape') {
             this.eventFunctions.closeModal();
@@ -194,17 +243,19 @@ class Consultation extends React.Component {
             }
         }
     }
+    handleError(msg) {
+
+    }
     resetBookingInputs() {
         this.setState({
+            paymentStage: false,
+            bookingStage: 0,
             inputs: {
                 photo: null,
                 name: '',
                 age: '',
                 ageValue: 'years',
                 gender: 'gender',
-                home: '',
-                familyMembers: '',
-                backgroundInfo: '',
                 reason: '',
                 otherQuestions: '',
                 clientName: '',
@@ -212,7 +263,7 @@ class Consultation extends React.Component {
                 clientNumber: '',
             }
         })
-        localStorage.removeItem('bookingInputs');
+        sessionStorage.removeItem('bookingInputs');
     }
     debounce(ms) {
         this.debounceActive = true;

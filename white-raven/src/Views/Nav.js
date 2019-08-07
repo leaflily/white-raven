@@ -22,7 +22,7 @@ function Nav(props) {
         }
     }
     return (
-        <nav onClick={() => window.scrollTo(0, 0)} className={'nav nav--'+props.page}>
+        <nav className={'nav nav--'+props.page}>
             {sortedLinks().map(link => <Link 
                 key={link.page} 
                 className={'nav__a nav__a--'+link.page} 

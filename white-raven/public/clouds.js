@@ -28,7 +28,6 @@ function Cloud() {
         z: random(-256, 256)
     }
     this.zoom = random(1000, 5000);
-    this.pos.x -= (128 * (1 + (this.zoom/1000)));
     this.cloud = this.create();
     this.created = Date.now();
     this.active = true;

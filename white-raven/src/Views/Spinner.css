@@ -1,0 +1,52 @@
+
+@import '../assests.css';
+
+.spinner {
+    animation: 2s linear infinite spin;
+}
+@keyframes spin {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+.no-spin .spinner {
+    animation: 20s linear infinite spin;
+}
+circle {
+    display: block;
+    fill: transparent;
+    stroke: var(--colour-orange);
+    stroke-width: 1px;
+    stroke-dasharray: 283;
+    stroke-linecap: round;
+    transform-origin: 50% 50%;
+    stroke-dashoffset: 280;
+    animation: 1.4s ease-in-out infinite both circle-animation;
+}
+@keyframes circle-animation {
+    0%,
+    25% {
+        stroke-width: 5px;
+        stroke: var(--colour-blue);
+        stroke-dashoffset: 280;
+        transform: rotate(0);
+    }
+    50% {
+        stroke-width: 10px;
+        stroke: var(--colour-orange);
+        stroke-dashoffset: 75;
+        transform: rotate(45deg);
+    }
+    100% {
+        stroke-width: 5px;
+        stroke: var(--colour-blue);
+        stroke-dashoffset: 280;
+        transform: rotate(360deg);
+    }
+}
+.no-spin circle {
+    animation: 14s ease-in-out infinite both circle-animation;
+}

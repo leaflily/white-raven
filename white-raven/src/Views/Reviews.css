@@ -53,7 +53,7 @@
     .main--reviews .main__section-background--orange .main__section__name-and-photo, .main--reviews .main__section-background--blue .main__section__text {
         order: 1
     }
-    .main--reviews .main__section__name-and-photo img {
+    .main--reviews .main__section__name-and-photo .image {
         width: calc(40vw);
         height: calc((40vw) * 0.75);
     }
@@ -63,7 +63,7 @@
 }
 
 @media only screen and (min-width: 1060px) {
-    .main--reviews .main__section__name-and-photo img {
+    .main--reviews .main__section__name-and-photo .image {
         width: 400px;
         height: 300px;
     }
