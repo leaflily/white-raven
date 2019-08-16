@@ -29,6 +29,33 @@ img {
 }
 
 .pre-img {
-  background: rgba(0,0,0,0.5) url('./Views/images/spinner.gif') no-repeat center;
+  background: rgba(0,0,0,0.5) url('./images/spinner.gif') no-repeat center;
 }
 
+button {
+  display: inline-block;
+  border: none;
+  margin: 0;
+  text-decoration: none;
+  background: none;
+  cursor: pointer;
+  transition: opacity 250ms ease-in-out, 
+              transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:hover,
+button:focus {
+  transform: scale(0.98);
+}
+
+button:focus {
+  outline: 1px solid white;
+  outline-offset: -2px;
+}
+
+button:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}

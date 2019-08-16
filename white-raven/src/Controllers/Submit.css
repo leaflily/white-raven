@@ -1,0 +1,13 @@
+
+.submit__exit {
+    position: absolute;
+    right: 11%;
+    top: 10%;
+    font-size: 18px;
+    padding-right: 16px;
+    padding-top: 8px;
+    align-self: flex-end;
+    color: var(--colour-white);
+    cursor: pointer;
+    z-index: 3000;
+}

@@ -43,13 +43,11 @@
 .modal__box__exit {
     font-size: 18px;
     padding-right: 16px;
-    padding-top: 8px;
+    padding-top: 12px;
     align-self: flex-end;
     color: var(--colour-white);
     cursor: pointer;
-    z-index: 200;
 }
-
 
 .modal-fade {
 z-index: 200;

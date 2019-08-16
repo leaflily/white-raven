@@ -4,9 +4,9 @@ import './CodeOfEthicsModal.css';
 
 function CodeOfEthicsModal(props) {
     return (
-        <div className="modal modal--CodeOfEthics" onClick={props.handleEvent} data-func="closeModal">
+        <div className="modal modal--CodeOfEthics" onClick={props.handleEvent} data-dest="Consultation" data-func="closeModal">
             <div className="modal__box">
-            <div className="modal__box__exit" onClick={props.handleEvent} data-func="closeModal">X</div>
+            <button aria-label="close Code of Ethics modal" className="modal__box__exit" onClick={props.handleEvent} data-dest="Consultation" data-func="closeModal">X</button>
                 <div className="modal__box__content modal__ethics">
                 
                     <h1 className="modal__ethics__title">Code of Ethics for Interspecies Telepathic Communicators</h1>

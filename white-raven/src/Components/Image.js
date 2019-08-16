@@ -20,7 +20,7 @@ class Image extends React.Component {
                 thumb: thumb
             })
         }
-        import(`./images/${this.state.sizeFolder}/thumbs/${this.props.fileName}`).then(img => this.setState({
+        import(`../images/${this.state.sizeFolder}/thumbs/${this.props.fileName}`).then(img => this.setState({
             thumb: img.default
         }))
     }
@@ -47,7 +47,7 @@ class Image extends React.Component {
         }
     }
     importFull() {
-        this.full = import(`./images/${this.state.sizeFolder}/${this.props.fileName}`).then(img => this.setState({
+        this.full = import(`../images/${this.state.sizeFolder}/${this.props.fileName}`).then(img => this.setState({
             full: img.default
         }))
     }
@@ -64,7 +64,7 @@ class Image extends React.Component {
                     />
                     {  this.state.full && <img 
                         className={this.props.className+'image-full'}
-                        alt={this.props.alt} 
+                        alt=''
                         src={this.state.full}
                         onLoad={() => this.setState({
                             thumbClass: 'image-thumb image-thumb--hide'

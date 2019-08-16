@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './Controllers/ScrollToTop';
 import Landing from './Views/Landing';
 import Communication from './Views/Communication';
 import About from './Views/About';
@@ -15,6 +15,7 @@ class App extends React.Component {
     this.state = {
       appClass: 'App'
     }
+    this.a11yRef = React.createRef();
   }
   componentDidMount() {
     setTimeout(() => this.setState({
@@ -44,11 +45,18 @@ class App extends React.Component {
       for (let folder of folders) {
         for (let thumb of folder.thumbs) {
           if (!localStorage.getItem(`thumb${folder.name}${thumb}`)) {
-            import(`./Views/images/${folder.name}/thumbs/${thumb}`).then(img => localStorage.setItem(`thumb${folder.name}${thumb}`, img.default))
+            import(`./images/${folder.name}/thumbs/${thumb}`).then(img => localStorage.setItem(`thumb${folder.name}${thumb}`, img.default))
           }
         }
       }
     }())
+  }
+  pages = {
+    Landing,
+    Communication,
+    About,
+    Reviews,
+    Consultation
   }
   render() {
     return (
@@ -64,11 +72,13 @@ class App extends React.Component {
               >
               <div>
                 <Switch location={location}>
-                  <Route path="/" exact component={Landing} />
-                  <Route path="/communication" component={Communication} />
-                  <Route path="/about" component={About} />
-                  <Route path="/reviews" component={Reviews} />
-                  <Route path="/consultation" component={Consultation} />
+                <div aria-live="polite" ref={this.a11yRef}>
+                    <Route path="/" exact component={Landing} />
+                    <Route path="/communication" component={Communication} />
+                    <Route path="/about" component={About} />
+                    <Route path="/reviews" component={Reviews} />
+                    <Route path="/consultation" component={Consultation} />
+                    </div>
                 </Switch>
               </div>
               </CSSTransition>

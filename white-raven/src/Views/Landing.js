@@ -1,16 +1,18 @@
 import React from 'react';
-import Header from './Header';
-import Nav from './Nav';
-import Clouds from './Clouds';
+import Header from '../Components/Header';
+import Nav from '../Components/Nav';
+import Clouds from '../Components/Clouds';
 import './Landing.css';
 
 
 function Landing(props) {
     return (
         <>
-            <Header page="landing" />
-            <Nav page="landing" />
-            <Clouds />
+                <Header page="landing" />
+            <main>
+                <Nav page="landing" />
+                <Clouds />
+            </main>
         </>
     );
 }

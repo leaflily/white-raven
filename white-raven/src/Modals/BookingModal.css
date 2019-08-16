@@ -47,8 +47,15 @@
   }
 
 .modal__booking-stage__form--payment {
-    display: block;
+    height: 100%;
     padding: 32px;
+}
+
+.modal__booking-stage__form__payment-button {
+    display: grid;
+    place-items: center center;
+    z-index: 2000;
+    cursor: pointer;
 }
 
 .modal__booking-stage__payment__alt {
@@ -71,6 +78,7 @@
     font-size: 10px;
     letter-spacing: 0.102em;
     text-shadow: 1px 1px 1px var(--colour-blue);
+    cursor: pointer;
 }
 
 .modal__booking-stage__form textarea:not(:focus), .modal__booking-stage__form input:not(:focus) {
@@ -136,7 +144,7 @@
     top: 0;
     width: 180px;
     height: 180px;
-    background: rgba(255,255,255,0.8) url(./images/photoupload.png) center no-repeat;
+    background: rgba(255,255,255,0.8) url(../images/photoupload.png) center no-repeat;
 }
 
 .modal__booking-stage__form--animal-info .modal__booking-stage__form__photo-upload__area__img {
@@ -275,3 +283,20 @@ transform: translate(100vw, 0vw);
 transition: all 1250ms ease-out;
 opacity: 0;
 } 
+
+.modal__booking-stage--Payment .modal__booking-stage__nav, .modal__booking-stage--Confirmation .modal__booking-stage__nav {
+    display: none;
+}
+
+.modal__booking-stage__form--confirmation {
+    height: 100%;
+    background-image: radial-gradient(70% 90% at bottom right, rgba(255,255,255,0.5), rgba(0,0,0,0.1));
+    font: var(--font-main);
+    text-align: center;
+}
+
+@media only screen and (min-height: 520px) {
+    .modal__booking-stage__form--payment {
+        display: block;
+    }
+}

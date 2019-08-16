@@ -1,11 +1,11 @@
 import React from 'react';
 import './Status.css';
-import Spinner from './Spinner';
+import Spinner from '../Components/Spinner';
 
 function Status(props) {
     return (
         <div className={'status '+props.classNames}>
-            <Spinner />
+            <div className="status__spinner"><Spinner /></div>
             <div className="status__message">
                 <h3>
                     {props.msg}
@@ -15,8 +15,8 @@ function Status(props) {
                 </h3>
             </div>
             <div className="status__options">
-                <div className="status__options__cancel" onClick={props.cancel}>Cancel</div>
-                {props.altOption && <div className="status__options__alt" onClick={props.altOption.handler}>{props.altOption.name}</div>}
+                <button className="status__options__option status__options__cancel" aria-label="cancel" onClick={props.cancel}>Cancel</button>
+                {props.alt.name && <button className="status__options__option status__options__alt" aria-label={props.alt.name} onClick={props.alt.handler}>{props.alt.name}</button>}
             </div>
         </div>
     )

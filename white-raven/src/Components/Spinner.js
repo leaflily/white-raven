@@ -1,6 +1,5 @@
 import React from 'react';
 import './Spinner.css';
-import spin from './images/spin.svg';
 
 function Spinner(props) {
     return (

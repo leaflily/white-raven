@@ -1,32 +1,32 @@
-import React from 'react';
-import Header from './Header';
-import Nav from './Nav';
-import Image from './Image';
+import React, {useEffect, useState} from 'react';
+import Header from '../Components/Header';
+import Nav from '../Components/Nav';
+import Image from '../Components/Image';
 import './main.css';
 import './Communication.css';
 
 function Communication() {
     const quote = {
         text: '"Some people talk to animals not many listen though, that’s the problem"',
-        author: 'A A Milne.'
-    }
+        author: 'A A Milne'
+    } 
     return (
         <>
             <Header page="communication" quote={quote} />
-            <main className="main main--communication">
+            <main role="main" className="main main--communication">
                 <div className="main__section-background main__section-background--blue">
-                    <section className="main__section">
+                    <article className="main__section">
                         <p className="main__section__p">
-                            <span className="main__section__p__headline">Animal Communication </span> 
+                            <span role="heading" aria-level="1" className="main__section__p__headline">Animal Communication<span className="hiddenPunctuation">,</span></span> 
                             Involves a telepathic, non-verbal way of interacting; 
                             using intentions and visualisations, I receive a 
                             heartfelt intuition and possibly a ‘sudden knowing' 
-                            about an animal's viewpoint, thoughts and feelings. 
+                            about an animal's viewpoint thoughts and feelings. 
                             This focusing energy facilitates a 2-way exchange of 
                             important information. Physical proximity is not required.
                         </p>
                         <figure className="main__section__figure main__section__figure--tablet main__section__figure--Dolphin image">
-                            <Image fileName="dolphin.jpg" sizeShifts={[0, 320, 600, 1060]} className="" alt="lady swimming with a dolphin" />
+                            <Image fileName="dolphin.jpg" sizeShifts={[0, 1059]} className="" alt="a lady underwater eye to eye with a dolphin." />
                         </figure>
                         <p className="main__section__p"> 
                         Using this silent but universal or interspecies ‘language', 
@@ -36,14 +36,14 @@ function Communication() {
                         in helping their animals by using brief information and a 
                         photograph, and in many cases, solutions are often found.
                         </p>
-                    </section>
+                    </article>
                 </div>
                 <figure className="main__figure main__figure--Dolphin-mobile image">
-                    <Image fileName="dolphin.jpg" sizeShifts={[0, 320, 600, 1060]} className="" alt="lady swimming with a dolphin" />
+                    <Image fileName="dolphin.jpg" sizeShifts={[0, 320, 420]} className="" alt="a lady underwater eye to eye with a dolphin." />
                 </figure>
                 <div className="main__section-background main__section-background--orange">
-                    <section className="main__section main__section--orange">
-                        <h3 className="main__section__list-heading">Consultations are available for:</h3>
+                    <aside className="main__section main__section--orange">
+                        <h2 className="main__section__list-heading">Consultations are available for:</h2>
                         <ul className="main__section__list__ul">
                             <li>
                                 Trauma, abuse, stored memories
@@ -85,7 +85,7 @@ function Communication() {
                             understanding, we move from concern, depression or 
                             grief to balance and well-being, even harmony.
                         </p>
-                    </section>
+                    </aside>
                 </div>
             </main>
             <Nav page="communication" />

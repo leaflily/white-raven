@@ -9,6 +9,15 @@
   position: relative;
 }
 
+.page-fade-exit .nav--landing {
+  opacity: 1;
+} 
+
+.page-fade-exit-active .nav--landing {
+  opacity: 0;
+  transition: opacity 750ms ease-in;
+} 
+
 .nav--landing .nav__a:nth-child(1) {
   font-size: 14px;
   width: 260px;

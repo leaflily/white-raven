@@ -17,6 +17,8 @@
 }
 
 .main--reviews .main__section__name-and-photo {
+    display: grid;
+    place-items: center center;
     padding: 0;
     margin: 0;
 }
@@ -27,12 +29,12 @@
     min-height: 204px;
     width: calc(100vw - 44px);
     height: calc((100vw - 44px) * 0.75);
-    max-width: 400px;
-    max-height: 300px;
+    max-width: 300px;
+    max-height: 225px;
     align-self: center;
 }
 
-.main--reviews .main__section__name-and-photo h4 {
+.main--reviews .main__section__name {
     color: var(--colour-reviews);
     font: var(--font-main-heading);
 }
@@ -64,7 +66,7 @@
 
 @media only screen and (min-width: 1060px) {
     .main--reviews .main__section__name-and-photo .image {
-        width: 400px;
-        height: 300px;
+        width: 300px;
+        height: 225px;
     }
 }
