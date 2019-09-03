@@ -25,10 +25,7 @@
 
 .main--reviews .main__section__photo {
     display: inline-block;
-    min-width: 272px;
-    min-height: 204px;
-    width: calc(100vw - 44px);
-    height: calc((100vw - 44px) * 0.75);
+
     max-width: 300px;
     max-height: 225px;
     align-self: center;

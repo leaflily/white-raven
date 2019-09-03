@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Header from '../Components/Header';
 import Nav from '../Components/Nav';
 import Image from '../Components/Image';
@@ -10,14 +10,19 @@ function Communication() {
         text: '"Some people talk to animals not many listen though, that’s the problem"',
         author: 'A A Milne'
     } 
+    const start = useRef(null);
+    useEffect(() => {
+        document.title = 'Communication  - White Raven';
+        start.current.focus();
+    }, []);
     return (
-        <>
+        <div tabIndex="-1" ref={start}>
             <Header page="communication" quote={quote} />
-            <main role="main" className="main main--communication">
+            <main id="communication" role="main" className="main main--communication">
                 <div className="main__section-background main__section-background--blue">
                     <article className="main__section">
                         <p className="main__section__p">
-                            <span role="heading" aria-level="1" className="main__section__p__headline">Animal Communication<span className="hiddenPunctuation">,</span></span> 
+                            <span role="heading" aria-level="1" className="main__section__p__headline">Animal Communication<span className="hiddenPunctuation">, </span></span> 
                             Involves a telepathic, non-verbal way of interacting; 
                             using intentions and visualisations, I receive a 
                             heartfelt intuition and possibly a ‘sudden knowing' 
@@ -89,7 +94,7 @@ function Communication() {
                 </div>
             </main>
             <Nav page="communication" />
-        </>
+        </div>
     )
 }
 

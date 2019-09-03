@@ -4,7 +4,7 @@ import Nav from '../Components/Nav';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import BookingModal from '../Modals/BookingModal';
 import CodeOfEthicsModal from '../Modals/CodeOfEthicsModal';
-import QnAModal from '../Modals/QnAModal';
+import QuestionsModal from '../Modals/QuestionsModal';
 import './main.css';
 import './Consultation.css';
 import Image from '../Components/Image';
@@ -23,11 +23,16 @@ class Consultation extends React.Component {
         this.closeOnEsc = this.closeOnEsc.bind(this);
         this.eventFunctions.closeModal = this.eventFunctions.closeModal.bind(this);
         this.debounceActive = false;
+        this.start = React.createRef(null);
     }
+    componentDidMount() {
+        document.title = 'Consultation - White Raven';
+        this.start.current.focus();
+    }   
     modals = {
         booking: () => <BookingModal handleEvent={this.handleEvent} closeModal={this.eventFunctions.closeModal} />,
         codeOfEthics: () => <CodeOfEthicsModal handleEvent={this.handleEvent} />,
-        qna: () => <QnAModal handleEvent={this.handleEvent} />,
+        questions: () => <QuestionsModal handleEvent={this.handleEvent} />,
         none: () => <></>
     };  
     eventFunctions = {
@@ -42,6 +47,8 @@ class Consultation extends React.Component {
                 modalSelected: 'none'
             });
             window.removeEventListener('keydown', this.closeOnEsc);
+            document.title = 'Consultation - White Raven';
+            this.start.current.focus();
         }
     };
     closeOnEsc(e) {
@@ -100,8 +107,8 @@ class Consultation extends React.Component {
     }
     render() {
         return (
-            <>
-                <Header page="consultation" quote={this.quote} />
+            <div tabIndex="-1" ref={this.start}>
+                <Header page="consultation" quote={this.quote} tabIndex={this.state.modalSelected !== 'none' ? '-1' : ''} />
                 <div className={this.state.modalSelected !== 'none' ? 'modal-back' : undefined}>
                     <TransitionGroup>
                         <CSSTransition
@@ -116,12 +123,12 @@ class Consultation extends React.Component {
                 <main role="main" className="main main--consultation">    
                     <div className="main__section-background main__section-background--blue">
                         <div className="main__section main__section--info">       
-                            <button aria-label="questions and answers." onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="qna" className="main__section__button main__section__button--qna">Q & A<span className="hiddenPunctuation">.</span></button>
-                            <button onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics<span className="hiddenPunctuation">.</span></button>
+                            <button tabIndex={this.state.modalSelected !== 'none' ? '-1' : ''} aria-label="questions?." onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="questions" className="main__section__button main__section__button--questions">Questions?<span className="hiddenPunctuation">.</span></button>
+                            <button tabIndex={this.state.modalSelected !== 'none' ? '-1' : ''} aria-label="Code of Ethics." onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="codeOfEthics" className="main__section__button main__section__button--code-of-ethics">Code of Ethics</button>
                         </div>
                         <div className="main__section">
-                            <button onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="booking" className="main__section__button main__section__button--book">
-                                Book a Session<span className="hiddenPunctuation">.</span> 
+                            <button tabIndex={this.state.modalSelected !== 'none' ? '-1' : ''} aria-label="Book a Session." onClick={this.handleEvent} data-dest="Consultation" data-func="openModal" data-params="booking" className="main__section__button main__section__button--book">
+                                Book a Session
                             </button>
                         </div>
                     </div>
@@ -131,8 +138,8 @@ class Consultation extends React.Component {
                         </div>
                     </div>
                 </main>
-                <Nav page="consultation" />
-            </>
+                <Nav page="consultation" tabIndex={this.state.modalSelected !== 'none' ? '-1' : ''} />
+            </div>
         )
     }
 }

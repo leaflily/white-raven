@@ -30,6 +30,8 @@ class BookingModal extends React.Component {
         this.events.handle = this.events.handle.bind(this);
         this.events.input.handle = this.events.input.handle.bind(this);
         this.debounceActive = false;
+        this.start = React.createRef('#');
+        this.lastStage = 0;
     }
     componentWillMount() {
         this.script.src = "https://www.paypal.com/sdk/js?client-id=Ab1pvgInjBlt_U7KDzpR54yqJDDV6Qk1X6riflHic00-oMSS8WSpXR_W7wP6xs76-zLIP6wp5Lojpkme&currency=GBP";
@@ -37,9 +39,11 @@ class BookingModal extends React.Component {
         document.body.appendChild(this.script);
         if (sessionStorage.getItem('bookingInputs') !== null) {
             const localData = JSON.parse(sessionStorage.getItem('bookingInputs'));
+            const stage = parseInt(sessionStorage.getItem('bookingStage')) || 0;
             setTimeout( () =>
                 this.setState({
-                    inputs: localData
+                    inputs: localData,
+                    bookingStage: stage
                 }),
             0);
         }
@@ -47,8 +51,21 @@ class BookingModal extends React.Component {
     componentWillUnmount() {
         document.body.removeChild(this.script);
         const data = this.state.inputs;
-        data.photo = null;
+        delete data.photo;
         sessionStorage.setItem('bookingInputs', JSON.stringify(data));
+        const bookingStage = this.stages[this.state.bookingStage];
+        const stage = bookingStage === 'Confirmation' ? this.stages.indexOf('Confirmation') : bookingStage === 'Payment' ? this.stages.indexOf('Payment') : bookingStage === 'Start' ? 0 : 1;
+        sessionStorage.setItem('bookingStage', stage.toString());
+    }
+    componentDidMount() {
+        document.title = 'Booking - White Raven';
+        this.start.current.focus();
+    }
+    componentDidUpdate() {
+        if (this.lastStage !== this.state.bookingStage) {
+            this.lastStage = this.state.bookingStage;
+            this.start.current.hasOwnProperty('focus') && this.start.current.focus();
+        }
     }
     requiredInputs = {
         0: [],
@@ -81,7 +98,7 @@ class BookingModal extends React.Component {
                 this.setState({
                     inputs: newInputValues,
                     invalid: ''
-                })
+                });
                 sessionStorage.setItem(name, value);
             },
             handle: e => {
@@ -91,21 +108,13 @@ class BookingModal extends React.Component {
                 }
                 const target = e.target.hasAttribute("data-name") ? e.target : e.target.parentElement;
                 const name = target.getAttribute("data-name");
-                if (target.hasAttribute("type")) {
-                    if (target.getAttribute("type") === 'file' && target.files.length > 0) {
-                        this.events.input.data(name, URL.createObjectURL(target.files[0]));
-                    }
-                    else {
-                        this.events.input.data(name, target.value);
-                    }
+                if (target.hasAttribute("type") && target.getAttribute("type") === 'file' && target.files.length > 0) {
+                    this.photoFile = target.files[0];
+                    this.photoName = Date.now()+''+this.photoFile.name;
+                    this.events.input.data(name, URL.createObjectURL(target.files[0]));
                 }
                 else {
-                    if (target.tagName === 'SELECT') {
-                        this.events.input.data(name, target.value);
-                    }
-                    else {
-                        this.events.input.data(name, target.value);
-                    }
+                    this.events.input.data(name, target.value);
                 }
             }
         },
@@ -124,12 +133,18 @@ class BookingModal extends React.Component {
                 stageForwards: true,
             }, () =>  this.setState({
                 bookingStage: stage
-            } ));
+            }));
         },
         nextStage: () => {
             var invalid = this.requiredInputs[this.state.bookingStage].find(input => !this.state.inputs[input] || (input === 'gender' && this.state.inputs.gender === 'gender'));
             if (invalid) {
-                this.setState({ invalid });
+                this.setState({ 
+                    invalid: ''
+                }, () => {
+                    this.setState({ 
+                        invalid
+                    });
+                });
             }
             else {
                 if (!this.debounceActive) {
@@ -156,7 +171,7 @@ class BookingModal extends React.Component {
                         stageForwards: false,
                     }, () =>  this.setState({
                         bookingStage: stage
-                    } ));
+                    }));
                 }
                 else {
                     this.events.closeModal();
@@ -164,33 +179,46 @@ class BookingModal extends React.Component {
             }
         },
         closeModal: () => {
+            if (this.stages[this.state.bookingStage] === 'Confirmation') {
+                this.resetBookingInputs();
+            }
             this.props.closeModal();
         },
         cancelBooking: () => {
-            this.events.closeModal();
-            this.resetBookingInputs();
+            this.sendCancelBooking();
         },
         onPayment: () => {
             this.sendConfirmation();
         }
     };
     sendBookingInfo() {
-        this.submit.url = '/server/emailclientinfo.php';
+        this.submit.url = '/server/emailbookinginfo.php';
         this.submit.statusMessages = {
-            onTry: 'Sending booking info',
-            onUnableToConnect: 'Unable to send booking info. Please check your internet connection and try again.',
+            onTry: 'Sending booking info'
         }
         this.submit.success = () => {
             this.submit.closeStatus();
             this.events.goToPaymentStage();
         }
+        this.submit.data = Object.assign({}, this.state.inputs, {photoFile: this.photoFile, photoName: this.photoName});
+        this.submit.try();
+    }
+    sendCancelBooking() {
+        this.submit.url = '/server/cancelbooking.php';
+        this.submit.statusMessages = {
+            onTry: 'Canceling booking'
+        }
+        this.submit.success = () => {
+            this.events.closeModal();
+            this.resetBookingInputs();
+        }
+        this.submit.data = this.state.inputs;
         this.submit.try();
     }
     sendConfirmation() {
         this.submit.url = '/server/emailbookingconfirmation.php';
         this.submit.statusMessages = {
-            onTry: 'Finishing Up',
-            onUnableToConnect: 'Unable to send confirmation email. Please check your internet connection and try again.',
+            onTry: 'Finishing Up'
         }
         this.submit.success = () => {
             this.submit.closeStatus();
@@ -198,32 +226,33 @@ class BookingModal extends React.Component {
         }
         this.submit.latch = true;
         this.submit.captcha = false;
+        this.submit.data = Object.assign({}, this.state.inputs, {photoName: this.photoName});
         this.submit.try();
     }
     confirmBooking() {
         this.setState({
-            bookingStage: 'success'
-        }, this.resetBookingInputs);
+            bookingStage: this.stages.indexOf('Confirmation')
+        });
     }
     submit = {
-        test: console.log(this.props),
         getProps: () => {
             return {
-                data: this.submit.data(),
+                data: this.submit.data,
                 url: this.submit.url,
                 onSuccess: this.submit.success,
                 cancel: this.submit.cancel,
                 statusMessages: this.submit.statusMessages,
                 captcha: this.submit.captcha,
-                latch: this.submit.resetLatch
+                latch: this.submit.latch
             }
         },
+        
         url: '',
         latch: false,
         captcha: true,
         statusMessages: {},
-        data: () => this.state.inputs,
         try: () => {
+            this.submit.removeExcessData();
             this.setState({
                 showStatus: true
             });
@@ -238,9 +267,14 @@ class BookingModal extends React.Component {
             this.setState({
                 showStatus: false
             })
+        },
+        removeExcessData: () => {
+            delete this.submit.data.photo;
         }
     }
     resetBookingInputs() {
+        sessionStorage.removeItem('bookingInputs');
+        sessionStorage.removeItem('bookingStage');
         this.setState({
             bookingStage: 0,
             inputs: {
@@ -255,8 +289,7 @@ class BookingModal extends React.Component {
                 clientEmail: '',
                 clientNumber: '',
             }
-        })
-        sessionStorage.removeItem('bookingInputs');
+        });
     }
     debounce(ms) {
         this.debounceActive = true;
@@ -274,10 +307,10 @@ class BookingModal extends React.Component {
             close: this.props.closeModal
         }
         return (
-            <div className="modal modal--Booking" onClick={this.props.handleEvent} data-dest="Consultation" data-func="closeModal">
+            <div tabIndex="-1" ref={this.start} className="modal modal--Booking" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">
                 {this.state.showStatus && <Submit {...this.submit.getProps()} /> }
                 <div className="modal__box">
-                    <button aria-label="close Book a Session modal" className="modal__box__exit" onClick={this.props.handleEvent} data-dest="Consultation" data-func="closeModal">X</button>   
+                    <button aria-label="close modal" className="modal__box__exit" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">X</button>   
                     <div className="modal__box__content">
                         <div className={'modal__booking-stage modal__booking-stage--'+this.stages[this.state.bookingStage]}>
                             <h2 className="modal__booking-stage__title">Booking - {this.stages[this.state.bookingStage]}</h2>
@@ -309,11 +342,11 @@ class BookingModal extends React.Component {
                                 { (this.stages[this.state.bookingStage] !== 'Payment' && this.stages[this.state.bookingStage] !== 'Confirmation') && 
                                     (this.state.bookingStage === 0 ? 
                                     <button onClick={this.events.handle} data-dest="BookingModal" data-func="prevStage" disabled>Previous</button> :
-                                    <button onClick={this.events.handle} data-dest="BookingModal" data-func="prevStage">Previous</button>)
+                                    <button onClick={this.events.handle} aria-label="previous." data-dest="BookingModal" data-func="prevStage">Previous</button>)
                                 }
                                 
                                 { (this.stages[this.state.bookingStage] !== 'Payment' && this.stages[this.state.bookingStage] !== 'Confirmation') && 
-                                    <button onClick={this.events.handle} data-dest="BookingModal" data-func="nextStage">Next</button>
+                                    <button onClick={this.events.handle} aria-label="next." data-dest="BookingModal" data-func="nextStage">Next</button>
                                 }
                             </nav>
                         </div>

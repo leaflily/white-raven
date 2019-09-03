@@ -19,6 +19,7 @@
 
 .header__logo__a {
     width: 260px;
+    max-width: 90vw;
     height: 100px;
     display: inline-block;
 }

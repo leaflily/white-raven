@@ -5,7 +5,7 @@
     min-height: 100vh;
     padding: 10vw;
     box-sizing: border-box;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     font: var(--font-aside);

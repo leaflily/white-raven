@@ -1,3 +1,5 @@
+var active = true;
+
 setTimeout(function() {
 var world = document.getElementById('world');
 var viewport = document.getElementById('viewport');
@@ -16,7 +18,7 @@ function generateClouds() {
     if (cloudCount < maxClouds) {
         new Cloud();
     }
-    setTimeout(generateClouds, random(minRegenRate, 15000));
+    active && setTimeout(generateClouds, random(minRegenRate, 15000));
 }
 
 
@@ -187,3 +189,7 @@ function random(min, max) {
     return randomAbsoluteNumber + min;
 }
 }, 0);
+
+window.onunload = function() {
+    active = false;
+}

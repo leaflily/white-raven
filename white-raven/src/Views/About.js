@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Header from '../Components/Header';
 import Nav from '../Components/Nav';
 import Image from '../Components/Image';
@@ -10,14 +10,19 @@ function About() {
         text: 'People who know me say simply, ‘Denise is an animal person’',
         author: 'Denise Law'
     }
+    const start = useRef(null);
+    useEffect(() => {
+        document.title = 'About - White Raven';
+        start.current.focus();
+    }, []);
     return (
-        <>
+        <div tabIndex="-1" ref={start}>
             <Header page="about" quote={quote} />
             <main role="main" className="main main--about">
                 <div className="main__section-background main__section-background--blue">
                     <section className="main__section">
                         <figure className="main__section__figure--Chimp image">
-                            <Image fileName="chimp.jpg" sizeShifts={[0, 600]} className="" alt="Denise hugging chimp." />
+                            <Image fileName="chimp.jpg" sizeShifts={[0, 600]} className="" alt="Denise hugging chimp" />
                         </figure>
                         <h1 className="main__section__headline">About Me<span className="hiddenPunctuation">.</span></h1>
                         <p>
@@ -68,7 +73,7 @@ function About() {
                 </div>
             </main>
             <Nav page="about" />
-        </>
+        </div>
     );
 }
 

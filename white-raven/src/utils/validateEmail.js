@@ -1,5 +1,5 @@
 function validateEmail(email) {
-    return email.match(/\w+@\D+\.\w+/);
+    return email.match(/^\S*@\S*\.\w+/);
 }
 
 export default validateEmail;

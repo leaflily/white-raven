@@ -71,3 +71,7 @@ li:after {
 .hiddenPunctuation {
   opacity: 0;
 }
+
+div[tabindex="-1"] {
+  outline: none;
+}

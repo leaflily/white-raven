@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import './modal.css';
 import './CodeOfEthicsModal.css';
 
 function CodeOfEthicsModal(props) {
+    const start = useRef(null);
+    useEffect(() => {
+        document.title = 'Code of Ethics - White Raven';
+        start.current.focus();
+    }, []);
     return (
-        <div className="modal modal--CodeOfEthics" onClick={props.handleEvent} data-dest="Consultation" data-func="closeModal">
+        <div tabIndex="-1" ref={start} className="modal modal--CodeOfEthics" onClick={props.handleEvent} data-dest="Consultation" data-func="closeModal">
             <div className="modal__box">
             <button aria-label="close Code of Ethics modal" className="modal__box__exit" onClick={props.handleEvent} data-dest="Consultation" data-func="closeModal">X</button>
                 <div className="modal__box__content modal__ethics">

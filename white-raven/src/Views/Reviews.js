@@ -27,7 +27,7 @@ With love and gratitude from Wilma and I."`
     {
         name: 'Beth and Bella',
         img: 'beth.jpg',
-        alt: 'A dog and horse touching snouts, in a grassy field',
+        alt: 'A dog and horse touching snouts, in a grassy field.',
         text: `I have known Denise for a number of years. She is such an beautiful lady, so spiritual and calm 
 
 I have been honoured to have Denise communicate with my fur baby and soul mate Bella. Over the years Bella has been through so much and Denise has guided me through very emotional times and has provided support when Bella has had to undergo surgery and when sometimes we needed that little bit extra. 
@@ -94,7 +94,7 @@ function Review(props) {
                 <section className="main__section main__section--blue">
                     <div className="main__section__name-and-photo">
                         <div className="main__section__photo image">
-                            <Image className="" fileName={props.img} sizeShifts={[0]} alt={props.alt} />
+                            <Image className="" fileName={props.img} sizeShifts={[0]} alt={'photo: '+props.alt} />
                         </div>
                         <h2 className="main__section__name">{props.name}<span className="hiddenPunctuation">.</span></h2>
                     </div>
@@ -108,6 +108,10 @@ function Review(props) {
 }
 
 class Reviews extends React.Component {
+    constructor(props) {
+        super(props);
+        this.start = React.createRef(null);
+    }
     quote = {
         text: <q>Clearly, animals know more than we think, and think a great deal more than we know.</q>,
         author: 'Irene M. Pepperberg'
@@ -115,15 +119,19 @@ class Reviews extends React.Component {
     componentWillMount() {
         this.reviews = reviewsData.map((review, i) => <Review key={review.name} odd={i%2===0} {...review} />);
     }
+    componentDidMount() {
+        document.title = 'Reviews - White Raven'; 
+        this.start.current.focus();
+    }
     render() {
         return (
-            <>
+            <div tabIndex="-1" ref={this.start}>
                 <Header page="reviews" quote={this.quote} />
                 <main role="main" aria-label="reviews" className="main main--reviews">
                     {this.reviews}
                 </main>
                 <Nav page="reviews" />
-            </>
+            </div>
         )
     }
 }

@@ -5,7 +5,7 @@ function Search(props) {
     let matches = props.data.map(obj =>
         queries.filter(query => {
             const q = escapeRegexMods(query);
-            return Object.values(obj).join(' ').match(new RegExp(q, 'i'));
+            return Object.values(obj).join(' ').match(new RegExp(q, 'i')); // join multiple property strings together and check for match against q
         }
     ));
     matches = matches.map((m, i) => {

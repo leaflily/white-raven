@@ -1,0 +1,69 @@
+@import '../assests.css';
+
+.modal__questions {
+    padding: 0 32px 8px 32px;
+    width: 70vw;
+    max-width: 800px;
+    font: var(--font-answers);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.modal__questions__title {
+    text-align: center;
+    margin-bottom: 16px;
+    margin-top: 0px;
+}
+
+.modal__questions__options {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1px;
+}
+
+.modal__questions__option {
+    font: var(--font-answers);
+    color: var(--colour-white);
+    padding: 12px;
+    width: 50%;
+    border: 1px solid var(--colour-white);
+    border-radius: 10px 10px 0 0;
+    font-family: var(--font-links);
+    letter-spacing: 0.102em;
+    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-align: center;
+    transform: scaleY(0.90);
+    position: relative;
+    top: 2px;
+    transition: transform 0.5s ease;
+}
+
+.modal__questions__option--active {
+  transform: scaleY(1);
+  outline: none;
+  border-bottom: none;
+  top: 0;
+  background: rgba(80,80,80,0.8);
+}
+
+.modal__questions__option:hover,
+.modal__questions__option:focus {
+  transform: scaleY(0.95);
+  outline: none;
+  border-bottom-color: var(--colour-grey);
+  top: 1px;
+}
+
+.modal__questions__box {
+    width: 100%;
+    border: 1px solid var(--colour-white);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 16px;
+    padding-bottom: 0;
+    background: rgba(80,80,80,0.8);
+    box-sizing: border-box;
+}

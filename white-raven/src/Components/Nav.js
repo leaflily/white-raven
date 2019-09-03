@@ -22,8 +22,9 @@ function Nav(props) {
         }
     }
     return (
-        <nav role="navigation" aria-label="Main Navigation" className={'nav nav--'+props.page}>
+        <nav role="navigation" className={'nav nav--'+props.page}>
             {sortedLinks().map(link => <Link 
+                tabIndex={props.tabIndex}
                 key={link.page} 
                 className={'nav__a nav__a--'+link.page} 
                 to={'/'+link.page}>

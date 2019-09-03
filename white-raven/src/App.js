@@ -72,13 +72,11 @@ class App extends React.Component {
               >
               <div>
                 <Switch location={location}>
-                <div aria-live="polite" ref={this.a11yRef}>
-                    <Route path="/" exact component={Landing} />
-                    <Route path="/communication" component={Communication} />
-                    <Route path="/about" component={About} />
-                    <Route path="/reviews" component={Reviews} />
-                    <Route path="/consultation" component={Consultation} />
-                    </div>
+                      <Route path="/" exact component={Landing} />
+                      <Route path="/communication" component={Communication} />
+                      <Route path="/about" component={About} />
+                      <Route path="/reviews" component={Reviews} />
+                      <Route path="/consultation" component={Consultation} />
                 </Switch>
               </div>
               </CSSTransition>

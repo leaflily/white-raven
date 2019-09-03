@@ -37,11 +37,8 @@ function Paypal(props) {
     var tryCount = 0;
     const loadButton = () => {
             setButtonLoaded(true);
-            console.log('load button');
             window.paypal
                 .Buttons({
-
-                    test: console.log('made'),
                     // Set up the transaction
                     createOrder: function(data, actions) {
                         return actions.order.create({

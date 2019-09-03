@@ -1,7 +1,6 @@
 import React from 'react';
 import '../clouds.css';
 
-
 class Landing extends React.Component {
     constructor(props) {
         super(props);

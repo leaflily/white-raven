@@ -20,7 +20,7 @@ function BookingStage(props) {
                     <li>A communication focus, the main reason for wanting the communication</li>
                     <li>Other concerns/questions/messages you have for your animal friend (optional)</li>
                 </ul>
-                <p>Consulations are £50 per animal. This covers a distance communication (45mins) + Skype or telephone call for feedback (45mins)</p>
+                <p>Consultations are £50 per animal. This covers a distance communication (45mins) + Skype or telephone call for feedback (45mins)</p>
             </form>
         ,
         'Animal Info': <form className="modal__booking-stage__form modal__booking-stage__form--animal-info">
@@ -57,10 +57,10 @@ function BookingStage(props) {
                 <Textarea invalid={props.invalid} dataName="otherQuestions" value={props.inputs['otherQuestions']} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" aria-label="(optional) Other concerns/questions/messages you have for your animal friend" placeholder="Other concerns/questions/messages you have for your animal friend (optional)" />
             </form>
         ,
-        'Your Info': <form className="modal__booking-stage__form modal__booking-stage__form--your-info">
-                <Input invalid={props.invalid} dataName="clientName" onChange={props.handleInput} value={props.inputs['clientName']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Your name" aria-label="Your name" />
-                <Input invalid={props.invalid} dataName="clientEmail" onChange={props.handleInput} value={props.inputs['clientEmail']} className="modal__booking-stage__form__animal-info__area" type="email" placeholder="Email" aria-label="Email" autoComplete="email" />
-                <Input invalid={props.invalid} dataName="clientNumber" onChange={props.handleInput} value={props.inputs['clientNumber']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number" aria-label="Skype or Phone Number" autoComplete="tel" />
+        'Your Info': <form className="modal__booking-stage__form modal__booking-stage__form--your-info" autoComplete="on">
+                <Input invalid={props.invalid} dataName="clientName" onChange={props.handleInput} value={props.inputs['clientName']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Your name" aria-label="Your name" name="name" />
+                <Input invalid={props.invalid} dataName="clientEmail" onChange={props.handleInput} value={props.inputs['clientEmail']} className="modal__booking-stage__form__animal-info__area" type="email" placeholder="Email" aria-label="Email" name="email" />
+                <Input invalid={props.invalid} dataName="clientNumber" onChange={props.handleInput} value={props.inputs['clientNumber']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number" aria-label="Skype or Phone Number" name="tel" />
             </form>
         ,
         'Payment': <form className="modal__booking-stage__form modal__booking-stage__form--payment">
@@ -72,10 +72,10 @@ function BookingStage(props) {
             </form>
         ,
         'Confirmation': <form className="modal__booking-stage__form modal__booking-stage__form--confirmation">
-                <h2>Congratulations!</h2>
+                <div><h2>Congratulations!</h2>
                 <p>Your payment and booking infomation has been recieved successfully.</p>
                 <p>I will be in touch soon.</p>
-                <h3>Thank You.</h3>
+                <h3>Thank You.</h3></div>
             </form>
     };
     return stages[props.stage]
