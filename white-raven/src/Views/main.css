@@ -1,9 +1,7 @@
-@import '../assests.css';
-
 .main {
     margin: 0;
-    font: var(--font-main);
-    color: var(--colour-off-black);
+    font: normal 400 14px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
+    color: #333333;
 }
 
 .main__section {
@@ -24,20 +22,20 @@
     padding-bottom: 80px;
 }
 .main__section__headline, .main__section__p__headline {
-    font: var(--font-main-heading);
+    font: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
     font-size: 28px;
 }
 
 .main__section__list-heading {
-    font: var(--font-aside-heading);
+    font: normal 600 14px nazare, sans-serif;
 }
 
 .main__section-background--blue {
-    background-color: var(--colour-light-blue);
+    background-color: #D8EBFE;
 }
 
 .main__section-background--orange {
-    background-color: var(--colour-light-orange);
+    background-color: #FBF3E1;
 }
 
 button {
@@ -45,9 +43,9 @@ button {
 }
 
 .main__section__button {
-    background: var(--colour-grey);
-    border: 1px solid var(--colour-white);
-    color: var(--colour-white);
+    background: #808080;
+    border: 1px solid #ffffff;
+    color: #ffffff;
     border-radius: 8px;
     width: 220px;
     height: 50px;

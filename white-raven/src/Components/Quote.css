@@ -2,12 +2,12 @@
 
 .quote {
     width: 300px;
-    color: var(--colour-off-white);
+    color: #E1E1E1;
     text-align: right;
 }
 .quote__text {
-    font: var(--font-quotes);
+    font: italic 400 16px basic-sans, Verdana, sans-serif;
 }
 .quote__author {
-    font: var(--font-people);
+    font: normal 300 8px work-sans, Arial, sans-serif;
 }

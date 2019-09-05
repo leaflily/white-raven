@@ -1,6 +1,3 @@
-
-@import '../assests.css';
-
 .spinner {
     animation: 2s linear infinite spin;
 }
@@ -18,7 +15,7 @@
 circle {
     display: block;
     fill: transparent;
-    stroke: var(--colour-orange);
+    stroke: #C69838;
     stroke-width: 1px;
     stroke-dasharray: 283;
     stroke-linecap: round;
@@ -30,19 +27,19 @@ circle {
     0%,
     25% {
         stroke-width: 5px;
-        stroke: var(--colour-blue);
+        stroke: #6698CC;
         stroke-dashoffset: 280;
         transform: rotate(0);
     }
     50% {
         stroke-width: 10px;
-        stroke: var(--colour-orange);
+        stroke: #C69838;
         stroke-dashoffset: 75;
         transform: rotate(45deg);
     }
     100% {
         stroke-width: 5px;
-        stroke: var(--colour-blue);
+        stroke: #6698CC;
         stroke-dashoffset: 280;
         transform: rotate(360deg);
     }

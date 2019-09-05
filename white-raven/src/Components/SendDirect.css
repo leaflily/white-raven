@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .send-direct {
     width: 100vw;
     min-height: 100vh;
@@ -8,8 +6,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    font: var(--font-answers);
-    color: var(--colour-white);
+    font: normal 300 16px work-sans, Arial, sans-serif;
+    color: #ffffff;
     background: rgba(0,0,0,0.8);
     display: flex;
     flex-direction: column;
@@ -44,10 +42,10 @@
     place-items: center center;
     width: 50px;
     margin: 8px;
-    color: var(--colour-white);
-    border: 1px solid var(--colour-white);
+    color: #ffffff;
+    border: 1px solid #ffffff;
     border-radius: 10px;
-    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-shadow: 1px 1px 1px #6698CC;
     font-size: 14px;
     padding: 0px 8px;
 }
@@ -63,14 +61,14 @@
     place-items: center center;
     width: 100%;
     margin: 8px;
-    border: 1px solid var(--colour-white);
+    border: 1px solid #ffffff;
     border-radius: 10px;
-    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-shadow: 1px 1px 1px #6698CC;
     background: rgba(0,0,0,0.8);
     font-size: 18px;
     padding: 0px 8px;
 }
 .send-direct__data__email>a {
-    color: var(--colour-white);
+    color: #ffffff;
     padding: 12px;
 }

@@ -1,10 +1,8 @@
-@import '../assests.css';
-
 .modal__questions {
     padding: 0 32px 8px 32px;
     width: 70vw;
     max-width: 800px;
-    font: var(--font-answers);
+    font: normal 300 16px work-sans, Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,15 +23,15 @@
 }
 
 .modal__questions__option {
-    font: var(--font-answers);
-    color: var(--colour-white);
+    font: normal 300 16px work-sans, Arial, sans-serif;
+    color: #ffffff;
     padding: 12px;
     width: 50%;
-    border: 1px solid var(--colour-white);
+    border: 1px solid #ffffff;
     border-radius: 10px 10px 0 0;
-    font-family: var(--font-links);
+    font-family: normal 700 12px delve-hand, cursive, sans-serif;
     letter-spacing: 0.102em;
-    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-shadow: 1px 1px 1px #6698CC;
     text-align: center;
     transform: scaleY(0.90);
     position: relative;
@@ -53,13 +51,13 @@
 .modal__questions__option:focus {
   transform: scaleY(0.95);
   outline: none;
-  border-bottom-color: var(--colour-grey);
+  border-bottom-color: #808080;
   top: 1px;
 }
 
 .modal__questions__box {
     width: 100%;
-    border: 1px solid var(--colour-white);
+    border: 1px solid #ffffff;
     border-top: none;
     border-radius: 0 0 10px 10px;
     padding: 16px;

@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .status {
     width: 100vw;
     min-height: 100vh;
@@ -7,8 +5,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    font: var(--font-aside);
-    color: var(--colour-white);
+    font: normal 300 18px nazare, sans-serif;
+    color: #ffffff;
     background: rgba(0,0,0,0.5);
     display: flex;
     flex-flow: row wrap;
@@ -35,12 +33,12 @@
     align-items: center;
     justify-content: center;
     margin: 8px;
-    color: var(--colour-white);
-    border: 1px solid var(--colour-white);
+    color: #ffffff;
+    border: 1px solid #ffffff;
     border-radius: 10px;
-    font-family: var(--font-links);
+    font-family: normal 700 12px delve-hand, cursive, sans-serif;
     letter-spacing: 0.102em;
-    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-shadow: 1px 1px 1px#6698CC;
     font-size: 14px;
     width: 260px;
     height: 60px;

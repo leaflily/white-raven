@@ -1,9 +1,7 @@
-@import '../assests.css';
-
 .modal__ethics {
     padding: 32px;
     max-width: 800px;
-    font: var(--font-ethics);
+    font: normal 300 16px work-sans, Arial, sans-serif;
 }
 
 .modal__ethics__title {

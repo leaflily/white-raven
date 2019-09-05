@@ -22,7 +22,7 @@
   font-size: 14px;
   width: 260px;
   height: 60px;
-  border: 1px solid var(--colour-white);
+  border: 1px solid #ffffff;
 }
 .nav--landing .nav__a:nth-child(2) {
   font-size: 12px;
@@ -68,7 +68,8 @@
   right: 0;
   top: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
 }
 
 #clouds__world {

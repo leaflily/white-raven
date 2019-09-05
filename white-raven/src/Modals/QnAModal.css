@@ -1,11 +1,9 @@
-@import '../assests.css';
-
 .modal__qna {
     padding: 32px;
     padding-top: 0;
     width: 70vw;
     max-width: 800px;
-    font: var(--font-answers);
+    font: normal 300 16px work-sans, Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,7 +58,7 @@
 
 .modal__qna__answers__dialog__q {
     padding: 8px 16px;
-    background: var(--colour-consultation);
+    background: #D47C5E;
     align-self: flex-start;
     border-radius: 10px;
     max-width: 80%;
@@ -68,7 +66,7 @@
 }
 .modal__qna__answers__dialog__a {
     padding: 8px 16px;
-    background: var(--colour-about);
+    background: #668A2F;
     align-self: flex-end;
     max-width: 80%;
     border-radius: 10px;
@@ -84,9 +82,9 @@
 }
 
 .modal__qna__ask {
-    background-color: var(--colour-light-blue);
-    font: var(--font-aside-heading);
-    color: var(--colour-consultation);
+    background-color: #D8EBFE;
+    font: normal 600 14px nazare, sans-serif;
+    color: #D47C5E;
     width: calc(100% + 10vw);
     border-radius: 0 0 10px 10px;
     text-align: center;
@@ -117,9 +115,9 @@
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    background: var(--colour-white);
+    background: #ffffff;
     width: 30px;
     height: 30px;
     border-radius: 5px;
-    color: var(--colour-off-black);
+    color: #333333;
 }

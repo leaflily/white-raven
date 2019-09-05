@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .main--communication .main__section__figure--Dolphin {
     display: none;
     margin-right: 0;
@@ -7,7 +5,7 @@
 }
 
 .main--communication .main__figure--Dolphin-mobile {
-    background: var(--colour-light-orange);
+    background: #FBF3E1;
     width: 100vw;
     min-height: 125vw;
     margin: 0;
@@ -16,12 +14,12 @@
 
 .main--communication .main__section__p__headline {
     display: inline;
-    color: var(--colour-communication);
+    color: #016AA3;
 }
 
 .main--communication .main__section__list-heading {
-    font: var(--font-aside-heading);
-    color: var(--colour-blue);
+    font: normal 600 14px nazare, sans-serif;
+    color: #6698CC;
 }
 
 .main--communication .main__section__list {
@@ -31,7 +29,7 @@
 }
 
 .main--communication .main__section__list__ul {
-    color: var(--colour-light-grey);
+    color: #898989;
 }
 
 .main--communication .main__section__p--last {
@@ -64,7 +62,7 @@
         min-height: 9px;
         width: 9px;
         height: 9px;
-        background: var(--colour-blue);
+        background: #6698CC;
         border-radius: 10px;
         margin: 9px 0 0 5px;
     }

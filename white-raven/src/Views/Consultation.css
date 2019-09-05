@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .main--consultation .main__section-background--blue {
     padding-top: 0;
 }
@@ -17,18 +15,18 @@
 }
 
 .main--consultation .main__section__button--book {
-    background: var(--colour-communication);
-    border: 3px solid var(--colour-white);
+    background: #016AA3;
+    border: 3px solid #ffffff;
     border-radius: 8px;
     width: 300px;
     height: 100px;
-    color: var(--colour-white);
-    font: var(--font-main-heading);
+    color: #ffffff;
+    font: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
     font-size: 32px;
     position: absolute;
     left: calc(50% - 150px);
     top: calc(60px - 50px);
-    text-shadow: 1px 1px 1px var(--colour-communication);
+    text-shadow: 1px 1px 1px #016AA3;
     z-index: 50;
 }
 
@@ -47,29 +45,29 @@
 }
 
 .main--consultation .main__section__button--questions, .main--consultation .main__section__button--code-of-ethics {
-    background: var(--colour-about);
+    background: #668A2F;
     margin-bottom: 16px;
-    border-color: var(--colour-consultation);
-    font: var(--font-main-heading);
+    border-color: #D47C5E;
+    font: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
     font-size: 18px;
 }
-.main--consultation .main__section__button--questions { background: var(--colour-about); }
-.main--consultation .main__section__button--code-of-ethics { background: var(--colour-reviews); }
+.main--consultation .main__section__button--questions { background: #668A2F; }
+.main--consultation .main__section__button--code-of-ethics { background: #E4B766; }
 
 @media only screen and (max-width: 320px) { 
     .main--consultation .main__section__button--book {
-        background: var(--colour-communication);
-        border: 3px solid var(--colour-white);
+        background: #016AA3;
+        border: 3px solid #ffffff;
         border-radius: 8px;
         width: 200px;
         height: 80px;
-        color: var(--colour-white);
-        font: var(--font-main-heading);
+        color: #ffffff;
+        font: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
         font-size: 24px;
         position: absolute;
         left: calc(50% - 100px);
         top: calc(60px - 40px);
-        text-shadow: 1px 1px 1px var(--colour-communication);
+        text-shadow: 1px 1px 1px #016AA3;
         z-index: 50;
     }
 }

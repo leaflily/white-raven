@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .nav {
     display: flex;
     flex-direction: column;
@@ -15,12 +13,12 @@
     align-items: center;
     justify-content: center;
     margin: 8px;
-    color: var(--colour-white);
-    border: 1px solid var(--colour-white);
+    color: #ffffff;
+    border: 1px solid #ffffff;
     border-radius: 10px;
-    font-family: var(--font-links);
+    font-family: normal 700 12px delve-hand, cursive, sans-serif;
     letter-spacing: 0.102em;
-    text-shadow: 1px 1px 1px var(--colour-blue);
+    text-shadow: 1px 1px 1px #6698CC;
     text-align: center;
 }
 .nav__a:nth-child(1) {
@@ -51,16 +49,16 @@
     height: 30px;
 }
 .nav__a--communication {
-    background-color: var(--colour-communication);
+    background-color: #016AA3;
 }
 .nav__a--about {
-    background-color: var(--colour-about);
+    background-color: #668A2F;
 }
 .nav__a--reviews {
-    background-color: var(--colour-reviews);
+    background-color: #E4B766;
 }
 .nav__a--consultation {
-    background-color: var(--colour-consultation);
+    background-color: #D47C5E;
 }
 
 @media only screen and (min-width: 1060px) {

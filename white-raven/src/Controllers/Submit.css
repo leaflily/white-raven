@@ -7,7 +7,7 @@
     padding-right: 16px;
     padding-top: 8px;
     align-self: flex-end;
-    color: var(--colour-white);
+    color: #ffffff;
     cursor: pointer;
     z-index: 3000;
 }

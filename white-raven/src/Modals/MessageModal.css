@@ -23,9 +23,9 @@
 }
 
 .modal__message__send {
-    background-color: var(--colour-light-blue);
-    font: var(--font-aside-heading);
-    color: var(--colour-consultation);
+    background-color: #D8EBFE;
+    font: normal 600 14px nazare, sans-serif;
+    color: #D47C5E;
     width: calc(100% + 32px);
     border-radius: 0 0 10px 10px;
     text-align: center;

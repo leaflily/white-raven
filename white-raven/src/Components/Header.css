@@ -1,5 +1,3 @@
-@import '../assests.css';
-
 .header {
     display: flex;
     flex-flow: row wrap;
@@ -9,7 +7,7 @@
 
 .header:not(.header--landing) {
     width: 100%;
-    background-image: radial-gradient(70% 90% at bottom right, var(--colour-orange), var(--colour-blue));
+    background-image: radial-gradient(70% 90% at bottom right, #C69838, #6698CC);
 }
 
 .header__logo {
@@ -33,6 +31,7 @@
         margin-left: 50px;
     }
     .header .quote {
+        overflow: visible;
         justify-self: flex-end;
         align-self: flex-end;
         float: right;

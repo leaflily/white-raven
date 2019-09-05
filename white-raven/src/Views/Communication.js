@@ -44,7 +44,7 @@ function Communication() {
                     </article>
                 </div>
                 <figure className="main__figure main__figure--Dolphin-mobile image">
-                    <Image fileName="dolphin.jpg" sizeShifts={[0, 320, 420]} className="" alt="a lady underwater eye to eye with a dolphin." />
+                    <Image fileName="dolphin.jpg" sizeShifts={[0, 220, 420]} className="" alt="a lady underwater eye to eye with a dolphin." />
                 </figure>
                 <div className="main__section-background main__section-background--orange">
                     <aside className="main__section main__section--orange">
