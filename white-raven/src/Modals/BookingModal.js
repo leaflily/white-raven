@@ -34,7 +34,7 @@ class BookingModal extends React.Component {
         this.lastStage = 0;
     }
     componentWillMount() {
-        this.script.src = "https://www.paypal.com/sdk/js?client-id=Ab1pvgInjBlt_U7KDzpR54yqJDDV6Qk1X6riflHic00-oMSS8WSpXR_W7wP6xs76-zLIP6wp5Lojpkme&currency=GBP";
+        this.script.src = "https://www.paypal.com/sdk/js?client-id=AYDMCiH0BgRjIGDfXnb8a1biWbvoJmKbc9UwgFaDz0bJ-kNQZjWHXYFqFGDzk9_ZMtzRClA20BHQrWyA&currency=GBP";
         this.script.async = true;
         document.body.appendChild(this.script);
         if (sessionStorage.getItem('bookingInputs') !== null) {
@@ -44,6 +44,17 @@ class BookingModal extends React.Component {
                 this.setState({
                     inputs: localData,
                     bookingStage: stage
+                },
+                () => {
+                    if (sessionStorage.getItem('stage') === 'payed') {
+                        this.sendConfirmation();
+                    }
+                    else if (sessionStorage.getItem('stage') === 'confirmed') {
+                        this.confirmBooking();
+                    }
+                    else if (sessionStorage.getItem('stage') === 'finished') {
+                        this.resetBookingInputs();
+                    }
                 }),
             0);
         }
@@ -179,15 +190,22 @@ class BookingModal extends React.Component {
             }
         },
         closeModal: () => {
-            if (this.stages[this.state.bookingStage] === 'Confirmation') {
-                this.resetBookingInputs();
+            if (this.stages[this.state.bookingStage] === 'Payment') {
+
             }
-            this.props.closeModal();
+            else {
+                if (this.stages[this.state.bookingStage] === 'Confirmation') {
+                    this.resetBookingInputs();
+                    sessionStorage.setItem('stage', 'finished');
+                }
+                this.props.closeModal();
+            }
         },
         cancelBooking: () => {
             this.sendCancelBooking();
         },
         onPayment: () => {
+            sessionStorage.setItem('stage', 'payed');
             this.sendConfirmation();
         }
     };
@@ -209,9 +227,12 @@ class BookingModal extends React.Component {
             onTry: 'Canceling booking'
         }
         this.submit.success = () => {
-            this.events.closeModal();
             this.resetBookingInputs();
+            this.submit.closeStatus();
+            this.events.closeModal();
         }
+        this.submit.latch = true;
+        this.submit.captcha = false;
         this.submit.data = this.state.inputs;
         this.submit.try();
     }
@@ -221,6 +242,7 @@ class BookingModal extends React.Component {
             onTry: 'Finishing Up'
         }
         this.submit.success = () => {
+            sessionStorage.setItem('stage', 'confirmed');
             this.submit.closeStatus();
             this.confirmBooking();
         }
@@ -246,7 +268,6 @@ class BookingModal extends React.Component {
                 latch: this.submit.latch
             }
         },
-        
         url: '',
         latch: false,
         captcha: true,
@@ -290,6 +311,7 @@ class BookingModal extends React.Component {
                 clientNumber: '',
             }
         });
+        sessionStorage.setItem('stage', 'new');
     }
     debounce(ms) {
         this.debounceActive = true;
@@ -310,7 +332,8 @@ class BookingModal extends React.Component {
             <div tabIndex="-1" ref={this.start} className="modal modal--Booking" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">
                 {this.state.showStatus && <Submit {...this.submit.getProps()} /> }
                 <div className="modal__box">
-                    <button aria-label="close modal" className="modal__box__exit" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">X</button>   
+                    {this.stages[this.state.bookingStage] !== 'Payment' &&
+                    <button aria-label="close modal" className="modal__box__exit" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">X</button> }
                     <div className="modal__box__content">
                         <div className={'modal__booking-stage modal__booking-stage--'+this.stages[this.state.bookingStage]}>
                             <h2 className="modal__booking-stage__title">Booking - {this.stages[this.state.bookingStage]}</h2>

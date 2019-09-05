@@ -199,9 +199,14 @@ class Submit extends React.Component {
         this.setState({ showSendDirect: true });
     }
     resetLatch = () => {
-        fetch('/server/resetSendEmailLatch.php').then(() => {
-            this.props.hasOwnProperty('statusMessages') && Object.assign(this.statusMessages, this.props.statusMessages);
-            this.trySending();
+        fetch('/server/resetSendEmailLatch.php').then((response) => {
+            if (response.status !== 200) {
+                this.handleCaptchaFail();
+            }
+            else {
+                this.props.hasOwnProperty('statusMessages') && Object.assign(this.statusMessages, this.props.statusMessages);
+                this.trySending();
+            }
         }).catch(() => {
             this.updateStatus(this.statusMessages.onUnableToConnect, false, {name: 'Retry', handler: this.resetLatch});
         });

@@ -39,6 +39,7 @@
 .main--reviews .main__section__text {
     font: var(--font-quotes);
     white-space: pre-line;
+    color: var(--colour-dark-grey);
 }
 
 @media only screen and (min-width: 768px) {

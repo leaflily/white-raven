@@ -11,10 +11,6 @@
     align-items: center;
 }
 
-.modal__booking-stage__title {
-    margin-top: 0px;
-}
-
 .modal__booking-stage__form {
     box-sizing: border-box;
     width: 90vw;

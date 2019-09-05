@@ -1,4 +1,8 @@
+@import './assests.css';
+
 body {
+  background-color: #6698CC;
+  background-image: radial-gradient(70% 90% at bottom right, #C69838, #6698CC);
   background-image: radial-gradient(70% 90% at bottom right, var(--colour-orange), var(--colour-blue));
   background-size: cover;
   padding: 0;
