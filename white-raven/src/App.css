@@ -46,11 +46,11 @@ ul {
   padding: 0;
   margin: 0;
   text-align: right;
-  font: normal 300 18px nazare, sans-serif;
+  font: normal 300 20px nazare, sans-serif;
 }
 
 li {
-  margin: 1em 0;
+  margin: 8px 0;
   display: flex;
   justify-content: flex-end;
 }
@@ -63,7 +63,7 @@ li:after {
   height: 8px;
   background: #6698CC;
   border-radius: 10px;
-  margin: 8px 0 0 5px;
+  margin: 10px 0 0 5px;
 }
 
 .hiddenPunctuation {

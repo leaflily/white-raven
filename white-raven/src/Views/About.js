@@ -7,8 +7,8 @@ import './About.css';
 
 function About() {
     const quote = {
-        text: 'People who know me say simply, ‘Denise is an animal person’',
-        author: 'Denise Law'
+        text: <q>Animals are reliable, many full of love, true in their affections, predictable in their actions, grateful and loyal. Difficult standards for people to live up to.</q>,
+        author: 'Alfred A. Montapert'
     }
     const start = useRef(null);
     useEffect(() => {
@@ -26,11 +26,14 @@ function About() {
                         </figure>
                         <h1 className="main__section__headline">About Me<span className="hiddenPunctuation">.</span></h1>
                         <p>
+                            People who know me simply say, <br />'Denise is an animal person'
+                        </p>
+                        <p>
                             Having a lifelong interest in animals, I have been 
-                            the guardian and carer for a great variety of them.
-                            From the humble gerbil, goats, dogs, donkeys, to the 
+                            the guardian and carer for a great variety of them,
+                            from the humble gerbil, goats, dogs, donkeys, to the 
                             more unusual - meerkats, chinchillas, parrots, 
-                            reptiles to name but a few. Also endangered species 
+                            reptiles to name but a few. I’ve also cared for endangered species 
                             such as monkeys from South America and potoroos from 
                             Australia. I am widely travelled and have many 
                             wildlife experiences on which to draw.
@@ -41,7 +44,7 @@ function About() {
                             instincts into a formally accredited skill when my 
                             human family members had left the nest. For me, the 
                             catalyst to the process of serious study was discovering 
-                            the remarkable Anna Breytenbach. And her transformative 
+                            the remarkable Anna Breytenbach and her transformative 
                             work with a black leopard, Spirit, at Jukani Predator 
                             Park (a game rescue centre) in South Africa in 2012.
                         </p>
@@ -50,10 +53,10 @@ function About() {
                 <div className="main__section-background main__section-background--orange">
                     <section className="main__section">
                             <p>
-                                Thus inspired, I trained with renowned experts and mentors.
+                                Thus inspired, I trained with renowned experts and mentors,
                                 Nancy Windheart, Amelia Kinkade, and Danielle Tremblay. I studied 
                                 at the internationally recognized Animal Talk Africa Online 
-                                Academy. And qualified as a certified advanced practitioner 
+                                Academy, and qualified as a certified advanced practitioner 
                                 in animal communication in 2018.
                             </p>
                             <iframe className="main__section__iframe--youtube pre-img" title="Youtube: The incredible story of how leopard Diabolo became Spirit - Anna Breytenbach, 'animal communicator'." 

@@ -23,10 +23,10 @@ function Communication() {
                     <article className="main__section">
                         <p className="main__section__p">
                             <span role="heading" aria-level="1" className="main__section__p__headline">Animal Communication<span className="hiddenPunctuation">, </span></span> 
-                            Involves a telepathic, non-verbal way of interacting; 
+                            involves a telepathic, non-verbal way of interacting; 
                             using intentions and visualisations, I receive a 
                             heartfelt intuition and possibly a ‘sudden knowing' 
-                            about an animal's viewpoint thoughts and feelings. 
+                            about an animal's viewpoint, thoughts, and feelings. 
                             This focusing energy facilitates a 2-way exchange of 
                             important information. Physical proximity is not required.
                         </p>
@@ -63,7 +63,7 @@ function Communication() {
                                 Communicating with wildlife
                             </li>
                             <li>
-                                Contacting animals spirit after death
+                                Contacting animal's spirit after death
                             </li>
                             <li>
                                 Behaviour and training issues; altered behavior, 
@@ -71,12 +71,14 @@ function Communication() {
                             </li>
                             <li>
                                 Family transition, abandonment, additional pets, 
-                                babies, other family members Environmental change, 
-                                travel, emigration 
+                                babies, other family members
+                            </li>
+                            <li>
+                                Environmental change, travel, emigration 
                             </li>
                             <li>
                                 Health, illness, disease (healing is always in 
-                                conjunction with veterinary care, please note 
+                                conjunction with veterinary care: please note 
                                 I am not a vet and cannot diagnose but can 
                                 express what I'm shown and receive from your 
                                 animal friend) 
@@ -88,7 +90,7 @@ function Communication() {
                             enriched and deeper relationship with their animal 
                             friends. Through shared knowledge and mutual 
                             understanding, we move from concern, depression or 
-                            grief to balance and well-being, even harmony.
+                            grief to balance, well-being and harmony.
                         </p>
                     </aside>
                 </div>

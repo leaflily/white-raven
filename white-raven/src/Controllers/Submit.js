@@ -2,6 +2,7 @@ import React from 'react';
 import Status from '../Modals/Status';
 import Captcha from '../Components/Captcha';
 import SendDirect from '../Components/SendDirect';
+import SentToAdmin from '../Components/SentToAdmin';
 import './Submit.css';
 
 class Submit extends React.Component {
@@ -27,9 +28,12 @@ class Submit extends React.Component {
                     name: null,
                     handler: null
                 },
-                cancel: this.cancel
-            }
+                cancel: this.cancel,
+                help: this.displaySendDirect
+            },
+            sentErrorToAdmin: false
         }
+        this.clientError = false;
         this.statusMessages = {
             onTry: 'connecting',
             onUnableToConnect: 'Unable to connect',
@@ -81,19 +85,29 @@ class Submit extends React.Component {
         this.xhttp && this.xhttp.abort();
     }
     trySending = () => {
-        this.uploadingPhoto ? this.sendPhoto() : this.sendData();
+        if (this.clientError) {
+            this.handleClientFail();
+        }
+        else {
+            this.uploadingPhoto ? this.sendPhoto() : this.sendData();
         this.timeout = setTimeout(() => {
             this.unableToConnect();
-        }, 5000);
+        }, 300000);
         this.updateStatus(this.statusMessages.onTry, true);
+        }
     }
     retry = () => {
         this.updateStatus(this.statusMessages.onTry, true);
         this.clearTimeouts();
         this.timeout = setTimeout(() => {
             this.unableToConnect();
-        }, 5000);
+        }, 300000);
+        if (this.clientError) {
+            this.handleClientFail();
+        }
+        else {
         this.uploadingPhoto ? this.sendPhoto() : this.sendData();
+        }
     }
     cancel = () => {
         this.clearTimeouts();
@@ -185,13 +199,45 @@ class Submit extends React.Component {
     };
     handleClientFail = msg => {
         this.clientErrors.push(this.statusMessages.onUnableToSend);
-        this.updateStatus(this.statusMessages.onUnableToSend+'. '+msg, false, {name: 'Retry', handler: this.retry});
+        this.updateStatus(this.statusMessages.onUnableToSend+' '+msg+'. Darn, sorry we are having trouble processing your info. Emailing admin...', true);
+        this.clientError = true;
         this.clearTimeouts();
         this.xhttp && this.xhttp.abort();
+        this.resetLatch();
+        this.emailAdmin(msg);
     };
+    emailAdmin = msg => {
+        this.xhttp = new XMLHttpRequest();
+        this.xhttp.open("POST", "/server/emailAdmin.php", true);
+        const sumbit = this;
+        this.xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                sumbit.adminEmailed();
+                sumbit.clientError = false;
+            }
+            else if (this.status === 403) {
+                sumbit.handleCaptchaFail();
+            }
+            else {
+                sumbit.displaySendDirect();
+                sumbit.clearTimeouts();
+                sumbit.xhttp && sumbit.xhttp.abort();
+                sumbit.clientError = false;
+            }
+        }
+        this.data.error = msg;
+        this.xhttp.send(JSON.stringify(this.data));
+    }
+    adminEmailed = () => {
+        this.setState({
+            sentErrorToAdmin: true
+        });
+        this.clearTimeouts();
+        this.xhttp && this.xhttp.abort();
+    }
     handleServerFail = msg => {
         this.serverErrors.push(this.statusMessages.onUnableToSend);
-        this.updateStatus(this.statusMessages.onUnableToSend+'. '+msg, false, {name: 'Contact via email', handler: this.displaySendDirect});
+        this.updateStatus(this.statusMessages.onUnableToSend+' '+msg+'. Woops, sorry somethings not working.', false, {name: 'Contact via email', handler: this.displaySendDirect});
         this.clearTimeouts();
         this.xhttp && this.xhttp.abort();
     };
@@ -200,7 +246,7 @@ class Submit extends React.Component {
     }
     resetLatch = () => {
         fetch('/server/resetSendEmailLatch.php').then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 403) {
                 this.handleCaptchaFail();
             }
             else {
@@ -208,12 +254,12 @@ class Submit extends React.Component {
                 this.trySending();
             }
         }).catch(() => {
-            this.updateStatus(this.statusMessages.onUnableToConnect, false, {name: 'Retry', handler: this.resetLatch});
+            this.updateStatus("Sorry somethings not working", false, {name: 'Contact via email', handler: this.displaySendDirect});
         });
     }
     disableBackground = () => {}
     render() {
-        const display = this.state.showSendDirect ? <SendDirect data={JSON.stringify(this.data)} serverErrors={this.serverErrors} clientErrors={this.clientErrors} /> : this.state.showCaptcha ? <Captcha {...this.getCaptchaProps()} /> : <Status {...this.getStatusProps()} />;
+        const display = this.state.sentErrorToAdmin ? <SentToAdmin /> : this.state.showSendDirect ? <SendDirect data={JSON.stringify(this.data)} serverErrors={this.serverErrors} clientErrors={this.clientErrors} /> : this.state.showCaptcha ? <Captcha {...this.getCaptchaProps()} /> : <Status {...this.getStatusProps()} />;
         return <div onClick={this.disableBackground}><button className="submit__exit" aria-label="cancel" onClick={this.cancel}>X</button>{display}</div>
     }
 }

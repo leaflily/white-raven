@@ -23,7 +23,14 @@ function Nav(props) {
     }
     return (
         <nav role="navigation" className={'nav nav--'+props.page}>
-            {sortedLinks().map(link => <Link 
+            {sortedLinks().map((link, i) => (i === 0 && props.page !== 'landing') ? 
+                <div
+                key={link.page} 
+                className={'nav__a nav__a--'+link.page} 
+                >
+                    {link.title}
+                </div>
+            : <Link 
                 tabIndex={props.tabIndex}
                 key={link.page} 
                 className={'nav__a nav__a--'+link.page} 

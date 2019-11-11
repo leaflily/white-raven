@@ -15,7 +15,7 @@ function SendDirect(props) {
             <div className="send-direct__data">
                 <div className="send-direct__data__copy" onClick={copyData}>copy</div>
                 <textarea className="send-direct__data__text" ref={dataArea} value={props.data}></textarea>
-                <div className="send-direct__data__email"><a href="mailto:woops@white-raven.co.uk" target="_top">woops@white-raven.co.uk</a></div>
+                <div className="send-direct__data__email"><a href="mailto:white3raven@gmail.com" target="_top">white3raven@gmail.com</a></div>
             </div>
         </div>
     )
