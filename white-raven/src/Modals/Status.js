@@ -18,7 +18,6 @@ function Status(props) {
                 <button className="status__options__option status__options__cancel" aria-label="cancel" onClick={props.cancel}>Cancel</button>
                 {props.alt.name && <button className="status__options__option status__options__alt" aria-label={props.alt.name} onClick={props.alt.handler}>{props.alt.name}</button>}
             </div>
-            <button className="status__not-working status__options__option status__options__alt" onClick={props.help}>Not connecting?</button>
         </div>
     )
 }

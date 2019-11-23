@@ -2,16 +2,12 @@ import React from 'react';
 import Status from '../Modals/Status';
 import Captcha from '../Components/Captcha';
 import SendDirect from '../Components/SendDirect';
-import SentToAdmin from '../Components/SentToAdmin';
 import './Submit.css';
 
 class Submit extends React.Component {
     constructor(props) {
         super(props);
-        this.xhttp = null;
         this.data = props.data;
-        this.tryCount = 0;
-        this.timeout = null;
         this.state = {
             showSendDirect: false,
             showCaptcha: this.props.captcha || false,
@@ -33,6 +29,7 @@ class Submit extends React.Component {
             },
             sentErrorToAdmin: false
         }
+        this.resultLog = [];
         this.clientError = false;
         this.statusMessages = {
             onTry: 'connecting',
@@ -40,31 +37,25 @@ class Submit extends React.Component {
             onUnableToSend: 'error'
         }
         props.hasOwnProperty('statusMessages') && Object.assign(this.statusMessages, props.statusMessages);
-        this.retry = this.retry.bind(this);
         this.handleCaptchaInput = this.handleCaptchaInput.bind(this);
         this.handleCaptchaSubmit = this.handleCaptchaSubmit.bind(this);
         this.displaySendDirect = this.displaySendDirect.bind(this);
         this.disableBackground = this.disableBackground.bind(this);
         this.cancel = this.cancel.bind(this);
-        this.resetLatch = this.resetLatch.bind(this);
         this.count = 0;
         this.serverErrors = [];
         this.clientErrors = [];
         this.uploadingPhoto = this.data.hasOwnProperty('photoFile');
     }
     componentDidMount() {
-        if (this.props.latch) {
-            this.updateStatus();
-            this.resetLatch();
-        }
-        else if (!this.props.captcha) {
+        if (!this.props.captcha) {
             this.trySending();
         }
     }
     componentWillUnmount() {
-        this.updateStatus(this.statusMessages.onTry, true);
-        this.xhttp && this.xhttp.abort();
+        
     }
+
     updateStatus(msg, spin, alt = { name: null, handler: null}, cancel = this.state.statusProps.cancel) {
         const classNames = spin ? '' : 'no-spin';
         this.setState({
@@ -76,105 +67,21 @@ class Submit extends React.Component {
             }
         })
     }
-    clearTimeouts = () => {
-        clearTimeout(this.timeout);
-    }
-    unableToConnect = () => {
-        this.updateStatus(this.statusMessages.onUnableToConnect, false, {name: 'Retry', handler: this.retry});
-        this.clearTimeouts();
-        this.xhttp && this.xhttp.abort();
-    }
-    trySending = () => {
-        if (this.clientError) {
-            this.handleClientFail();
-        }
-        else {
-            this.uploadingPhoto ? this.sendPhoto() : this.sendData();
-        this.timeout = setTimeout(() => {
-            this.unableToConnect();
-        }, 300000);
-        this.updateStatus(this.statusMessages.onTry, true);
-        }
-    }
-    retry = () => {
-        this.updateStatus(this.statusMessages.onTry, true);
-        this.clearTimeouts();
-        this.timeout = setTimeout(() => {
-            this.unableToConnect();
-        }, 300000);
-        if (this.clientError) {
-            this.handleClientFail();
-        }
-        else {
-        this.uploadingPhoto ? this.sendPhoto() : this.sendData();
-        }
-    }
-    cancel = () => {
-        this.clearTimeouts();
-        this.xhttp && this.xhttp.abort();
-        this.props.cancel();
-    }
-    success = () => { 
-        this.clearTimeouts();
-        this.props.onSuccess(); 
-    }
-    sendPhoto = () => {
-        this.xhttp = new XMLHttpRequest();
-        this.xhttp.open("POST", '/server/photoUpload.php', true);
-        const sumbit = this;
-        this.xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                sumbit.photoUploaded();
-            }
-            else if (this.status === 403) {
-                sumbit.handleCaptchaFail();
-            }
-            else if (this.status >= 400 && this.status < 500) { 
-                sumbit.handleClientFail(this.response);
-            }
-            else if (this.status >= 500) {
-                sumbit.handleServerFail(this.response);
-            }
-        }
-        var form_data = new FormData();
-        const file = this.data.photoFile;
-        form_data.append('photoFile', file, this.data.photoName);
-        this.xhttp.send(form_data);
-    }
-    photoUploaded = () => {
-        this.uploadingPhoto = false;
-        this.resetLatch();
-    }
-    sendData = () => {
-        this.xhttp = new XMLHttpRequest();
-        this.xhttp.open("POST", this.props.url, true);
-        const sumbit = this;
-        this.xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                sumbit.success();
-            }
-            else if (this.status === 403) {
-                sumbit.handleCaptchaFail();
-            }
-            else if (this.status >= 400 && this.status < 500) { 
-                sumbit.handleClientFail(this.response);
-            }
-            else if (this.status >= 500) {
-                sumbit.handleServerFail(this.response);
-            }
-        }
-        this.xhttp.send(JSON.stringify(this.data));
-    }
-    getStatusProps = () => this.state.statusProps;
+
+    /* captcha */
     handleCaptchaFail = () => {
-        this.setState({ showCaptcha: true });
+        this.updateStatus('Captcha Fail', false);
+        this.setState({ 
+            showCaptcha: true, 
+            captchaInput: '' 
+        });
     }
     handleCaptchaInput = e => {
         e.preventDefault();
         const input = e.target.value.replace(/\s/g, '');
         this.setState({ 
             captchaInput: input,
-            requireCaptchaInput: false
+            requireCaptchaInput: true
         });
     }
     handleCaptchaSubmit = () => {
@@ -197,71 +104,107 @@ class Submit extends React.Component {
             requireInput: this.state.requireCaptchaInput
         }
     };
-    handleClientFail = msg => {
-        this.clientErrors.push(this.statusMessages.onUnableToSend);
-        this.updateStatus(this.statusMessages.onUnableToSend+' '+msg+'. Darn, sorry we are having trouble processing your info. Emailing admin...', true);
-        this.clientError = true;
-        this.clearTimeouts();
-        this.xhttp && this.xhttp.abort();
-        this.resetLatch();
-        this.emailAdmin(msg);
-    };
-    emailAdmin = msg => {
-        this.xhttp = new XMLHttpRequest();
-        this.xhttp.open("POST", "/server/emailAdmin.php", true);
-        const sumbit = this;
-        this.xhttp.onreadystatechange = function() {
+
+
+    trySending = () => {
+        const newData = Object.assign({}, this.data, {timeStamp: Date.now()});
+        this.data = newData;
+        this.uploadingPhoto ? this.sendPhoto(this) : this.sendData(this);
+    }
+    sendPhoto = (thisSelf) => {
+        this.updateStatus('Uploading your photo', true);
+        const done = () => {
+            clearTimeout(timeOut);
+            thisSelf.uploadingPhoto = false;
+            thisSelf.trySending();
+        }
+        const failed = () => {
+            thisSelf.xhttp && thisSelf.xhttp.abort();
+            clearTimeout(timeOut);
+            thisSelf.resultLog.push('Your photo was unable to upload, but we can sort this out later via email.');
+            done();
+        }
+        let timeOut = setTimeout(() => {
+            failed();
+        }, 15000); // 15 seconds
+        thisSelf.xhttp = new XMLHttpRequest();
+        thisSelf.xhttp.open("POST", '/server/photoUpload.php', true);
+        thisSelf.xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                sumbit.adminEmailed();
-                sumbit.clientError = false;
+                done();
             }
             else if (this.status === 403) {
-                sumbit.handleCaptchaFail();
+                clearTimeout(timeOut);
+                thisSelf.handleCaptchaFail();
             }
-            else {
-                sumbit.displaySendDirect();
-                sumbit.clearTimeouts();
-                sumbit.xhttp && sumbit.xhttp.abort();
-                sumbit.clientError = false;
+            else if (this.readyState === 4) { 
+                failed();
             }
         }
-        this.data.error = msg;
+        var form_data = new FormData();
+        const file = thisSelf.data.photoFile;
+        if (file) {
+            form_data.append('photoFile', file, thisSelf.data.photoName);
+        } 
+        else {
+            delete thisSelf.data.photoName;
+        }
+        thisSelf.xhttp.send(form_data); 
+    }
+
+    sendData = (thisSelf) => {
+        this.updateStatus('Uploading your info', true);
+        const done = () => {
+            clearTimeout(timeOut);
+            thisSelf.success();
+        }
+        const failed = () => {
+            this.xhttp && this.xhttp.abort();
+            thisSelf.resultLog.push('Unable to send your info. Sorry about this somethings not working right now.');
+            thisSelf.failedToSend();
+        }
+        let timeOut = setTimeout(() => {
+            failed();
+        }, 15000); // 15 seconds
+        this.xhttp = new XMLHttpRequest();
+        this.xhttp.open("POST", this.props.url, true);
+        this.xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) { 
+                done();
+            }
+            else if (this.status === 403) {
+                thisSelf.handleCaptchaFail();
+            }
+            else if (this.readyState === 4) {
+                failed();
+            }
+        }
         this.xhttp.send(JSON.stringify(this.data));
     }
-    adminEmailed = () => {
-        this.setState({
-            sentErrorToAdmin: true
-        });
-        this.clearTimeouts();
+
+    cancel = () => {
         this.xhttp && this.xhttp.abort();
+        this.props.cancel();
     }
-    handleServerFail = msg => {
-        this.serverErrors.push(this.statusMessages.onUnableToSend);
-        this.updateStatus(this.statusMessages.onUnableToSend+' '+msg+'. Woops, sorry somethings not working.', false, {name: 'Contact via email', handler: this.displaySendDirect});
-        this.clearTimeouts();
-        this.xhttp && this.xhttp.abort();
-    };
+    success = () => { 
+        this.props.onSuccess(); 
+    }
+    photoUploaded = () => {
+        this.uploadingPhoto = false;
+    }
+    failedToSend = () => {
+        this.displaySendDirect();
+    }
     displaySendDirect = () => {
         this.setState({ showSendDirect: true });
     }
-    resetLatch = () => {
-        fetch('/server/resetSendEmailLatch.php').then((response) => {
-            if (response.status === 403) {
-                this.handleCaptchaFail();
-            }
-            else {
-                this.props.hasOwnProperty('statusMessages') && Object.assign(this.statusMessages, this.props.statusMessages);
-                this.trySending();
-            }
-        }).catch(() => {
-            this.updateStatus("Sorry somethings not working", false, {name: 'Contact via email', handler: this.displaySendDirect});
-        });
-    }
     disableBackground = () => {}
+
     render() {
-        const display = this.state.sentErrorToAdmin ? <SentToAdmin /> : this.state.showSendDirect ? <SendDirect data={JSON.stringify(this.data)} serverErrors={this.serverErrors} clientErrors={this.clientErrors} /> : this.state.showCaptcha ? <Captcha {...this.getCaptchaProps()} /> : <Status {...this.getStatusProps()} />;
+        const display = this.state.showSendDirect ? <SendDirect data={JSON.stringify(this.data)} log={this.resultLog} /> : this.state.showCaptcha ? <Captcha {...this.getCaptchaProps()} /> : <Status {...this.state.statusProps} />;
         return <div onClick={this.disableBackground}><button className="submit__exit" aria-label="cancel" onClick={this.cancel}>X</button>{display}</div>
     }
 }
 
 export default Submit;
+
