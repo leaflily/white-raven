@@ -62,7 +62,7 @@ class BookingModal extends React.Component {
     componentWillUnmount() {
         document.body.removeChild(this.script);
         const data = this.state.inputs;
-        delete data.photo;
+    //    delete data.photo;
         sessionStorage.setItem('bookingInputs', JSON.stringify(data));
         const bookingStage = this.stages[this.state.bookingStage];
         const stage = bookingStage === 'Confirmation' ? this.stages.indexOf('Confirmation') : bookingStage === 'Payment' ? this.stages.indexOf('Payment') : bookingStage === 'Start' ? 0 : 1;
@@ -80,7 +80,7 @@ class BookingModal extends React.Component {
     }
     requiredInputs = {
         0: [],
-        1: ['photo', 'name', 'age', 'gender'],
+        1: ['name', 'age', 'gender'],
         2: ['reason'],
         3: ['clientName', 'clientEmail', 'clientNumber'],
         4: [],

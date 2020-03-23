@@ -15,7 +15,7 @@ const reviewsData = [
     },
     */
     {
-        name: 'Rowan and Wilma',
+        name: 'Rowen and Wilma',
         img: 'rowan.jpg',
         alt: 'A black cat, high up on the top of a cupboard.',
         text: `"I was excited to think that Denise would be chatting to my feline friend Wilma. I was intrigued and hopeful to imagine that my relationship with Wilma could improve. As with any relationship, i know how much happier i am when i feel i better understand another soul. I was delighted with what i learned about my feline friend and the things she chose to share with Denise. My world was forever changed as i now see Wilma with different eyes. It's made me look at my own habits and change some of my own behaviours towards Wilma and this greater respect has shifted the energy exchange between us. This is a magical and beautiful thing to witness. I found Denise to have a huge warm heart full of compassion and I was very impressed with the accuracy of her intuitive skills and gentle approach to the way she worked throughout the process. Our discussions both before and after the communication with Wilma, felt easy and comfortable. 

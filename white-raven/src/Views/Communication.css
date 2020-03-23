@@ -18,8 +18,8 @@
 }
 
 .main--communication .main__section__list-heading {
-    font: normal 600 14px nazare, sans-serif;
-    color: #6698CC;
+    font: normal 600 12px nazare, sans-serif;
+    color: rgb(86, 127, 170);
 }
 
 .main--communication .main__section__list {
@@ -29,10 +29,11 @@
 }
 
 .main--communication .main__section__list__ul {
-    color: #898989;
+    color: #9b9b9b;
 }
 
 .main--communication .main__section__p--last {
+    margin-top: 64px;
     clear: both;
 }
 
@@ -51,10 +52,10 @@
 
 @media only screen and (min-width: 768px) {
     .main--communication .main__section__list-heading {
-        font-size: 16px;
+        font-size: 14px;
     }
     .main--communication .main__section__list__ul {
-        font-size: 20px;
+        font-size: 22px;
     }
     .main--communication .main__section__list__ul li:after {
         content: '';
@@ -64,7 +65,7 @@
         height: 9px;
         background: #6698CC;
         border-radius: 10px;
-        margin: 9px 0 0 5px;
+        margin: 11px 0 0 5px;
     }
 }
 
