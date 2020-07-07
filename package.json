@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/leaflily/white-raven#readme",
   "dependencies": {
+    "framer-motion": "^1.10.2",
     "next": "^9.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"

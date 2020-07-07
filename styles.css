@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --colour-blue: #016AA3;
+    --colour-green: #668A2F;
+    --colour-yellow: #E4B766;
+    --colour-orange: #D47C5E;
+
+    --button-font-size-large: 16px;
+    --button-font-size-medium: 14px;
+    --button-font-size-small: 12px;
+    --button-font-size-x-small: 10px;
+
+    --button-width-large: 260px;
+    --button-width-medium: 220px;
+    --button-width-small: 195px;
+    --button-width-x-small: 150px;
+}
