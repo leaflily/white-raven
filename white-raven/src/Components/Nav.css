@@ -3,9 +3,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 250px;
     position: relative;
     top: -35px;
+}
+.nav:not(.nav--landing) {
+    height: 250px;
 }
 .nav__a {
     display: flex;
@@ -22,34 +24,43 @@
     text-align: center;
 }
 .nav__a:nth-child(1) {
-    font-size: 14px;
-    width: 220px;
+    font-size: 16px;
+    width: 240px;
     max-width: 70vw;
     height: 50px;
     border: none;
     cursor: auto;
 }
 .nav__a:nth-child(2){
-    font-size: 16px;
+    font-size: 18px;
     width: 260px;
     max-width: 80vw;
     height: 60px;
 }
 .nav__a:nth-child(3) {
-    font-size: 12px;
-    width: 195px;
+    font-size: 14px;
+    width: 220px;
     max-width: 60vw;
     height: 40px;
 }
-
 .nav__a:nth-child(4) {
+    font-size: 12px;
+    width: 195px;
+    max-width: 50vw;
+    height: 30px;
+}
+.nav__a:nth-child(5) {
     font-size: 10px;
     width: 150px;
     max-width: 50vw;
     height: 30px;
 }
+
 .nav__a--communication {
     background-color: #016AA3;
+}
+.nav__a--reiki {
+    background-color: #13635E;
 }
 .nav__a--about {
     background-color: #668A2F;
@@ -69,17 +80,24 @@
     .nav__a--communication {
         order: 1;
     }
-    .nav__a--about {
+    .nav__a--reiki {
         order: 2;
     }
-    .nav__a--reviews {
+    .nav__a--about {
         order: 3;
     }
-    .nav__a--consultation {
+    .nav__a--reviews {
         order: 4;
+    }
+    .nav__a--consultation {
+        order: 5;
     }
     .nav__a:nth-child(1) {
         align-self: flex-start;
+    }
+    .nav__a:nth-child(2) {
+        align-self: center;
+        margin-top: 100px;
     }
     .nav__a:nth-child(2) {
         align-self: center;

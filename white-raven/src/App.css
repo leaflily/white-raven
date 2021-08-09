@@ -68,6 +68,7 @@ li:after {
 
 .hiddenPunctuation {
   opacity: 0;
+  font-size: 10px;
 }
 
 div[tabindex="-1"] {

@@ -5,6 +5,7 @@ import './Nav.css';
 function Nav(props) {
     let links = [
         { page: 'communication', title: 'Animal Communication'},
+        { page: 'reiki', title: 'Reiki'},
         { page: 'about', title: 'About Me'},
         { page: 'reviews', title: 'Reviews'},
         { page: 'consultation', title: 'Consultation'}

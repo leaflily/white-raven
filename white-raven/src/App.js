@@ -4,6 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ScrollToTop from './Controllers/ScrollToTop';
 import Landing from './Views/Landing';
 import Communication from './Views/Communication';
+import Reiki from './Views/Reiki';
 import About from './Views/About';
 import Reviews from './Views/Reviews';
 import Consultation from './Views/Consultation';
@@ -54,6 +55,7 @@ class App extends React.Component {
   pages = {
     Landing,
     Communication,
+    Reiki,
     About,
     Reviews,
     Consultation
@@ -74,6 +76,7 @@ class App extends React.Component {
                 <Switch location={location}>
                       <Route path="/" exact component={Landing} />
                       <Route path="/communication" component={Communication} />
+                      <Route path="/reiki" component={Reiki} />
                       <Route path="/about" component={About} />
                       <Route path="/reviews" component={Reviews} />
                       <Route path="/consultation" component={Consultation} />

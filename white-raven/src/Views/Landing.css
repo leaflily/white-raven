@@ -26,15 +26,21 @@
   cursor: pointer;
 }
 .nav--landing .nav__a:nth-child(2) {
-  font-size: 14px;
-  width: 220px;
+  font-size: 15px;
+  width: 240px;
   height: 50px;
+  max-width: 65vw;
 }
 .nav--landing .nav__a:nth-child(3) {
-  font-size: 12px;
+  font-size: 13px;
+  width: 220px;
+  height: 45px;
 }
 .nav--landing .nav__a:nth-child(4) {
-  font-size: 10px;
+  font-size: 11px;
+}
+.nav--landing .nav__a:nth-child(5) {
+  font-size: 9px;
 }
 @media only screen and (min-width: 450px) and (min-height: 400px) {
   .nav--landing {

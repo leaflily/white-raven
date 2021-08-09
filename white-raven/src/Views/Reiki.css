@@ -1,0 +1,32 @@
+
+.main--reiki .main__section__figure--Dog {
+    width: 100%;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+.main--reiki .main__section__figure--Dog img {
+    height: initial;
+}
+
+.main--reiki .main__section__p__headline {
+    display: inline;
+    color: #13635E;
+}
+
+.main--reiki .main__section-background--blue {
+    max-height: 800px;
+    padding-bottom: 15vw;
+}
+.main--reiki .main__section-background--orange {
+    padding-top: 10vw;
+}
+@media only screen and (min-width: 1000px) {
+    .main--reiki .main__section-background--blue {
+        padding-bottom: 200px;
+    }
+    .main--reiki .main__section-background--orange {
+        padding-top: 200px;
+    }
+}
