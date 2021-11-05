@@ -16,7 +16,7 @@ const QnAs = [
     {
         tags: '',
         q: 'What happens after I book a session?',
-        a: 'After booking, you will receive a confirmation email. I will be in touch, time can then be arranged for our Skype or phone call where we can discuss the communication in detail.'
+        a: 'After booking, you will receive a confirmation email. I will be in touch with the next available dates and times, along with payment details.'
     },
     {
         tags: 'far, location',
@@ -31,7 +31,9 @@ const QnAs = [
     {
         tags: 'price, time, included, pay, payment',
         q: 'How much will it cost and what will that include?',
-        a: 'Each communication is £50 per animal this includes a distant communication (45mins) plus a skype/phone call.'
+        a: `Each communication is £85 per animal this includes a distant communication (45mins) plus a skype/phone call. 
+        
+Distant Animal Reiki Session 1 x 30 mins - £30 or 3 x 30 mins - £80, to be used within 3 months.`
     },
     {
         tags: 'multiple',

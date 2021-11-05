@@ -10,9 +10,7 @@ class Submit extends React.Component {
         this.data = props.data;
         this.state = {
             showSendDirect: false,
-            showCaptcha: this.props.captcha || false,
-            captchaInput: '',
-            requireCaptchaInput: false,
+            showCaptcha: false, 
             altProps: {
                 name: 'retry',
                 handler: this.retry
@@ -37,23 +35,21 @@ class Submit extends React.Component {
             onUnableToSend: 'error'
         }
         props.hasOwnProperty('statusMessages') && Object.assign(this.statusMessages, props.statusMessages);
-        this.handleCaptchaInput = this.handleCaptchaInput.bind(this);
-        this.handleCaptchaSubmit = this.handleCaptchaSubmit.bind(this);
+        this.handleCaptchaSuccess = this.handleCaptchaSuccess.bind(this);
         this.displaySendDirect = this.displaySendDirect.bind(this);
         this.disableBackground = this.disableBackground.bind(this);
         this.cancel = this.cancel.bind(this);
         this.count = 0;
         this.serverErrors = [];
         this.clientErrors = [];
-        this.uploadingPhoto = this.data.hasOwnProperty('photoFile');
+        this.uploadingPhoto = !!this.data['photo'];
+        this.clientOffline = false;
+        console.log(this.data['photo'])
     }
     componentDidMount() {
         if (!this.props.captcha) {
             this.trySending();
         }
-    }
-    componentWillUnmount() {
-        
     }
 
     updateStatus(msg, spin, alt = { name: null, handler: null}, cancel = this.state.statusProps.cancel) {
@@ -68,43 +64,14 @@ class Submit extends React.Component {
         })
     }
 
-    /* captcha */
+    handleCaptchaSuccess = () => {
+        this.trySending()
+    }
     handleCaptchaFail = () => {
-        this.updateStatus('Captcha Fail', false);
         this.setState({ 
-            showCaptcha: true, 
-            captchaInput: '' 
+            showCaptcha: true
         });
     }
-    handleCaptchaInput = e => {
-        e.preventDefault();
-        const input = e.target.value.replace(/\s/g, '');
-        this.setState({ 
-            captchaInput: input,
-            requireCaptchaInput: true
-        });
-    }
-    handleCaptchaSubmit = () => {
-        if (this.state.captchaInput.match(/^[a-z]{3}$/ig)) {
-            const newData = Object.assign({}, this.data, {captcha: this.state.captchaInput});
-            this.data = newData;
-            this.setState({ showCaptcha: false });
-            this.trySending();
-        }
-        else {
-            this.setState({
-                requireCaptchaInput: true
-            })
-        }
-    }
-    getCaptchaProps = () => {
-        return {
-            handleInput: this.handleCaptchaInput,
-            handleSumbit: this.handleCaptchaSubmit,
-            requireInput: this.state.requireCaptchaInput
-        }
-    };
-
 
     trySending = () => {
         const newData = Object.assign({}, this.data, {timeStamp: Date.now()});
@@ -112,39 +79,37 @@ class Submit extends React.Component {
         this.uploadingPhoto ? this.sendPhoto(this) : this.sendData(this);
     }
     sendPhoto = (thisSelf) => {
-        this.updateStatus('Uploading your photo', true);
-        const done = () => {
-            clearTimeout(timeOut);
-            thisSelf.uploadingPhoto = false;
-            thisSelf.trySending();
-        }
-        const failed = () => {
-            thisSelf.xhttp && thisSelf.xhttp.abort();
-            clearTimeout(timeOut);
-            thisSelf.resultLog.push('Your photo was unable to upload, but we can sort this out later via email.');
-            done();
-        }
-        let timeOut = setTimeout(() => {
-            failed();
-        }, 15000); // 15 seconds
+        var form_data = new FormData();
+        const file = thisSelf.data.photo;
+        console.log(file)
+        thisSelf.updateStatus('Uploading your photo', true);
         thisSelf.xhttp = new XMLHttpRequest();
         thisSelf.xhttp.open("POST", '/server/photoUpload.php', true);
         thisSelf.xhttp.onreadystatechange = function() {
+
+            ///// TODO this.status doesn't seem to be the res! 
             if (this.readyState === 4 && this.status === 200) {
-                done();
+                console.log(this) // get filename to add to form data
+                thisSelf.props.onSuccess(this.response); 
             }
             else if (this.status === 403) {
-                clearTimeout(timeOut);
                 thisSelf.handleCaptchaFail();
             }
-            else if (this.readyState === 4) { 
-                failed();
+            else {
+                console.log(this)
+                thisSelf.xhttp && thisSelf.xhttp.abort(); 
+                if (this.status == 0) { 
+                    // client offline
+                    thisSelf.updateStatus('Not online, please try again', false, { name: 'Retry', handler: thisSelf.trySending})
+                }
+                else {   
+                    console.log(this) // TODO check for message to add to status
+                    thisSelf.updateStatus('Unable to upload photo', false)
+                }
             }
         }
-        var form_data = new FormData();
-        const file = thisSelf.data.photoFile;
         if (file) {
-            form_data.append('photoFile', file, thisSelf.data.photoName);
+            form_data.append('photoFile', file);
         } 
         else {
             delete thisSelf.data.photoName;
@@ -153,30 +118,26 @@ class Submit extends React.Component {
     }
 
     sendData = (thisSelf) => {
-        this.updateStatus('Uploading your info', true);
-        const done = () => {
-            clearTimeout(timeOut);
-            thisSelf.success();
-        }
-        const failed = () => {
-            this.xhttp && this.xhttp.abort();
-            thisSelf.resultLog.push('Unable to send your info. Sorry about this somethings not working right now.');
-            thisSelf.failedToSend();
-        }
-        let timeOut = setTimeout(() => {
-            failed();
-        }, 15000); // 15 seconds
+        this.updateStatus('Sending info', true);
         this.xhttp = new XMLHttpRequest();
         this.xhttp.open("POST", this.props.url, true);
         this.xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { 
-                done();
+                thisSelf.success();
             }
             else if (this.status === 403) {
                 thisSelf.handleCaptchaFail();
             }
             else if (this.readyState === 4) {
-                failed();
+                this.xhttp && this.xhttp.abort();
+                if (this.status == 0) {
+                    // client offline
+                    thisSelf.updateStatus('Not online, please try again', false, { name: 'Retry', handler: thisSelf.trySending})
+                }
+                else {
+                    thisSelf.resultLog.push('Unable to send your info. Sorry about this somethings not working right now. ');
+                    thisSelf.displaySendDirect();
+                }
             }
         }
         this.xhttp.send(JSON.stringify(this.data));
@@ -199,9 +160,18 @@ class Submit extends React.Component {
         this.setState({ showSendDirect: true });
     }
     disableBackground = () => {}
-
+    
     render() {
-        const display = this.state.showSendDirect ? <SendDirect data={JSON.stringify(this.data)} log={this.resultLog} /> : this.state.showCaptcha ? <Captcha {...this.getCaptchaProps()} /> : <Status {...this.state.statusProps} />;
+        let display = <></> 
+        if (this.state.showSendDirect) {
+            display = <SendDirect data={JSON.stringify(this.data)} log={this.resultLog} />
+        }
+        else if (this.state.showCaptcha) {
+            display = <Captcha {...this.getCaptchaProps()} />
+        }
+        else {
+            display = <Status {...this.state.statusProps} />
+        }
         return <div onClick={this.disableBackground}><button className="submit__exit" aria-label="cancel" onClick={this.cancel}>X</button>{display}</div>
     }
 }

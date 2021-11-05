@@ -22,6 +22,7 @@
     padding: 32px;
 }
 
+
 .modal__booking-stage__form--about {
     text-align: right;
     justify-content: flex-end;
@@ -293,4 +294,13 @@ opacity: 0;
     .modal__booking-stage__form--payment {
         display: block;
     }
+}
+
+.modal__booking-stage--Start .modal__booking-stage__form .select_service  {
+    margin: 12px;
+    text-align: center;
+    width: 80%;
+}
+.modal__booking-stage--Start .modal__booking-stage__form .select_service:active  {
+    text-align: left;
 }

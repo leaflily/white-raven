@@ -22,10 +22,14 @@ class BookingModal extends React.Component {
                 clientName: '',
                 clientEmail: '',
                 clientNumber: '',
+                quietTimes: '',
+                services: '',
+                photoName: ''
             },
-            invalid: ''
+            invalid: '',
+            uploadPhotoCancelKeyCount: 0
         };
-        this.stages = ['Start', 'Animal Info', 'Focus', 'Your Info', 'Payment', 'Confirmation'];
+        this.stages = ['Start', 'Animal Info', 'Focus', 'Your Info', 'Sending', 'Confirmation'];
         this.script = document.createElement("script");
         this.events.handle = this.events.handle.bind(this);
         this.events.input.handle = this.events.input.handle.bind(this);
@@ -34,9 +38,6 @@ class BookingModal extends React.Component {
         this.lastStage = 0;
     }
     componentWillMount() {
-        this.script.src = "https://www.paypal.com/sdk/js?client-id=AYDMCiH0BgRjIGDfXnb8a1biWbvoJmKbc9UwgFaDz0bJ-kNQZjWHXYFqFGDzk9_ZMtzRClA20BHQrWyA&currency=GBP";
-        this.script.async = true;
-        document.body.appendChild(this.script);
         if (sessionStorage.getItem('bookingInputs') !== null) {
             const localData = JSON.parse(sessionStorage.getItem('bookingInputs'));
             const stage = parseInt(sessionStorage.getItem('bookingStage')) || 0;
@@ -46,7 +47,7 @@ class BookingModal extends React.Component {
                     bookingStage: stage
                 },
                 () => {
-                    if (sessionStorage.getItem('stage') === 'payed') {
+                    if (sessionStorage.getItem('stage') === 'emailed') {
                         this.sendConfirmation();
                     }
                     else if (sessionStorage.getItem('stage') === 'confirmed') {
@@ -60,12 +61,12 @@ class BookingModal extends React.Component {
         }
     }
     componentWillUnmount() {
-        document.body.removeChild(this.script);
+     //   document.body.removeChild(this.script);
         const data = this.state.inputs;
     //    delete data.photo;
         sessionStorage.setItem('bookingInputs', JSON.stringify(data));
         const bookingStage = this.stages[this.state.bookingStage];
-        const stage = bookingStage === 'Confirmation' ? this.stages.indexOf('Confirmation') : bookingStage === 'Payment' ? this.stages.indexOf('Payment') : bookingStage === 'Start' ? 0 : 1;
+        const stage = bookingStage === 'Confirmation' ? this.stages.indexOf('Confirmation') : bookingStage === 'Start' ? 0 : 1;
         sessionStorage.setItem('bookingStage', stage.toString());
     }
     componentDidMount() {
@@ -79,7 +80,7 @@ class BookingModal extends React.Component {
         }
     }
     requiredInputs = {
-        0: [],
+        0: ['services'],
         1: ['name', 'age', 'gender'],
         2: ['reason'],
         3: ['clientName', 'clientEmail', 'clientNumber'],
@@ -120,22 +121,13 @@ class BookingModal extends React.Component {
                 const target = e.target.hasAttribute("data-name") ? e.target : e.target.parentElement;
                 const name = target.getAttribute("data-name");
                 if (target.hasAttribute("type") && target.getAttribute("type") === 'file' && target.files.length > 0) {
-                    this.photoFile = target.files[0];
-                    this.photoName = Date.now()+''+this.photoFile.name;
-                    this.events.input.data(name, URL.createObjectURL(target.files[0]));
+                    this.events.input.data('photo', target.files[0]);
+                    setTimeout(() => this.sendPhoto(), 0)
                 }
                 else {
                     this.events.input.data(name, target.value);
                 }
             }
-        },
-        goToPaymentStage: () => {
-            this.debounce(500);
-            this.setState({
-                stageForwards: true,
-            }, () =>  this.setState({
-                bookingStage: this.stages.indexOf('Payment')
-            } ));
         },
         goToNextStage: () => {
             const stage = this.state.bookingStage + 1;
@@ -159,7 +151,7 @@ class BookingModal extends React.Component {
             }
             else {
                 if (!this.debounceActive) {
-                    if (this.stages[this.state.bookingStage+1] === 'Payment') { 
+                    if (this.stages[this.state.bookingStage+1] === 'Confirmation') { 
                         if (!validateEmail(this.state.inputs.clientEmail)) {
                             this.setState({ invalid: 'clientEmail' });
                         }
@@ -190,25 +182,40 @@ class BookingModal extends React.Component {
             }
         },
         closeModal: () => {
-            if (this.stages[this.state.bookingStage] === 'Payment') {
-
+            if (this.stages[this.state.bookingStage] === 'Confirmation') {
+                this.resetBookingInputs();
+                sessionStorage.setItem('stage', 'finished');
             }
-            else {
-                if (this.stages[this.state.bookingStage] === 'Confirmation') {
-                    this.resetBookingInputs();
-                    sessionStorage.setItem('stage', 'finished');
-                }
-                this.props.closeModal();
-            }
+            this.props.closeModal();
         },
         cancelBooking: () => {
             this.sendCancelBooking();
         },
-        onPayment: () => {
-            sessionStorage.setItem('stage', 'payed');
+        onEmailed: () => {
+            sessionStorage.setItem('stage', 'emailed');
             this.sendConfirmation();
         }
     };
+    sendPhoto() {
+        if (this.state.inputs.photo) {
+            this.submit.url = '/server/photoUpload.php';
+            this.submit.statusMessages = {
+                onTry: 'Sending booking info'
+            }
+            this.submit.success = (photoName) => {
+                this.events.input.data('photoName', photoName);
+                this.events.input.data('photo', false);
+                this.setState({
+                    showUploadPhoto: false,
+                    uploadPhotoCancelKeyCount: this.state.uploadPhotoCancelKeyCount + 1
+                });
+            }
+            this.submit.data = this.state.inputs;
+            this.setState({
+                showUploadPhoto: true
+            })
+        }
+    }
     sendBookingInfo() {
         this.submit.url = '/server/emailbookinginfo.php';
         this.submit.statusMessages = {
@@ -216,9 +223,9 @@ class BookingModal extends React.Component {
         }
         this.submit.success = () => {
             this.submit.closeStatus();
-            this.events.goToPaymentStage();
+            this.events.goToNextStage();
         }
-        this.submit.data = Object.assign({}, this.state.inputs, {photoFile: this.photoFile, photoName: this.photoName});
+        this.submit.data = this.state.inputs;
         this.submit.try();
     }
     sendCancelBooking() {
@@ -231,8 +238,6 @@ class BookingModal extends React.Component {
             this.submit.closeStatus();
             this.events.closeModal();
         }
-        this.submit.latch = true;
-        this.submit.captcha = false;
         this.submit.data = this.state.inputs;
         this.submit.try();
     }
@@ -246,9 +251,7 @@ class BookingModal extends React.Component {
             this.submit.closeStatus();
             this.confirmBooking();
         }
-        this.submit.latch = true;
-        this.submit.captcha = false;
-        this.submit.data = Object.assign({}, this.state.inputs, {photoName: this.photoName});
+        this.submit.data = this.state.inputs;
         this.submit.try();
     }
     confirmBooking() {
@@ -264,16 +267,13 @@ class BookingModal extends React.Component {
                 onSuccess: this.submit.success,
                 cancel: this.submit.cancel,
                 statusMessages: this.submit.statusMessages,
-                captcha: this.submit.captcha,
-                latch: this.submit.latch
+                captcha: this.submit.captcha
             }
         },
         url: '',
-        latch: false,
-        captcha: true,
+        captcha: false,
         statusMessages: {},
         try: () => {
-            this.submit.removeExcessData();
             this.setState({
                 showStatus: true
             });
@@ -286,11 +286,11 @@ class BookingModal extends React.Component {
         },
         closeStatus: () => {
             this.setState({
-                showStatus: false
-            })
-        },
-        removeExcessData: () => {
-            delete this.submit.data.photo;
+                showStatus: false,
+                showUploadPhoto: false,
+                uploadPhotoCancelKeyCount: this.state.uploadPhotoCancelKeyCount + 1
+            });
+            this.events.input.data('photo', null);
         }
     }
     resetBookingInputs() {
@@ -317,23 +317,28 @@ class BookingModal extends React.Component {
         this.debounceActive = true;
         setTimeout(() => this.debounceActive = false, ms);
     }
+
     render() {
         const bookingStageProps = {
             invalid: this.state.invalid, 
             photo: this.stages[this.state.bookingStage] === 'Animal Info' ? this.state.inputs.photo : null,
+            uploadedPhoto: this.state.inputs.photoName && `/server/uploads/${this.state.inputs.photoName}`,
+            uploadPhotoCancelKeyCount: this.state.uploadPhotoCancelKeyCount,
             stage: this.stages[this.state.bookingStage],
             handleEvent: this.events.handle,
             handleInput: this.events.input.handle,
             inputs: this.state.inputs,
-            payed: this.events.onPayment,
-            close: this.props.closeModal
+            emailed: this.events.onEmailed,
+            close: this.props.closeModal,
+            includesReiki: this.state.inputs.services && !!this.state.inputs.services.match(/reiki/i)
         }
+    
         return (
             <div tabIndex="-1" ref={this.start} className="modal modal--Booking" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">
+                {this.state.showUploadPhoto && <Submit {...this.submit.getProps()} /> }
                 {this.state.showStatus && <Submit {...this.submit.getProps()} /> }
                 <div className="modal__box">
-                    {this.stages[this.state.bookingStage] !== 'Payment' &&
-                    <button aria-label="close modal" className="modal__box__exit" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">X</button> }
+                    <button aria-label="close modal" className="modal__box__exit" onClick={this.events.handle} data-dest="BookingModal" data-func="closeModal">X</button>
                     <div className="modal__box__content">
                         <div className={'modal__booking-stage modal__booking-stage--'+this.stages[this.state.bookingStage]}>
                             <h2 className="modal__booking-stage__title">Booking - {this.stages[this.state.bookingStage]}</h2>
@@ -362,14 +367,19 @@ class BookingModal extends React.Component {
                                 </TransitionGroup>
                             }
                             <nav className="modal__booking-stage__nav">
-                                { (this.stages[this.state.bookingStage] !== 'Payment' && this.stages[this.state.bookingStage] !== 'Confirmation') && 
+                                { (this.stages[this.state.bookingStage] !== 'Confirmation' && this.stages[this.state.bookingStage] !== 'Sending') && 
                                     (this.state.bookingStage === 0 ? 
                                     <button onClick={this.events.handle} data-dest="BookingModal" data-func="prevStage" disabled>Previous</button> :
                                     <button onClick={this.events.handle} aria-label="previous." data-dest="BookingModal" data-func="prevStage">Previous</button>)
                                 }
                                 
-                                { (this.stages[this.state.bookingStage] !== 'Payment' && this.stages[this.state.bookingStage] !== 'Confirmation') && 
-                                    <button onClick={this.events.handle} aria-label="next." data-dest="BookingModal" data-func="nextStage">Next</button>
+                                { (this.stages[this.state.bookingStage] !== 'Confirmation' && this.stages[this.state.bookingStage] !== 'Sending') &&
+                                 <button onClick={this.events.handle} aria-label="next." data-dest="BookingModal" data-func="nextStage">
+                                    { this.stages[this.state.bookingStage+1] === 'Sending' ?
+                                        'Send' :
+                                        'Next'
+                                    }
+                                 </button>
                                 }
                             </nav>
                         </div>

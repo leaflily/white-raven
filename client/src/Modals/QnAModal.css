@@ -41,6 +41,7 @@
     justify-content: flex-start;
     overflow: auto;
     height: 45vh;
+    white-space: pre-wrap;
 }
 
 .modal__qna__answers__dialog {
