@@ -36,11 +36,11 @@ function send({to, from, subject, subtitle, body, sendersName, sendersName}) {
         subject: subject,
         text: `
           ${subtitle ? `${subtitle}\r\n\r\n` : ''}
-          ${body ? `${body}\r\n\r\n` : ''}
+          ${body ? `${body('\r\n')}\r\n\r\n` : ''}
           ${sendersName ? `${sendersName}\r\n` : ''}
           ${sendersEmail ? `${sendersEmail}\r\n` : ''}
         `,
-        html: template(subtitle, body, sendersName, sendersEmail)
+        html: template(subtitle, body('<br />'), sendersName, sendersEmail)
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -50,7 +50,6 @@ function send({to, from, subject, subtitle, body, sendersName, sendersName}) {
           console.log('Email sent: ' + info.response);
         }
       });
-
 }
 
-export { send }
+exports.send = send

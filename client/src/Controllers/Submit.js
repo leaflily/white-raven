@@ -79,42 +79,42 @@ class Submit extends React.Component {
         this.uploadingPhoto ? this.sendPhoto(this) : this.sendData(this);
     }
     sendPhoto = (thisSelf) => {
-        var form_data = new FormData();
+        const url = '/server/photoUpload'
         const file = thisSelf.data.photo;
-        console.log(file)
-        thisSelf.updateStatus('Uploading your photo', true);
-        thisSelf.xhttp = new XMLHttpRequest();
-        thisSelf.xhttp.open("POST", '/server/photoUpload.php', true);
-        thisSelf.xhttp.onreadystatechange = function() {
-
-            ///// TODO this.status doesn't seem to be the res! 
-            if (this.readyState === 4 && this.status === 200) {
-                console.log(this) // get filename to add to form data
-                thisSelf.props.onSuccess(this.response); 
+        const formData = new FormData();
+        if (!file) {
+            delete thisSelf.data.photoName;
+            return False
+        } 
+        formData.append('photoFile', file);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
             }
-            else if (this.status === 403) {
+        }
+        thisSelf.updateStatus('Uploading your photo', true);
+        post(url, formData, config).then((res) => {
+            console.log(res)
+            if (res.status === 200) {
+                // get filename to add to form data
+                thisSelf.props.onSuccess(res); 
+            }
+            else if (res.status === 403) {
                 thisSelf.handleCaptchaFail();
             }
             else {
-                console.log(this)
-                thisSelf.xhttp && thisSelf.xhttp.abort(); 
-                if (this.status == 0) { 
+                if (res.status == 0) { 
                     // client offline
                     thisSelf.updateStatus('Not online, please try again', false, { name: 'Retry', handler: thisSelf.trySending})
                 }
                 else {   
-                    console.log(this) // TODO check for message to add to status
+                    // TODO check for message to add to status
                     thisSelf.updateStatus('Unable to upload photo', false)
                 }
             }
-        }
-        if (file) {
-            form_data.append('photoFile', file);
-        } 
-        else {
-            delete thisSelf.data.photoName;
-        }
-        thisSelf.xhttp.send(form_data); 
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     sendData = (thisSelf) => {
