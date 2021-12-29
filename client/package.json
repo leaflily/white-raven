@@ -5,6 +5,7 @@
   "homepage": "https://white-raven.co.uk",
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
+    "axios": "^0.24.0",
     "core-js": "^3.4.0",
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.4",
@@ -38,5 +39,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

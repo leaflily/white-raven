@@ -225,19 +225,8 @@ class QnAModal extends React.Component {
         }, 
         sendQuery: () => {
             this.submit.captcha = true;
-            this.submit.url = '/server/emailquery.php';
+            this.submit.url = '/server/query';
             this.submit.latch = false;
-            this.submit.success = () => {
-                this.closeStatus();
-                this.submit.sendConfirmation();
-            };
-            this.submit.success = this.submit.success.bind(this);
-            this.submit.try();
-        },
-        sendConfirmation: () => {
-            this.submit.captcha = false;
-            this.submit.latch = true;
-            this.submit.url = '/server/emailqueryconfirmation.php';
             this.submit.success = () => {
                 this.setState({
                     querySent: true,

@@ -2,6 +2,7 @@ import React from 'react';
 import Status from '../Modals/Status';
 import Captcha from '../Components/Captcha';
 import SendDirect from '../Components/SendDirect';
+import axios from 'axios';
 import './Submit.css';
 
 class Submit extends React.Component {
@@ -47,9 +48,10 @@ class Submit extends React.Component {
         console.log(this.data['photo'])
     }
     componentDidMount() {
-        if (!this.props.captcha) {
+        console.log(this.props)
+        //if (!this.props.captcha) {
             this.trySending();
-        }
+       // }
     }
 
     updateStatus(msg, spin, alt = { name: null, handler: null}, cancel = this.state.statusProps.cancel) {
@@ -84,7 +86,7 @@ class Submit extends React.Component {
         const formData = new FormData();
         if (!file) {
             delete thisSelf.data.photoName;
-            return False
+            return false
         } 
         formData.append('photoFile', file);
         const config = {
@@ -93,7 +95,7 @@ class Submit extends React.Component {
             }
         }
         thisSelf.updateStatus('Uploading your photo', true);
-        post(url, formData, config).then((res) => {
+        axios.post(url, formData, config).then((res) => {
             console.log(res)
             if (res.status === 200) {
                 // get filename to add to form data
@@ -119,28 +121,18 @@ class Submit extends React.Component {
 
     sendData = (thisSelf) => {
         this.updateStatus('Sending info', true);
-        this.xhttp = new XMLHttpRequest();
-        this.xhttp.open("POST", this.props.url, true);
-        this.xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { 
-                thisSelf.success();
-            }
-            else if (this.status === 403) {
-                thisSelf.handleCaptchaFail();
-            }
-            else if (this.readyState === 4) {
-                this.xhttp && this.xhttp.abort();
-                if (this.status == 0) {
-                    // client offline
-                    thisSelf.updateStatus('Not online, please try again', false, { name: 'Retry', handler: thisSelf.trySending})
-                }
-                else {
-                    thisSelf.resultLog.push('Unable to send your info. Sorry about this somethings not working right now. ');
-                    thisSelf.displaySendDirect();
-                }
-            }
-        }
-        this.xhttp.send(JSON.stringify(this.data));
+        console.log(this.data)
+        axios.post(this.props.url, this.data).then(() => {
+            thisSelf.success();
+        }).catch((e) => {
+            console.log(e)
+            // if catcha fail
+            // thisSelf.handleCaptchaFail();
+            // if ofline 
+            // thisSelf.updateStatus('Not online, please try again', false, { name: 'Retry', handler: thisSelf.trySending})
+            thisSelf.resultLog.push('Unable to send your info. Sorry about this somethings not working right now. ');
+            thisSelf.displaySendDirect();
+        })
     }
 
     cancel = () => {

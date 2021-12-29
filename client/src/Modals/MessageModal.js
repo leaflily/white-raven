@@ -112,19 +112,8 @@ class MessageModal extends React.Component {
         }, 
         sendMessage: () => {
             this.submit.captcha = true;
-            this.submit.url = '/server/emailmessage.php';
+            this.submit.url = '/server/message';
             this.submit.latch = false;
-            this.submit.success = () => {
-                this.closeStatus();
-                this.submit.sendConfirmation();
-            };
-            this.submit.success = this.submit.success.bind(this);
-            this.submit.try();
-        },
-        sendConfirmation: () => {
-            this.submit.captcha = false;
-            this.submit.url = '/server/emailmessageconfirmation.php';
-            this.submit.latch = true;
             this.submit.success = () => {
                 this.setState({
                     messageSent: true,

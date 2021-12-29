@@ -48,7 +48,7 @@ class BookingModal extends React.Component {
                 },
                 () => {
                     if (sessionStorage.getItem('stage') === 'emailed') {
-                        this.sendConfirmation();
+                        this.onSent();
                     }
                     else if (sessionStorage.getItem('stage') === 'confirmed') {
                         this.confirmBooking();
@@ -193,7 +193,7 @@ class BookingModal extends React.Component {
         },
         onEmailed: () => {
             sessionStorage.setItem('stage', 'emailed');
-            this.sendConfirmation();
+            this.onSent();
         }
     };
     sendPhoto() {
@@ -241,18 +241,10 @@ class BookingModal extends React.Component {
         this.submit.data = this.state.inputs;
         this.submit.try();
     }
-    sendConfirmation() {
-        this.submit.url = '/server/emailbookingconfirmation.php';
-        this.submit.statusMessages = {
-            onTry: 'Finishing Up'
-        }
-        this.submit.success = () => {
-            sessionStorage.setItem('stage', 'confirmed');
-            this.submit.closeStatus();
-            this.confirmBooking();
-        }
-        this.submit.data = this.state.inputs;
-        this.submit.try();
+    onSent() {
+        sessionStorage.setItem('stage', 'confirmed');
+        this.submit.closeStatus();
+        this.confirmBooking();
     }
     confirmBooking() {
         this.setState({

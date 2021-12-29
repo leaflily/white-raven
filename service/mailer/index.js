@@ -1,12 +1,16 @@
 require("dotenv").config();
 const nodemailer = require('nodemailer');
-const template = require('./template');
+const { template } = require('./template');
 
-function send({to, from, subject, subtitle, body, sendersName, sendersName}) {
+console.log({template})
+
+function send({to, subject, subtitle, body, sendersName, sendersEmail}) {
 
     const user = process.env.GMAIL_USER;
     const id = process.env.GMAIL_CLIENT_ID;
     const secret = process.env.GMAIL_CLIENT_SECRET;
+    const refreshToken = process.env.GMAIL_REFRESH_TOKEN;
+    const accessToken = process.env.GMAIL_ACCESS_TOKEN;
 
     if (!user || !id || !secret) {
         console.error("GMAIL_USER and/or GMAIL_CLIENT_ID and/or GMAIL_CLIENT_SECRET env not set!");
@@ -16,16 +20,12 @@ function send({to, from, subject, subtitle, body, sendersName, sendersName}) {
     if (!to) {
         to = user;
     }
-    // if (!from) {
-        from = user; // Gmail restricts changing this
-    // }
-    else if (to === user) {
-        console.warn('service/mailer.send: to and from not set');
-    }
+    from = user; 
 
     // Set up token:
     // - goto https://console.cloud.google.com/apis/dashboard
-    // - Credentials
+    // - Activate email api and get Credentials ID and secret
+    // - get refresh token using https://developers.google.com/oauthplayground as described on https://stackoverflow.com/questions/24098461/nodemailer-gmail-what-exactly-is-a-refresh-token-and-how-do-i-get-one
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -35,30 +35,10 @@ function send({to, from, subject, subtitle, body, sendersName, sendersName}) {
           user,
           clientId: id, 
           clientSecret: secret,
-          // refreshToken: '1/XXxXxsss-xxxXXXXXxXxx0XXXxxXXx0x00xxx',
-          // accessToken: 'ya29.Xx_XX0xxxxx-xX0X0XxXXxXxXXXxX0x',
-          // expires: 1484314697598
+          refreshToken,
+          accessToken
       }
     });
-
-    // const transporter = nodemailer.createTransport({
-    //   host: 'smtp.gmail.com',
-    //   port: 465,
-    //   secure: true,
-    //   auth: {
-    //       type: 'OAuth2',
-    //       user: 'user@example.com'
-    //   }
-    // });
-  
-    // transporter.set('oauth2_provision_cb', (user, renew, callback)=>{
-    //     let accessToken = userTokens[user];
-    //     if(!accessToken){
-    //         return callback(new Error('Unknown user'));
-    //     }else{
-    //         return callback(null, accessToken);
-    //     }
-    // });
         
     const mailOptions = {
       from,
