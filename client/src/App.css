@@ -14,7 +14,7 @@
   overflow: hidden;
 }
 
-.required {
+.required, .error {
   outline: red solid 3px;
   transition: transform 500ms ease-in;
   transform: scale(1.025);
@@ -73,4 +73,19 @@ li:after {
 
 div[tabindex="-1"] {
   outline: none;
+}
+
+.email_link {
+  background: #D47C5E;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  width: 100%;
+  height: 100px;
+  color: #ffffff;
+  font: normal 400 24px dapifer-stencil, Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD, Georgia, serif;
+  font-size: 24px;
+  text-shadow: 1px 1px 1px #D47C5E;
+  display: grid;
+  place-items: center center;
+  margin-bottom: 12px;
 }

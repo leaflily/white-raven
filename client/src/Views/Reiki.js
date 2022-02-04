@@ -2,6 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import Header from '../Components/Header';
 import Nav from '../Components/Nav';
 import Image from '../Components/Image';
+import practofexc2022 from '../images/practofexc2022.png';
+import practofexc2020 from '../images/practofexc2020.png';
 import './main.css';
 import './Reiki.css';
 
@@ -49,9 +51,6 @@ function Reiki() {
                             A Reiki practitioner when they are working on a human will use a sequence of hand positions on or 
                             just off the body with the therapist moving around the person directing the reiki energy.
                         </p>
-                        <figure className="main__section__figure">
-                            <img src="" alt="Let Animals Lead - Practitioner of Excellence 2021" />
-                        </figure>
                         <p className="main__section__p">
                             Animals are much more sensitive to this Reiki energy, the technique I trained in is taught by Kathleen 
                             Prasad - ‘Let animals lead’ way of offering reiki. Where the animal reiki practitioner will stay still 
@@ -59,6 +58,10 @@ function Reiki() {
                             come into,  they are free to take as much of Reiki energy as they need,  physical contact is not 
                             necessary unless the animal shows that is what they want.
                         </p>
+                        <figure className="main__section__figure main__section__figure--certs">
+                            <img src={practofexc2022} alt="Let Animals Lead - Practitioner of Excellence 2022" />
+                            <img src={practofexc2020} alt="Let Animals Lead - Practitioner of Excellence 2020" />
+                        </figure>
                         <p className="main__section__p">
                             Animal reiki is a wonderful, gentle, non obtrusive way to help our animal 
                             companions. Many animals become more relaxed, and some will go into what 

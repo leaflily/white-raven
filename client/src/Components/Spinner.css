@@ -1,5 +1,6 @@
 .spinner {
     animation: 2s linear infinite spin;
+    max-height: 100%;
 }
 @keyframes spin {
     0% {

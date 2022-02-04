@@ -3,26 +3,42 @@ import React from 'react';
 import Input from '../Components/Input';
 import Textarea from '../Components/Textarea';
 import Select from '../Components/Select';
-import Spinner from '../Components/Spinner';
 
 
 function BookingStage(props) {
-    const uploadImgStyle = {
-        backgroundImage: `url(${props.photo || props.uploadedPhoto})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center'
-    }
+    const { name, age, ageValue, gender, reason, otherQuestions, clientName, clientNumber, quietTimes, services } = props.inputs;
+    const getEmailBody = () => {
+        const newLine = '';
+        return (
+`
+Hello Denise, I'd like to book in for ${services} ${newLine} 
+
+    Animal Name: ${name} ${newLine} 
+    Gender: ${gender} ${newLine} 
+    Age: ${age} ${ageValue} ${newLine}
+    ${quietTimes ? `Quiet at: ${quietTimes} ${newLine}` : ''}
+    Reason for Communication: ${reason} ${newLine} ${newLine}
+    ${otherQuestions ? `Other Questions: ${otherQuestions} ${newLine} ${newLine}` : ''}
+
+Please find a clear and recent photo of ${name} attached. 
+Let me know if I've forgotten to attach this!
+
+Kind regards${clientName || clientNumber ? ',' : ''}
+${clientName ? clientName : ''}${clientName && clientNumber ? ' | ' : ''}${clientNumber ? clientNumber : ''}
+`
+        )
+    };
+
     const stages = {
         'Start': <form className="modal__booking-stage__form modal__booking-stage__form--about">
                 <h3>To book a consultation please prepare: </h3>
                 <ul>
-                    <li>A clear recent photo of your animal on its own (with eyes showing)</li>
                     <li>The animals name, age, and gender</li>
                     <li>A communication focus, the main reason for wanting the communication</li>
                     <li>Other concerns/questions/messages you have for your animal friend (optional)</li>
+                    <li>A clear recent photo of your animal on its own (with eyes showing. Please send this as a reply to the email confirmation)</li>
                 </ul>
-                <Select className="select_service" invalid={props.invalid} dataName="services" onChange={props.handleInput} value={props.inputs['services']}
+                <Select className="select_service" invalid={props.invalid} dataName="services" onChange={props.handleInput} value={services}
                     options={<>
                         <option value="">Select a service</option>
                         <option value="Animal Communication">Animal Communication</option>
@@ -51,24 +67,17 @@ function BookingStage(props) {
             </form>
         ,
         'Animal Info': <form className="modal__booking-stage__form modal__booking-stage__form--animal-info">
-                <div className="modal__booking-stage__form__photo-upload">
-                    <div className="modal__booking-stage__form__photo-upload__area">
-                        <div className="modal__booking-stage__form__photo-upload__area__img" style={uploadImgStyle} alt="" />
-                        <Input key={props.uploadPhotoCancelKeyCount} aria-label="Upload photo" inputs={props.inputs} invalid={props.invalid} dataName="photo" onChange={props.handleInput} type="file" />
-                    </div>
-                    <p className="modal__booking-stage__form__photo-upload__info">Clear recent photo (alone, with eyes visible)</p>
-                </div>    
                 <div className="modal__booking-stage__form__animal-info">
-                    <Input invalid={props.invalid} className="modal__booking-stage__form__animal-info__area" type="text" aria-label="Animal's Name" placeholder="Animal's Name" dataName="name" onChange={props.handleInput} value={props.inputs['name']} />
+                    <Input invalid={props.invalid} className="modal__booking-stage__form__animal-info__area" type="text" aria-label="Animal's Name" placeholder="Animal's Name" dataName="name" onChange={props.handleInput} value={name} />
                     <div>
-                        <Input invalid={props.invalid} dataName="age" onChange={props.handleInput} value={props.inputs['age']} type="number" aria-label="Age" placeholder="Age" className="modal__booking-stage__form__animal-info__age" />
-                        <Select invalid={props.invalid} dataName="ageValue" onChange={props.handleInput} value={props.inputs['ageValue']}
+                        <Input invalid={props.invalid} dataName="age" onChange={props.handleInput} value={age} type="number" aria-label="Age" placeholder="Age" className="modal__booking-stage__form__animal-info__age" />
+                        <Select invalid={props.invalid} dataName="ageValue" onChange={props.handleInput} value={ageValue}
                             options={<><option value="years">Years</option>
                             <option value="months">Months</option>
                             <option value="days">Days</option></>}
                         />
                     </div>
-                    <Select invalid={props.invalid} className="placeholdered" dataName="gender" onChange={props.handleInput} value={props.inputs['gender']}
+                    <Select invalid={props.invalid} className="placeholdered" dataName="gender" onChange={props.handleInput} value={gender}
                         options={<><option disabled hidden value="gender">Gender</option>
                         <option value="female">Female</option>
                         <option value="male">Male</option>
@@ -80,7 +89,7 @@ function BookingStage(props) {
                         <Textarea 
                             invalid={props.invalid} 
                             dataName="quietTimes" 
-                            value={props.inputs['quietTimes']} 
+                            value={quietTimes} 
                             onChange={props.handleInput} 
                             className="modal__booking-stage__form__animal-info__text-area" 
                             aria-label="Times of day your animal is more quiet. Please include your timezone." 
@@ -91,27 +100,29 @@ function BookingStage(props) {
             </form>
         ,
         'Focus': <form className="modal__booking-stage__form modal__booking-stage__form--focus">
-                <Textarea invalid={props.invalid} dataName="reason" value={props.inputs['reason']} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" aria-label="Main reason for communication" placeholder="Main reason for communication" />
-                <Textarea invalid={props.invalid} dataName="otherQuestions" value={props.inputs['otherQuestions']} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" aria-label="(optional) Other concerns/questions/messages you have for your animal friend" placeholder="Other concerns/questions/messages you have for your animal friend (optional)" />
+                <Textarea invalid={props.invalid} dataName="reason" value={reason} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" aria-label="Main reason for communication" placeholder="Main reason for communication" />
+                <Textarea invalid={props.invalid} dataName="otherQuestions" value={otherQuestions} onChange={props.handleInput} className="modal__booking-stage__form__animal-info__text-area" aria-label="(optional) Other concerns/questions/messages you have for your animal friend" placeholder="Other concerns/questions/messages you have for your animal friend (optional)" />
             </form>
         ,
         'Your Info': <form className="modal__booking-stage__form modal__booking-stage__form--your-info" autoComplete="on">
-                <Input invalid={props.invalid} dataName="clientName" onChange={props.handleInput} value={props.inputs['clientName']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Your name" aria-label="Your name" name="name" />
-                <Input invalid={props.invalid} dataName="clientEmail" onChange={props.handleInput} value={props.inputs['clientEmail']} className="modal__booking-stage__form__animal-info__area" type="email" placeholder="Email" aria-label="Email" name="email" />
-                <Input invalid={props.invalid} dataName="clientNumber" onChange={props.handleInput} value={props.inputs['clientNumber']} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number" aria-label="Skype or Phone Number" name="tel" />
+                <Input invalid={props.invalid} dataName="clientName" onChange={props.handleInput} value={clientName} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Your name" aria-label="Your name" name="name" />
+                <Input invalid={props.invalid} dataName="clientNumber" onChange={props.handleInput} value={clientNumber} className="modal__booking-stage__form__animal-info__area" type="text" placeholder="Skype or Phone Number (optional)" aria-label="Skype or Phone Number" name="tel" />
             </form>
         ,
-        'Sending': <form className="modal__booking-stage__form modal__booking-stage__form--sending">
-                <Spinner />
-            </form>
-        ,
-        'Confirmation': <form className="modal__booking-stage__form modal__booking-stage__form--confirmation">
+        'Send': <form className="modal__booking-stage__form modal__booking-stage__form--sending">
                 <div>
-                    <h2>Congratulations!</h2>
-                    <p>Your booking infomation has been recieved successfully.</p>
-                    <p>I will be in touch soon with the next available dates and times, along with payment details.</p>
-                    <h3>Thank You.</h3>
+                    <p>Booking for: {services}</p>
+                    <p>Animal Name: {name}</p>
+                    <p>Gender: {gender}</p>
+                    <p>Age: {ageValue}</p>
+                    <p>Quiet at: {quietTimes}</p>
+                    <p>Reason for Communication: {reason}</p>
+                    <p>{otherQuestions ? `Other Questions: ${otherQuestions}` : ''}</p>
+                    <p>{clientNumber ? `Contact number: ${clientNumber}` : ''}</p>
                 </div>
+                <a className="email_link" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven - Booking for ${services} with ${name}`)}&body=${encodeURIComponent(getEmailBody())}`} title="Opens your email application">
+                    Email your booking
+                </a>
             </form>
     };
     return stages[props.stage]

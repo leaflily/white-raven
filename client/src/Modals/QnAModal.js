@@ -1,8 +1,6 @@
 import React from 'react';
-import Submit from '../Controllers/Submit';
 import Search from '../Controllers/Search';
 import QnA from '../Components/QnA';
-import validateEmail from '../utils/validateEmail';
 import Input from '../Components/Input';
 import './modal.css';
 import './QnAModal.css';
@@ -16,7 +14,7 @@ const QnAs = [
     {
         tags: '',
         q: 'What happens after I book a session?',
-        a: 'After booking, you will receive a confirmation email. I will be in touch with the next available dates and times, along with payment details.'
+        a: 'After booking I will be in touch with the next available dates and times, along with payment details.'
     },
     {
         tags: 'far, location',
@@ -71,7 +69,6 @@ class QnAModal extends React.Component {
         this.state = {
             query: '',
             name: '',
-            email: '',
             displayAnswers: [],
             showMore: 1,
             showNResults: QnAs.length,
@@ -82,8 +79,6 @@ class QnAModal extends React.Component {
         this.handleEvent = this.handleEvent.bind(this);
         this.matchResults = [];
         this.closeStatus = this.closeStatus.bind(this);
-        this.eventFunctions.submit = this.eventFunctions.submit.bind(this);
-        this.submit.cancel = this.submit.cancel.bind(this);
     }
     componentDidMount() {
         document.title = 'Q&A - White Raven';
@@ -101,30 +96,11 @@ class QnAModal extends React.Component {
                 }
             });
         },
-        submit: () => { 
-            if (!this.state.showStatus) {
-                const {email} = this.state;
-                if (this.state.name === '') {
-                    this.setState({
-                        invalid: 'name'
-                    });
-                }
-                else if (!validateEmail(email)) {
-                    this.setState({
-                        invalid: 'email'
-                    });
-                }
-                else {
-                    this.submit.sendQuery();
-                }
-            }
-        },
         finish() {
             this.matchResults = [];
             this.setState({
                 query: '',
                 name: '',
-                email: '',
                 invalid: '',
                 displayAnswers: [],
                 showMore: 1,
@@ -195,96 +171,35 @@ class QnAModal extends React.Component {
         }
         
     }
-    
-    // submit stuff
-    submit = {
-        getProps: () => {
-            return {
-                data: this.submit.getData(),
-                url: this.submit.url,
-                onSuccess: this.submit.success,
-                cancel: this.submit.cancel,
-                captcha: this.submit.captcha,
-                latch: this.submit.latch
-            }
-        },
-        latch: false,
-        try: () => {
-            this.setState({
-                showStatus: true
-            });
-        },
-        cancel: () => {
-            this.setState({
-                showStatus: false
-            }, () => this.closeStatus());
-        },
-        getData: () => {
-            const {query, name, email} = this.state;
-            return {query, name, email}
-        }, 
-        sendQuery: () => {
-            this.submit.captcha = true;
-            this.submit.url = '/server/query';
-            this.submit.latch = false;
-            this.submit.success = () => {
-                this.setState({
-                    querySent: true,
-                    showStatus: false
-                });
-            };
-            this.submit.success = this.submit.success.bind(this);
-            this.submit.try();
-        }
-    }
+
     closeStatus() {
         this.setState({
             showStatus: false
         })
     }
     
-    queryCompleteMessage() {
-        return (
-            <div className="modal__qna__complete">
-                <div className="modal__qna__complete__header">
-                    <h2>Query Sent!</h2>
-                </div>
-                <QnA q={this.state.query}
-                    a={<>Thank you {this.state.name} for asking.<br /> 
-                    I really do appreicate your interest.<br />
-                    I'll get back to you with an answer soon.<br />
-                    You should receive a email confirming I've 
-                    received your query<br />(P.S. if you can't find 
-                    the confirmation email please double check {this.state.email} is 
-                    the correct address and check your email's junk folder)</>} 
-                />
-            </div>
-        )
-    };
     render() {
         return (
             <>
-                {this.state.showStatus && <Submit {...this.submit.getProps()} /> }
-                { this.state.querySent ? this.queryCompleteMessage() :
-                    <form onSubmit={this.preventDefault} className="modal__qna__form" autoComplete="on">
-                        <textarea id="askQuery" value={this.state.query} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" aria-label="Describe your query." />
-                        <div onScroll={this.handleScroll} className="modal__qna__answers">
-                            {this.state.displayAnswers.map(a => <QnA key={QnAs[a].q} q={QnAs[a].q} a={QnAs[a].a} />)}
-                            {this.state.query !== '' && this.matchResults.length <= this.state.displayAnswers.length && <>
-                            <div className="modal__qna__answers__dialog">
-                                <h3>Query unanswered?</h3>
-                                <p className="modal__qna__answers__dialog__q">{this.state.query}</p>
-                                <div className="modal__qna__answers__dialog__a">
-                                    <Input invalid={this.state.invalid} dataName="name" aria-label="Your name" value={this.state.name} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="name,value" className="modal__qna__name" type="text" placeholder="Your name" name="name" />
-                                    <Input invalid={this.state.invalid} dataName="email" aria-label="Email address" value={this.state.email} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="email,value" className="modal__qna__email" type="email" placeholder="Email address" name="email" />
-                                </div>
-                                <input aria-labelledby="askQuery" onClick={this.handleEvent} data-dest="QnAModal" data-func="submit" className="modal__qna__ask" type="submit" value="Ask" />
+                <form onSubmit={this.preventDefault} className="modal__qna__form" autoComplete="on">
+                    <textarea id="askQuery" value={this.state.query} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="query,value" className="modal__qna__query" type="text" placeholder="Describe your query" aria-label="Describe your query." />
+                    <div onScroll={this.handleScroll} className="modal__qna__answers">
+                        {this.state.displayAnswers.map(a => <QnA key={QnAs[a].q} q={QnAs[a].q} a={QnAs[a].a} />)}
+                        {this.state.query !== '' && this.matchResults.length <= this.state.displayAnswers.length && <>
+                        <div className="modal__qna__answers__dialog">
+                            <h3>Query unanswered?</h3>
+                            <p className="modal__qna__answers__dialog__q">{this.state.query}</p>
+                            <div className="modal__qna__answers__dialog__a">
+                                <Input invalid={this.state.invalid} dataName="name" aria-label="Your name" value={this.state.name} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="name,value" className="modal__qna__name" type="text" placeholder="Your name" name="name" />
                             </div>
-                            </>
-                            }
+                            <a className="modal__message__send" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven Q&A - ${this.state.name} asks...`)}&body=${encodeURIComponent(this.state.query)}`} title="Opens your email application">
+                                Email your query
+                            </a>
                         </div>
-                    </form>
-                }
+                        </>
+                        }
+                    </div>
+                </form>
             </>
         )
     }

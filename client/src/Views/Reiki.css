@@ -22,6 +22,20 @@
 .main--reiki .main__section-background--orange {
     padding-top: 10vw;
 }
+
+.main__section__figure--certs {
+    min-width: 100px; 
+    width: 25%;
+    display: inline-flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    float: right;
+    margin: 1% 5%;
+}
+.main__section__figure--certs img {
+    min-width: 100px; 
+    max-width: 200px;
+}
 @media only screen and (min-width: 1000px) {
     .main--reiki .main__section-background--blue {
         padding-bottom: 200px;

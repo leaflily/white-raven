@@ -13,12 +13,13 @@
     box-sizing: border-box;
     width: 90vw;
     max-width: 800px;
-    height: 50vh;
+    height: calc(80vh - 160px);
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
+    align-items: flex-start;
     padding: 32px;
 }
 
@@ -232,7 +233,26 @@
     flex-flow: column;
     align-content: center;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    row-gap: 12px;
+}
+
+.modal__booking-stage__form--sending {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.modal__booking-stage__form--sending > div {
+    box-sizing: border-box;
+    width: 100%;
+    background: rgba(216, 235, 254, 0.2);
+    border: 16px solid rgba(216, 235, 254, 0);
+    border-radius: 12px 12px 0 0;
+    overflow-y: auto;
+    height: 100%;
+    backdrop-filter: blur(12px);
 }
 
 .modal__booking-stage>div {
