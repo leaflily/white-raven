@@ -8,24 +8,9 @@ import Select from '../Components/Select';
 function BookingStage(props) {
     const { name, age, ageValue, gender, reason, otherQuestions, clientName, clientNumber, quietTimes, services } = props.inputs;
     const getEmailBody = () => {
-        const newLine = '';
+        const newLine = '\r\n';
         return (
-`
-Hello Denise, I'd like to book in for ${services} ${newLine} 
-
-    Animal Name: ${name} ${newLine} 
-    Gender: ${gender} ${newLine} 
-    Age: ${age} ${ageValue} ${newLine}
-    ${quietTimes ? `Quiet at: ${quietTimes} ${newLine}` : ''}
-    Reason for Communication: ${reason} ${newLine} ${newLine}
-    ${otherQuestions ? `Other Questions: ${otherQuestions} ${newLine} ${newLine}` : ''}
-
-Please find a clear and recent photo of ${name} attached. 
-Let me know if I've forgotten to attach this!
-
-Kind regards${clientName || clientNumber ? ',' : ''}
-${clientName ? clientName : ''}${clientName && clientNumber ? ' | ' : ''}${clientNumber ? clientNumber : ''}
-`
+`Hello Denise, ${newLine}I'd like to make a booking for ${services} ${newLine}${newLine}Animal Name: ${name} ${newLine}Gender: ${gender} ${newLine}Age: ${age} ${ageValue} ${newLine}${quietTimes ? `Quiet at: ${quietTimes} ${newLine}` : ''}Reason for Communication: ${reason} ${newLine} ${newLine}${otherQuestions ? `Other Questions: ${otherQuestions} ${newLine} ${newLine}` : ''}Please find a clear and recent photo of ${name} attached. ${newLine}Let me know if I've forgotten to attach this! ${newLine} ${newLine}Kind regards${clientName || clientNumber ? ',' : ''} ${newLine}${clientName ? clientName : ''}${clientName && clientNumber ? ' | ' : ''}${clientNumber ? clientNumber : ''}`
         )
     };
 
