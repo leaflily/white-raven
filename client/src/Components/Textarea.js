@@ -7,9 +7,9 @@ function Textarea(props) {
     const [alert, setAlert] = useState({});
     const valid = props.dataName === props.invalid;
     const setValidity = () => {
-       setClassNames(props.dataName === props.invalid ? 'required required-out' : '');
-       setAlert(props.dataName === props.invalid ? { role:"alert" } : {});
-       props.dataName === props.invalid && focusInput.current.focus();
+       setClassNames(valid ? 'required required-out' : '');
+       setAlert(valid ? { role:"alert" } : {});
+       valid && focusInput.current.focus();
     }  
     useEffect(setValidity, [valid]);
     return <textarea

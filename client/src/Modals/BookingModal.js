@@ -90,6 +90,14 @@ class BookingModal extends React.Component {
             handle: e => {
                 const target = e.target.hasAttribute("data-name") ? e.target : e.target.parentElement;
                 const name = target.getAttribute("data-name");
+                if (name === 'services') {
+                    if (target.value.match('Reiki')) {
+                        this.requiredInputs[1] = ['name', 'age', 'gender', 'quietTimes'];
+                    }
+                    else {
+                        this.requiredInputs[1] = ['name', 'age', 'gender'];
+                    }
+                }
                 this.events.input.data(name, target.value);
             }
         },

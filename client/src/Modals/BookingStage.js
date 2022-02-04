@@ -99,8 +99,8 @@ function BookingStage(props) {
                     <p>Booking for: {services}</p>
                     <p>Animal Name: {name}</p>
                     <p>Gender: {gender}</p>
-                    <p>Age: {ageValue}</p>
-                    <p>Quiet at: {quietTimes}</p>
+                    <p>Age: {age} {ageValue}</p>
+                    <p>{quietTimes ? `Quiet at: ${quietTimes}` : ''}</p>
                     <p>Reason for Communication: {reason}</p>
                     <p>{otherQuestions ? `Other Questions: ${otherQuestions}` : ''}</p>
                     <p>{clientNumber ? `Contact number: ${clientNumber}` : ''}</p>
