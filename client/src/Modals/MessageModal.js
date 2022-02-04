@@ -65,7 +65,7 @@ class MessageModal extends React.Component {
                 <form onSubmit={this.preventDefault} className="modal__message__form" autoComplete="on">
                     <Textarea invalid={this.state.invalid} dataName="text" id="askmessage" value={this.state.message} onChange={this.handleEvent} data-dest="MessageModal" data-func="input" data-params="message,value" className="modal__message__text" type="text" placeholder="Your message" aria-label="Your message." />
                     <Input invalid={this.state.invalid} dataName="name" aria-label="Your name" value={this.state.name} onChange={this.handleEvent} data-dest="MessageModal" data-func="input" data-params="name,value" className="modal__message__name" type="text" placeholder="Your name" name="name" />
-                    <a className="modal__message__send" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven Message - from ${this.state.name}`)}&body=${encodeURIComponent(this.state.message)}`} title="Opens your email application">
+                    <a className="modal__message__send" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven Message${this.state.name ? ' - from ' + this.state.name : ''}`)}&body=${encodeURIComponent(this.state.message)}`} title="Opens your email application">
                         Email your message
                     </a>
                 </form>

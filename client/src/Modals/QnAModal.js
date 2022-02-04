@@ -192,7 +192,7 @@ class QnAModal extends React.Component {
                             <div className="modal__qna__answers__dialog__a">
                                 <Input invalid={this.state.invalid} dataName="name" aria-label="Your name" value={this.state.name} onChange={this.handleEvent} data-dest="QnAModal" data-func="input" data-params="name,value" className="modal__qna__name" type="text" placeholder="Your name" name="name" />
                             </div>
-                            <a className="modal__message__send" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven Q&A - ${this.state.name} asks...`)}&body=${encodeURIComponent(this.state.query)}`} title="Opens your email application">
+                            <a className="modal__message__send" href={`mailto:white3raven@gmail.com?subject=${encodeURIComponent(`White Raven Q&A${this.state.name ? ` - ${this.state.name} asks...` : ''}`)}&body=${encodeURIComponent(this.state.query)}`} title="Opens your email application">
                                 Email your query
                             </a>
                         </div>
